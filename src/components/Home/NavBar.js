@@ -12,10 +12,10 @@ function NavBar() {
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="#">Link</Nav.Link>
         </Nav>
+        <Button type="button" onClick={() => firebase.auth().signOut()}>
+          Logout
+        </Button>
       </Navbar.Collapse>
-      <Button type="button" onClick={() => firebase.auth().signOut()}>
-        Logout
-      </Button>
     </Navbar>
   );
 }
