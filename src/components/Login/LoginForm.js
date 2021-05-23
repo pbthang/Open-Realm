@@ -1,3 +1,4 @@
+import { Button } from "react-bootstrap";
 import React, { useCallback, useContext } from "react";
 import { Redirect } from "react-router";
 import { gooogleProvider } from "../../config/authMethods";
@@ -27,19 +28,20 @@ function LoginForm({ history }) {
 
   return (
     <div className="container-fluid text-center">
-      <button
-        className="btn btn-light btn-md text-center m-5 pr-5 pl-5"
+      <Button
+        variant="light"
+        type="button"
+        size="md"
         onClick={() => handleClick(gooogleProvider)}
+        className="text-center m-5 pl-5 pr-5"
       >
-        <span>
-          <img
-            className="m-2"
-            src="https://img.icons8.com/color/16/000000/google-logo.png"
-            alt="logo"
-          />
-          Login with Google
-        </span>
-      </button>
+        <img
+          className="m-2"
+          src="https://img.icons8.com/color/16/000000/google-logo.png"
+          alt="logo"
+        />
+        Login with Google
+      </Button>
     </div>
   );
 }

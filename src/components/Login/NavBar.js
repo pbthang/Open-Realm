@@ -1,27 +1,18 @@
 import React from "react";
+import { Navbar, Nav } from "react-bootstrap";
 
 function NavBar() {
   return (
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary d-flex">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">
-          Open Realm
-        </a>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="/">
-              Home
-            </a>
-            <a class="nav-link" href="#">
-              Features
-            </a>
-            <a class="nav-link" href="#">
-              Pricing
-            </a>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <Navbar variant="dark" bg="primary" expand="lg">
+      <Navbar.Brand href="#home">Open Realm</Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto">
+          <Nav.Link href="/">Home</Nav.Link>
+          <Nav.Link href="#">Link</Nav.Link>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
   );
 }
 
