@@ -1,25 +1,14 @@
-import { Button } from "react-bootstrap";
-import React, { useCallback, useContext } from "react";
-import { Redirect } from "react-router";
-import { gooogleProvider } from "../../config/authMethods";
-import socialMediaAuth from "../../services/auth";
+import React, { useContext } from "react";
+import { Redirect, withRouter } from "react-router";
+import {
+  googleProvider,
+  facebookProvider,
+  githubProvider,
+} from "../../config/authMethods";
 import { AuthContext } from "../Auth";
-import "./LoginForm.css";
+import LoginButton from "./LoginButton";
 
 function LoginForm({ history }) {
-  const handleClick = useCallback(
-    async (provider) => {
-      try {
-        const res = await socialMediaAuth(provider);
-        history.push("/");
-        console.log(res);
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    [history]
-  );
-
   const { currUser } = useContext(AuthContext);
 
   if (currUser) {
@@ -27,23 +16,30 @@ function LoginForm({ history }) {
   }
 
   return (
-    <div className="container-fluid text-center">
-      <Button
-        variant="light"
-        type="button"
-        size="md"
-        onClick={() => handleClick(gooogleProvider)}
-        className="text-center m-5 pl-5 pr-5"
+    <div className="container-fluid text-center mt-5 mb-5">
+      <LoginButton
+        history={history}
+        provider={googleProvider}
+        imgSrc="https://img.icons8.com/color/144/000000/google-logo.png"
       >
-        <img
-          className="m-2"
-          src="https://img.icons8.com/color/16/000000/google-logo.png"
-          alt="logo"
-        />
         Login with Google
-      </Button>
+      </LoginButton>
+      <LoginButton
+        history={history}
+        provider={facebookProvider}
+        imgSrc="https://img.icons8.com/color/144/000000/facebook-new.png"
+      >
+        Login with Facebook
+      </LoginButton>
+      <LoginButton
+        history={history}
+        provider={githubProvider}
+        imgSrc="https://img.icons8.com/material-sharp/96/000000/github.png"
+      >
+        Login with Github
+      </LoginButton>
     </div>
   );
 }
 
-export default LoginForm;
+export default withRouter(LoginForm);
