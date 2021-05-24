@@ -9,10 +9,11 @@ import { AuthContext } from "../Auth";
 import LoginButton from "./LoginButton";
 
 function LoginForm({ history }) {
+  // console.log(history);
   const { currUser } = useContext(AuthContext);
 
   if (currUser) {
-    return <Redirect to="/" />;
+    return <Redirect to="/home" />;
   }
 
   return (

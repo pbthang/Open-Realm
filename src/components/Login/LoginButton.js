@@ -7,8 +7,7 @@ function LoginButton({ provider, imgSrc, history, children }) {
     async (provider) => {
       try {
         const res = await socialMediaAuth(provider);
-        history.push("/");
-        console.log(res);
+        history.push("/home");
       } catch (err) {
         console.log(err);
       }
