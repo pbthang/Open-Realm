@@ -1,34 +1,28 @@
-import React, { useCallback } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "react-bootstrap";
-import socialMediaAuth from "../../services/auth";
+import React from "react";
+import { Redirect, withRouter } from "react-router";
 
-function LoginButton({ provider, imgSrc, history, children }) {
-  const handleClick = useCallback(
-    async (provider) => {
-      try {
-        const res = await socialMediaAuth(provider);
-        history.push("/home");
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    [history]
-  );
+function LoginForm() {
+  // console.log(history);
+
+  const { loginWithPopup, isAuthenticated } = useAuth0();
+
+  if (isAuthenticated) {
+    return <Redirect to="/home" />;
+  }
 
   return (
-    <div>
-      <Button
-        variant="light"
-        type="button"
-        size="md"
-        onClick={() => handleClick(provider)}
-        className="text-center m-3 pl-5 pr-5"
-      >
-        <img className="m-2" src={imgSrc} alt="logo" height="30" />
-        {children}
-      </Button>
-    </div>
+    <Button
+      variant="primary"
+      type="button"
+      size="md"
+      onClick={() => loginWithPopup()}
+      className="text-center m-1 pl-5 pr-5"
+    >
+      Login
+    </Button>
   );
 }
 
-export default LoginButton;
+export default LoginForm;

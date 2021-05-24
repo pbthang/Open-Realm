@@ -1,20 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { AuthContext } from "./Auth";
+import { useAuth0 } from "@auth0/auth0-react";
+import Login from "../pages/Login";
 
 function PrivateRoute({ component: RouteComponent, ...rest }) {
-  const { currUser } = useContext(AuthContext);
-  console.log(currUser);
+  const { isAuthenticated } = useAuth0();
 
   return (
     <Route
       {...rest}
       render={(routeProps) =>
-        !!currUser ? (
-          <RouteComponent {...routeProps} />
-        ) : (
-          <Redirect to="/login" {...routeProps} />
-        )
+        !!isAuthenticated ? <RouteComponent {...routeProps} /> : <Login />
       }
     />
   );
