@@ -1,13 +1,8 @@
 import React from "react";
-import NavBar from "../components/NavBar";
+import AppShell from "../components/AppShell";
 
 function Profile() {
-  return (
-    <div>
-      <NavBar />
-      <div>User Profile</div>
-    </div>
-  );
+  return <AppShell>User Profile</AppShell>;
 }
 
 export default Profile;

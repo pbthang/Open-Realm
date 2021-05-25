@@ -1,13 +1,8 @@
 import React from "react";
-import NavBar from "../components/NavBar";
+import AppShell from "../components/AppShell";
 
 function Home() {
-  return (
-    <div>
-      <NavBar />
-      <div>Home Page</div>
-    </div>
-  );
+  return <AppShell>Home Page</AppShell>;
 }
 
 export default Home;

@@ -4,9 +4,41 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { CssBaseline } from "@material-ui/core";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
 const domain = "dev-d1rzgdpx.jp.auth0.com";
 const clientId = "QOU1OyaL4Odw32gPc6rw69DkjXHvdnMA";
+
+const theme = createMuiTheme({
+  palette: {
+    type: "light",
+    primary: {
+      main: "#563d7c",
+    },
+    secondary: {
+      main: "#dc3545",
+    },
+    error: {
+      main: "#dc3545",
+    },
+    warning: {
+      main: "#ffc107",
+    },
+    info: {
+      main: "#17a2b8",
+    },
+    success: {
+      main: "#28a745",
+    },
+  },
+  shape: {
+    borderRadius: 10,
+  },
+  typography: {
+    fontFamily: "Montserrat",
+  },
+});
 
 ReactDOM.render(
   <Auth0Provider
@@ -14,7 +46,10 @@ ReactDOM.render(
     clientId={clientId}
     redirectUri={window.location.origin}
   >
-    <App />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
   </Auth0Provider>,
   document.getElementById("root")
 );
