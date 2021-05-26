@@ -14,16 +14,18 @@ import HomeIcon from "@material-ui/icons/Home";
 import PersonIcon from "@material-ui/icons/Person";
 import InfoIcon from "@material-ui/icons/Info";
 import MeetingRoomRoundedIcon from "@material-ui/icons/MeetingRoomRounded";
+import CreateIcon from "@material-ui/icons/Create";
+import BookmarksIcon from "@material-ui/icons/Bookmarks";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
-    width: drawerWidth,
+    width: drawerWidth / 1.1,
     flexShrink: 0,
   },
   drawerPaper: {
-    width: drawerWidth,
+    width: drawerWidth / 1.1,
   },
   drawerContainer: {
     overflow: "auto",
@@ -57,10 +59,22 @@ function Sidebar() {
             </ListItemIcon>
             <ListItemText primary="Profile" />
           </ListItem>
+          <ListItem button key="Create" component="a" href="/create">
+            <ListItemIcon>
+              <CreateIcon />
+            </ListItemIcon>
+            <ListItemText primary="Create" />
+          </ListItem>
+          <ListItem button key="Bookmarked" component="a" href="/bookmarked">
+            <ListItemIcon>
+              <BookmarksIcon />
+            </ListItemIcon>
+            <ListItemText primary="Bookmarked" />
+          </ListItem>
         </List>
         <Divider />
         <List>
-          <ListItem button key="About">
+          <ListItem button key="About" component="a" href="/about">
             <ListItemIcon>
               <InfoIcon />
             </ListItemIcon>

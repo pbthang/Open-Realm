@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  AppBar,
-  Typography,
-  Toolbar,
-  Avatar,
-  Button,
-  Menu,
-  MenuItem,
-} from "@material-ui/core";
+import { AppBar, Typography, Toolbar, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -39,17 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 function NavBar() {
   const classes = useStyles();
-  const { user, logout } = useAuth0();
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const { user } = useAuth0();
 
   return (
     <AppBar position="fixed" className={classes.root}>
