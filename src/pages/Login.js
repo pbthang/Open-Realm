@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import loginCover from "../resources/loginCover.jpg";
 import { Backdrop, Typography } from "@material-ui/core";
 import { RandomReveal } from "react-random-reveal";
+import TypeWriterEffect from "react-typewriter-effect";
 
 const useStyles = makeStyles((theme) => ({
   background: {
@@ -28,13 +29,15 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: "1.5rem",
     margin: "2rem 3rem",
     textShadow:
-      "4px -4px 0 rgb(255,38,251, 0.8), -4px 4px 0 rgb(44,255,255, 0.8)",
+      "4px -4px 0 rgb(255,38,251, 0.7), -4px 4px 0 rgb(44,255,255, 0.7)",
   },
   subtext: {
     color: "#fff",
-    fontWeight: 500,
+    fontWeight: 700,
     marginLeft: "3rem",
-    marginRight: "20vw",
+    marginRight: "10vw",
+    textShadow:
+      "4px -4px 0 rgb(255,38,251, 0.7), -4px 4px 0 rgb(44,255,255, 0.7)",
   },
 }));
 
@@ -54,7 +57,17 @@ function Login() {
           />
         </Typography>
         <Typography variant="h2" className={classes.subtext}>
-          The dynamic world of fictional writings.
+          <TypeWriterEffect
+            textStyle={{
+              fontFamily: "Montserrat",
+              fontWeight: 500,
+              fontSize: "3rem",
+            }}
+            startDelay={50}
+            cursorColor="white"
+            text="The dynamic world of fictional writings."
+            typeSpeed={70}
+          />
         </Typography>
       </div>
     </div>
