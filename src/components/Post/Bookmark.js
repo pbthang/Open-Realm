@@ -27,7 +27,7 @@ function Bookmark({ book }) {
 
   useEffect(() => {
     books.find((b) => b.id === book.id).numberOfBookmarks = number;
-  }, [number]);
+  }, [number, book]);
 
   const handleClick = () => {
     setNumber(marked ? number - 1 : number + 1);
