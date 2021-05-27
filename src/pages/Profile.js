@@ -9,10 +9,10 @@ function Profile() {
   return (
     <AppShell>
       <Typography variant="h2">User Profile</Typography>
-      <Avatar src={user.picture} style={{ height: 60, width: 60 }} />
+      <Avatar src={user?.picture} style={{ height: 60, width: 60 }} />
       <span>
-        <Typography variant="h4">Name: {user.name}</Typography>
-        <Typography variant="h4">Email: {user.email}</Typography>
+        <Typography variant="h4">Name: {user?.name}</Typography>
+        <Typography variant="h4">Email: {user?.email}</Typography>
       </span>
     </AppShell>
   );
