@@ -11,8 +11,8 @@ import {
   responsiveFontSizes,
 } from "@material-ui/core/styles";
 
-const domain = "dev-d1rzgdpx.jp.auth0.com";
-const clientId = "QOU1OyaL4Odw32gPc6rw69DkjXHvdnMA";
+const domain = process.env.REACT_APP_DOMAIN;
+const clientId = process.env.REACT_APP_CLIENT_ID;
 
 const theme = responsiveFontSizes(
   createMuiTheme({
@@ -54,6 +54,7 @@ ReactDOM.render(
   >
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      {console.log(domain, clientId)}
       <App />
     </ThemeProvider>
   </Auth0Provider>,

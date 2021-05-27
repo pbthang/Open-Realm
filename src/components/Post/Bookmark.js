@@ -7,11 +7,6 @@ import books from "./testBooks";
 const initialMarked = false;
 
 const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-  },
   icon: {
     cursor: "pointer",
   },
