@@ -17,15 +17,15 @@ import MeetingRoomRoundedIcon from "@material-ui/icons/MeetingRoomRounded";
 import CreateIcon from "@material-ui/icons/Create";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
-    width: drawerWidth / 1.1,
+    width: drawerWidth,
     flexShrink: 0,
   },
   drawerPaper: {
-    width: drawerWidth / 1.1,
+    width: drawerWidth,
   },
   drawerContainer: {
     overflow: "auto",

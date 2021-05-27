@@ -7,12 +7,14 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import Create from "./pages/Create";
 import Bookmarked from "./pages/Bookmarked";
+import Story from "./pages/Story";
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Switch>
+          <PrivateRoute exact path="/home/:bookId" component={Story} />
           <PrivateRoute exact path="/home" component={Home} />
           <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/create" component={Create} />

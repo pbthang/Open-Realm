@@ -2,7 +2,7 @@ import React from "react";
 import LoginNavBar from "../components/LoginNavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import loginCover from "../resources/loginCover.jpg";
-import { Backdrop, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { RandomReveal } from "react-random-reveal";
 import TypeWriterEffect from "react-typewriter-effect";
 
@@ -46,7 +46,6 @@ function Login() {
   return (
     <div>
       <LoginNavBar />
-      <Backdrop className={classes.backdrop} open={true}></Backdrop>
       <div className={classes.background}>
         <Typography variant="h1" className={classes.text}>
           <RandomReveal
