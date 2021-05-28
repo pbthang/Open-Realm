@@ -74,7 +74,7 @@ function Create() {
           Save Draft
         </Button>
         <Button variant="contained" color="primary" className={classes.btn}>
-          Create
+          Publish
         </Button>
       </div>
     </AppShell>
