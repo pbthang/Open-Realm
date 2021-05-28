@@ -2,7 +2,7 @@ import React from "react";
 import AppShell from "../components/AppShell";
 import Post from "../components/Post";
 import { makeStyles } from "@material-ui/core/styles";
-import books from "../components/Post/testBooks";
+import { books } from "../components/Post/testDb";
 
 const useStyles = makeStyles({
   root: {

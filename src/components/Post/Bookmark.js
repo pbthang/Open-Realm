@@ -2,13 +2,20 @@ import React, { useState, useEffect } from "react";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import { makeStyles } from "@material-ui/core/styles";
-import books from "./testBooks";
+import { books } from "./testDb";
 
 const initialMarked = false;
 
 const useStyles = makeStyles({
+  root: {
+    display: "inline-flex",
+    alignItems: "center",
+  },
   icon: {
     cursor: "pointer",
+  },
+  number: {
+    fontSize: "1rem",
   },
 });
 

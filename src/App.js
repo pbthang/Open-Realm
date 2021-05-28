@@ -8,6 +8,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Create from "./pages/Create";
 import Bookmarked from "./pages/Bookmarked";
 import Story from "./pages/Story";
+import YourWorks from "./pages/YourWorks";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <PrivateRoute exact path="/home" component={Home} />
           <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/create" component={Create} />
+          <PrivateRoute exact path="/yourworks" component={YourWorks} />
           <PrivateRoute exact path="/bookmarked" component={Bookmarked} />
           <Route exact path="/about" component={About} />
           <Route exact path="/" component={Login} />
