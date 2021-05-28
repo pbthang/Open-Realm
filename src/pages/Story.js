@@ -72,7 +72,7 @@ function Story() {
     <AppShell>
       <div className={classes.root}>
         <Typography variant="h2" className={classes.title}>
-          {book.chapter}. {book.title}
+          {book.title} - Chapter {book.chapter}
         </Typography>
 
         <span className={classes.authorInfo}>

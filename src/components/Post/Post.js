@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   root: {
     display: "inline-block",
     margin: "0.5rem",
-    height: "7rem",
+    height: "8rem",
     width: "19rem",
   },
   title: {
@@ -41,6 +41,7 @@ function Post({ book }) {
             {book.title}
           </Typography>
         </Tooltip>
+        <Typography variant="subtitle1">Chapter {book.chapter}</Typography>
       </CardContent>
 
       <CardActions className={classes.action}>
