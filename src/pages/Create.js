@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AppShell from "../components/AppShell";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Button, Paper } from "@material-ui/core";
