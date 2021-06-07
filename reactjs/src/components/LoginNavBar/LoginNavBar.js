@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Redirect } from "react-router";
 import { AppBar, Toolbar, Typography, Button } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
+// import api from "../../api/api";
 
 const useStyles = makeStyles((theme) => ({
   title: {

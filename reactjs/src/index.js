@@ -54,7 +54,6 @@ ReactDOM.render(
   >
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {console.log(domain, clientId)}
       <App />
     </ThemeProvider>
   </Auth0Provider>,

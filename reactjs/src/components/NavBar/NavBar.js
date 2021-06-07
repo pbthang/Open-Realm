@@ -40,7 +40,7 @@ function NavBar() {
           Open Realm
         </Typography>
         <span className={classes.userInfo}>
-          <span className={classes.avatarText}>Hi, {user?.name}</span>
+          <span className={classes.avatarText}>Hi, {user?.nickname}</span>
           <Avatar className={classes.avatar} src={user?.picture} />
         </span>
       </Toolbar>

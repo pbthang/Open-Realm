@@ -67,7 +67,9 @@ function Create() {
             />
           </Paper>
         </form>
-        <Paper style={{ padding: "1rem", margin: "1rem 0" }}>
+        <Paper
+          style={{ padding: "1rem", margin: "1rem 0", wordWrap: "break-word" }}
+        >
           {parse(content)}
         </Paper>
         <Button variant="contained" color="primary" className={classes.btn}>

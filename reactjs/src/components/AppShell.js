@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     width: "80vw",
+    wordWrap: "break-word",
     padding: theme.spacing(3),
   },
 }));

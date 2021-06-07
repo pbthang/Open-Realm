@@ -16,7 +16,6 @@ import InfoIcon from "@material-ui/icons/Info";
 import MeetingRoomRoundedIcon from "@material-ui/icons/MeetingRoomRounded";
 import CreateIcon from "@material-ui/icons/Create";
 import BookmarksIcon from "@material-ui/icons/Bookmarks";
-import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 
 const drawerWidth = 200;
 
@@ -54,7 +53,12 @@ function Sidebar() {
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItem>
-          <ListItem button key="Profile" component="a" href="/profile">
+          <ListItem
+            button
+            key="Profile"
+            component="a"
+            href={`/profile/openrealm01`}
+          >
             <ListItemIcon>
               <PersonIcon />
             </ListItemIcon>
@@ -65,12 +69,6 @@ function Sidebar() {
               <CreateIcon />
             </ListItemIcon>
             <ListItemText primary="Create" />
-          </ListItem>
-          <ListItem button key="YourWorks" component="a" href="/yourworks">
-            <ListItemIcon>
-              <LibraryBooksIcon />
-            </ListItemIcon>
-            <ListItemText primary="Your Works" />
           </ListItem>
           <ListItem button key="Bookmarked" component="a" href="/bookmarked">
             <ListItemIcon>

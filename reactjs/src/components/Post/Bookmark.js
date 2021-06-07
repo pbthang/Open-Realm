@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import { makeStyles } from "@material-ui/core/styles";
-import { books } from "./testDb";
-
-const initialMarked = false;
+import api from "../../api/api";
 
 const useStyles = makeStyles({
   root: {
@@ -22,13 +20,28 @@ const useStyles = makeStyles({
 function Bookmark({ book }) {
   const classes = useStyles();
 
-  const initialNumber = book.numberOfBookmarks;
+  const initialMarked = false;
 
   const [marked, setMarked] = useState(initialMarked);
-  const [number, setNumber] = useState(initialNumber);
+  const [number, setNumber] = useState(0);
 
   useEffect(() => {
-    books.find((b) => b.id === book.id).numberOfBookmarks = number;
+    setNumber(parseInt(book.numberOfBookmarks, 10));
+  }, [book]);
+
+  useEffect(() => {
+    const updateBookmarkNumber = async () => {
+      try {
+        await api.put(`/stories/${book.id}`, {
+          ...book,
+          numberOfBookmarks: number.toString(),
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    number && updateBookmarkNumber();
   }, [number, book]);
 
   const handleClick = () => {
@@ -43,7 +56,7 @@ function Bookmark({ book }) {
       ) : (
         <BookmarkBorderIcon className={classes.icon} onClick={handleClick} />
       )}
-      <span className={classes.number}>{number}</span>
+      <span className={classes.number}>{number || ""}</span>
     </span>
   );
 }
