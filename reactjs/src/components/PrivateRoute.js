@@ -1,20 +1,15 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
-import Cookies from "js-cookie";
+import { Route } from "react-router-dom";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
+import Loading from "../pages/Loading";
 
-function PrivateRoute({ component: RouteComponent, ...rest }) {
-  const isAuthenticated = !!Cookies.get("auth0.is.authenticated");
-
+function PrivateRoute({ component, ...rest }) {
   return (
     <Route
+      component={withAuthenticationRequired(component, {
+        onRedirecting: () => <Loading />,
+      })}
       {...rest}
-      render={(routeProps) =>
-        !!isAuthenticated ? (
-          <RouteComponent {...routeProps} />
-        ) : (
-          <Redirect to="/" />
-        )
-      }
     />
   );
 }

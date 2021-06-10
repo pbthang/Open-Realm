@@ -8,19 +8,57 @@ import PrivateRoute from "./components/PrivateRoute";
 import Create from "./pages/Create";
 import Bookmarked from "./pages/Bookmarked";
 import Story from "./pages/Story";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
+  const { isAuthenticated } = useAuth0();
+
   return (
     <div className="App">
       <Router>
         <Switch>
-          <PrivateRoute exact path="/home/:bookId" component={Story} />
-          <PrivateRoute exact path="/home" component={Home} />
-          <PrivateRoute exact path="/profile" component={Profile} />
-          <PrivateRoute exact path="/profile/:username" component={Profile} />
-          <PrivateRoute exact path="/create" component={Create} />
-          <PrivateRoute exact path="/bookmarked" component={Bookmarked} />
-          <PrivateRoute exact path="/about" component={About} />
+          <PrivateRoute
+            exact
+            auth={isAuthenticated}
+            path="/home/:bookId"
+            component={Story}
+          />
+          <PrivateRoute
+            exact
+            auth={isAuthenticated}
+            path="/home"
+            component={Home}
+          />
+          <PrivateRoute
+            exact
+            auth={isAuthenticated}
+            path="/profile"
+            component={Profile}
+          />
+          <PrivateRoute
+            exact
+            auth={isAuthenticated}
+            path="/profile/:username"
+            component={Profile}
+          />
+          <PrivateRoute
+            exact
+            auth={isAuthenticated}
+            path="/create"
+            component={Create}
+          />
+          <PrivateRoute
+            exact
+            auth={isAuthenticated}
+            path="/bookmarked"
+            component={Bookmarked}
+          />
+          <PrivateRoute
+            exact
+            auth={isAuthenticated}
+            path="/about"
+            component={About}
+          />
           <Route exact path="/" component={Login} />
         </Switch>
       </Router>

@@ -192,7 +192,7 @@ function Story() {
         <Typography variant="body1" className={classes.content}>
           {book.content}
         </Typography>
-        <Bookmark book={book} />
+        <Bookmark type="book" book={book} />
         {nextChapters.length === 0 || (
           <>
             <Divider />

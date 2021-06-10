@@ -17,7 +17,7 @@ const useStyles = makeStyles({
   },
 });
 
-function Bookmark({ book }) {
+function Bookmark({ type, book }) {
   const classes = useStyles();
 
   const initialMarked = false;
@@ -27,22 +27,27 @@ function Bookmark({ book }) {
 
   useEffect(() => {
     setNumber(parseInt(book.numberOfBookmarks, 10));
-  }, [book]);
+    // eslint-disable-next-line
+  }, [JSON.stringify(book)]);
 
   useEffect(() => {
     const updateBookmarkNumber = async () => {
       try {
-        await api.put(`/stories/${book.id}`, {
-          ...book,
-          numberOfBookmarks: number.toString(),
-        });
+        await api.put(
+          `/${type === "chapter" ? "chapters" : "stories"}/${book.id}`,
+          {
+            ...book,
+            numberOfBookmarks: number.toString(),
+          }
+        );
       } catch (err) {
         console.log(err);
       }
     };
 
     number && updateBookmarkNumber();
-  }, [number, book]);
+    // eslint-disable-next-line
+  }, [number, JSON.stringify(book), type]);
 
   const handleClick = () => {
     setNumber(marked ? number - 1 : number + 1);

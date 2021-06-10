@@ -85,7 +85,14 @@ function Sidebar() {
             </ListItemIcon>
             <ListItemText primary="About" />
           </ListItem>
-          <ListItem button key="Logout" onClick={logout}>
+          <ListItem
+            button
+            key="Logout"
+            onClick={() => {
+              logout();
+              window.localStorage.clear();
+            }}
+          >
             <ListItemIcon>
               <MeetingRoomRoundedIcon />
             </ListItemIcon>

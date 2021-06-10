@@ -55,7 +55,6 @@ function Profile() {
       const queryString = user.startedStories?.map((x) => `id=${x}`).join("&");
       if (queryString?.length) {
         const response = await api.get("/stories?" + queryString);
-        console.log(queryString);
         setStartedStories(response.data);
       }
     };
@@ -81,7 +80,7 @@ function Profile() {
         <Avatar src={user?.picture} className={classes.avatar} />
         <span className={classes.userInfo}>
           <Typography variant="h4">Name: {user?.name}</Typography>
-          <Typography variant="h4">Username: {user?.nickname}</Typography>
+          <Typography variant="h4">Username: {user?.id}</Typography>
           <Typography variant="h4">Email: {user?.email}</Typography>
         </span>
       </div>

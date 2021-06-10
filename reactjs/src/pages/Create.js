@@ -32,17 +32,17 @@ function Create() {
   const classes = useStyles();
 
   const [content, setContent] = useState(
-    window.sessionStorage.getItem("createCache") ?? ""
+    window.localStorage.getItem("createCache") ?? ""
   );
 
   const [title, setTitle] = useState(
-    window.sessionStorage.getItem("titleCache") ?? ""
+    window.localStorage.getItem("titleCache") ?? ""
   );
 
   const handleOnChange = (e, editor) => {
     const data = editor.getData();
     setContent(data);
-    window.sessionStorage.setItem("createCache", data);
+    window.localStorage.setItem("createCache", data);
   };
 
   return (
@@ -56,7 +56,7 @@ function Create() {
             value={title}
             onChange={(e) => {
               setTitle(e.target.value);
-              window.sessionStorage.setItem("titleCache", e.target.value);
+              window.localStorage.setItem("titleCache", e.target.value);
             }}
           />
           <Paper className={classes.editorContainer}>
@@ -72,9 +72,6 @@ function Create() {
         >
           {parse(content)}
         </Paper>
-        <Button variant="contained" color="primary" className={classes.btn}>
-          Save Draft
-        </Button>
         <Button variant="contained" color="primary" className={classes.btn}>
           Publish
         </Button>

@@ -39,10 +39,12 @@ function NavBar() {
         <Typography variant="h6" className={classes.title}>
           Open Realm
         </Typography>
-        <span className={classes.userInfo}>
-          <span className={classes.avatarText}>Hi, {user?.nickname}</span>
-          <Avatar className={classes.avatar} src={user?.picture} />
-        </span>
+        {!!(user?.nickname && user?.picture) && (
+          <span className={classes.userInfo}>
+            <span className={classes.avatarText}>Hi, {user?.nickname}</span>
+            <Avatar className={classes.avatar} src={user?.picture} />
+          </span>
+        )}
       </Toolbar>
     </AppBar>
   );
