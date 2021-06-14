@@ -161,36 +161,27 @@
   "stories": [
     {
       "id": "1",
-      "title": "Mollit cillum duis adipisicing eiusmod nulla pariatur ullamco id adipisicing sint.",
-      "author": "openrealm01",
-      "chapter": "1",
+      "title": "I have nail in my shoes",
+      "author_id": 2,
+      "description": "I will go back to the forest and kill myself",
+      "numberOfChapters": 0,
       "numberOfBookmarks": "497",
-      "content": "Minim irure in et reprehenderit id aliqua duis ut ex est minim. Commodo ipsum ex velit aliquip ea magna et proident exercitation in pariatur labore qui. Laboris occaecat cillum ullamco amet commodo laborum ea ad in consectetur nostrud anim. Ad nulla ipsum Lorem aliqua cillum ut aliqua.Laboris voluptate enim do in Lorem duis pariatur elit eu reprehenderit occaecat quis magna. Adipisicing commodo minim nisi nulla exercitation aliquip et nostrud deserunt ad tempor tempor Lorem. Est reprehenderit non enim laboris deserunt irure laboris quis ex laboris magna Lorem aliqua dolor. Veniam nostrud fugiat elit adipisicing esse Lorem proident ea nulla nulla. Reprehenderit cupidatat fugiat commodo occaecat voluptate minim laborum nostrud et ipsum ad.\nNon fugiat ipsum est esse deserunt magna esse ut consequat cupidatat incididunt. Aliqua minim consequat commodo in nostrud reprehenderit incididunt ea aliquip magna velit irure. Duis exercitation ut tempor eu nulla elit id ut velit minim aliqua excepteur duis. Ipsum sint minim consequat irure et.",
-      "comments": [
-        "17",
-        "18"
-      ],
-      "nextChapters": [
-        "1",
-        "2"
-      ]
+      "comments_id": [],
+      "published": null,
+      "createdAt": "2021-06-13T15:14:04.101Z",
+      "updatedAt": "2021-06-13T15:14:04.101Z"
     },
     {
       "id": "2",
-      "title": "Non pariatur laborum cupidatat elit eu irure elit veniam duis.",
-      "author": "joshjoshjosh",
-      "chapter": "1",
-      "numberOfBookmarks": "275",
-      "content": "Est id sint qui est incididunt. Ullamco amet cillum irure eiusmod exercitation. Consequat anim deserunt incididunt officia officia exercitation irure elit eiusmod et cupidatat laboris veniam.Ad incididunt id ullamco qui ad dolor aute in officia nisi et. Est ea incididunt nisi aliquip enim velit. Nostrud voluptate aute non eu. Deserunt irure duis ut ea occaecat veniam. Esse ea dolore do veniam et esse labore occaecat minim anim adipisicing. Est laboris esse ullamco duis id tempor laborum nostrud mollit cupidatat cillum amet labore. Qui do laboris cupidatat minim.\nSit dolor irure aute magna eiusmod incididunt qui dolor. Cupidatat exercitation est eiusmod esse reprehenderit. Aliqua do ex magna nulla aliquip officia nulla et cillum consectetur voluptate velit ipsum. Esse sint elit ullamco elit ad pariatur ad. Cillum culpa reprehenderit reprehenderit velit.",
-      "comments": [
-        "19",
-        "20",
-        "21"
-      ],
-      "nextChapters": [
-        "3",
-        "4"
-      ]
+      "title": "The adventure of Tucks brothers",
+      "author_id": 1,
+      "description": "The tale of the Tucks' jouney in the West bank far far from home",
+      "numberOfChapters": 0,
+      "numberOfBookmarks": "1",
+      "comments_id": [],
+      "published": null,
+      "createdAt": "2021-06-13T15:14:29.331Z",
+      "updatedAt": "2021-06-13T15:14:29.331Z"
     },
     {
       "id": "3",

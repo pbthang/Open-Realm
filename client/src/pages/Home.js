@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AppShell from "../components/AppShell";
 import Post from "../components/Post";
 import { makeStyles } from "@material-ui/core/styles";
-import api from "../api/api";
+import BookDataService from "../services/book.service";
 
 const useStyles = makeStyles({
   root: {
@@ -18,7 +18,8 @@ function Home() {
   const [books, setBooks] = useState([]);
 
   const retrieveBooks = async () => {
-    const response = await api.get("/stories");
+    const response = await BookDataService.getAll();
+    console.log(response.data);
     return response.data;
   };
 
@@ -34,7 +35,7 @@ function Home() {
   return (
     <AppShell className={classes.root}>
       {books.map((book, idx) => (
-        <Post type="book" book={book} author={book.author} key={idx} />
+        <Post type="prompt" book={book} author={book.author} key={idx} />
       ))}
     </AppShell>
   );

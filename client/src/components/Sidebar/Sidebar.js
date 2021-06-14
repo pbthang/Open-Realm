@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Sidebar() {
   const classes = useStyles();
-  const { logout } = useAuth0();
+  const { logout, user } = useAuth0();
 
   return (
     <Drawer
@@ -57,7 +57,7 @@ function Sidebar() {
             button
             key="Profile"
             component="a"
-            href={`/profile/openrealm01`}
+            href={`/profile/${user?.sub}`}
           >
             <ListItemIcon>
               <PersonIcon />

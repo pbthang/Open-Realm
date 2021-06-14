@@ -18,7 +18,7 @@ function App() {
           <PrivateRoute exact path="/home/:bookId" component={Story} />
           <PrivateRoute exact path="/home" component={Home} />
           <PrivateRoute exact path="/profile" component={Profile} />
-          <PrivateRoute exact path="/profile/:username" component={Profile} />
+          <PrivateRoute exact path="/profile/:sub" component={Profile} />
           <PrivateRoute exact path="/create" component={Create} />
           <PrivateRoute exact path="/bookmarked" component={Bookmarked} />
           <PrivateRoute exact path="/about" component={About} />
