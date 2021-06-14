@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import api from "../api/api";
+import BookDataService from "../services/book.service";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -108,7 +109,7 @@ function Story() {
   };
 
   const getBook = async (id) => {
-    const response = await api.get(`/stories/${id}`);
+    const response = await BookDataService.get(id);
     return response.data;
   };
 
@@ -190,7 +191,7 @@ function Story() {
           </Typography>
         </span>
         <Typography variant="body1" className={classes.content}>
-          {book.content}
+          {book.description}
         </Typography>
         <Bookmark type="book" book={book} />
         {nextChapters.length === 0 || (

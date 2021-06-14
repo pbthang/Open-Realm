@@ -57,7 +57,7 @@ function Sidebar() {
             button
             key="Profile"
             component="a"
-            href={`/profile/${user?.email}`}
+            href={`/profile/${user?.sub}`}
           >
             <ListItemIcon>
               <PersonIcon />
