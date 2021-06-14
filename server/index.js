@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "http://localhost:3000",
 };
 
 app.use(cors(corsOptions));
@@ -25,7 +25,6 @@ db.sequelize.sync();
 // db.sequelize.sync({ force: true }).then(() => {
 //   console.log("Drop and re-sync db.");
 // });
-
 
 require("./app/routes/book.route.js")(app);
 require("./app/routes/chapter.route.js")(app);

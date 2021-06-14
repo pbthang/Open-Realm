@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 function Post({ type, book }) {
   const classes = useStyles();
 
-  if (type === "book") {
+  if (type === "prompt") {
     return (
       <Card className={classes.root}>
         <CardContent className={classes.content}>
@@ -89,7 +89,7 @@ function Post({ type, book }) {
         </CardActions>
       </Card>
     );
-  } else if (type === "chapter") {
+  } else if (type === "writing") {
     return (
       <Card className={classes.root}>
         <CardContent className={classes.content}>
