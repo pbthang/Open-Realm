@@ -28,7 +28,7 @@ db.sequelize.sync();
 
 
 require("./app/routes/book.route.js")(app);
-require("./aoo/routes/chapter.route.js")(app);
+require("./app/routes/chapter.route.js")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
