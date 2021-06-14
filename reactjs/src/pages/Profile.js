@@ -5,6 +5,8 @@ import { Typography, Avatar, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import api from "../api/api";
 import Post from "../components/Post";
+import { useAuth0 } from "@auth0/auth0-react";
+var axios = require("axios").default;
 
 const useStyles = makeStyles({
   user: {
@@ -30,16 +32,30 @@ const useStyles = makeStyles({
 
 function Profile() {
   const classes = useStyles();
-  const { username } = useParams();
+  const { email } = useParams();
+  // const { user } = useAuth0();
   const [user, setUser] = useState({});
   const [startedStories, setStartedStories] = useState([]);
   const [publishedChapters, setPublishedChapters] = useState([]);
 
   // get user
+  var options = {
+    method: 'GET',
+    url: `${process.env.REACT_APP_DOMAIN}/api/v2/users`,
+    params: {q: 'email:"' + email +'"', search_engine: 'v3'},
+    headers: {authorization: `Bearer ${process.env.REACT_APP_MGMT_API_ACCESS_TOKEN}`}
+  };
+
+  // axios.request(options).then(function (response) {
+  //   console.log(response.data);
+  // }).catch(function (error) {
+  //   console.error(error);
+  // });
+
   const userString = JSON.stringify(user);
   useEffect(() => {
     const getUser = async () => {
-      const response = await api.get(`/users/${username}`);
+      const response = await axios.request(options);
       return response.data;
     };
     (async () => {
@@ -48,30 +64,30 @@ function Profile() {
         setUser(user);
       }
     })();
-  }, [userString, username]);
+  }, [userString, email]);
 
-  useEffect(() => {
-    const getStartedStories = async () => {
-      const queryString = user.startedStories?.map((x) => `id=${x}`).join("&");
-      if (queryString?.length) {
-        const response = await api.get("/stories?" + queryString);
-        setStartedStories(response.data);
-      }
-    };
-    const getPublishedChapters = async () => {
-      const queryString = user.publishedChapters
-        ?.map((x) => `id=${x}`)
-        .join("&");
-      if (queryString?.length) {
-        const response = await api.get("/chapters?" + queryString);
-        setPublishedChapters(response.data);
-      }
-    };
-
-    getStartedStories();
-    getPublishedChapters();
-    // eslint-disable-next-line
-  }, [userString]);
+    // useEffect(() => {
+    //   const getStartedStories = async () => {
+    //     const queryString = user.startedStories?.map((x) => `id=${x}`).join("&");
+    //     if (queryString?.length) {
+    //       const response = await api.get("/stories?" + queryString);
+    //       setStartedStories(response.data);
+    //     }
+    //   };
+    //   const getPublishedChapters = async () => {
+    //     const queryString = user.publishedChapters
+    //     ?.map((x) => `id=${x}`)
+    //     .join("&");
+    //     if (queryString?.length) {
+    //       const response = await api.get("/chapters?" + queryString);
+    //       setPublishedChapters(response.data);
+    //     }
+    //   };
+    //
+    //   getStartedStories();
+    //   getPublishedChapters();
+    //   // eslint-disable-next-line
+    // }, [userString]);
 
   return (
     <AppShell>
@@ -79,52 +95,53 @@ function Profile() {
       <div className={classes.user}>
         <Avatar src={user?.picture} className={classes.avatar} />
         <span className={classes.userInfo}>
-          <Typography variant="h4">Name: {user?.name}</Typography>
-          <Typography variant="h4">Username: {user?.id}</Typography>
-          <Typography variant="h4">Email: {user?.email}</Typography>
+          <Typography variant="h4"><b>Name:</b> {user?.name}</Typography>
+          <Typography variant="h4"><b>Username:</b> {user?.nickname}</Typography>
+          <Typography variant="h4"><b>Email:</b> {user?.email}</Typography>
         </span>
       </div>
-      <div className={classes.yourWorks}>
-        {Object.keys(startedStories).length === 0 || (
-          <>
-            <Divider />
-            <Typography variant="h3" className={classes.title}>
-              Stories started
-            </Typography>
-            <div>
-              {startedStories.map((story, idx) => (
-                <Post
-                  type="book"
-                  book={story}
-                  author={story.author}
-                  key={idx}
-                />
-              ))}
-            </div>
-          </>
-        )}
-      </div>
-      <div className={classes.yourWorks}>
-        {Object.keys(publishedChapters).length === 0 || (
-          <>
-            <Divider />
-            <Typography variant="h3" className={classes.title}>
-              Chapters published
-            </Typography>
-            <div>
-              {publishedChapters.map((chapter, idx) => (
-                <Post
-                  type="chapter"
-                  book={chapter}
-                  author={chapter.author}
-                  key={idx}
-                />
-              ))}
-            </div>
-          </>
-        )}
-      </div>
     </AppShell>
+      // <div className={classes.yourWorks}>
+      //   {Object.keys(startedStories).length === 0 || (
+      //     <>
+      //       <Divider />
+      //       <Typography variant="h3" className={classes.title}>
+      //         Stories started
+      //       </Typography>
+      //       <div>
+      //         {startedStories.map((story, idx) => (
+      //           <Post
+      //             type="book"
+      //             book={story}
+      //             author={story.author}
+      //             key={idx}
+      //           />
+      //         ))}
+      //       </div>
+      //     </>
+      //   )}
+      // </div>
+      // <div className={classes.yourWorks}>
+      //   {Object.keys(publishedChapters).length === 0 || (
+      //     <>
+      //       <Divider />
+      //       <Typography variant="h3" className={classes.title}>
+      //         Chapters published
+      //       </Typography>
+      //       <div>
+      //         {publishedChapters.map((chapter, idx) => (
+      //           <Post
+      //             type="chapter"
+      //             book={chapter}
+      //             author={chapter.author}
+      //             key={idx}
+      //           />
+      //         ))}
+      //       </div>
+      //     </>
+      //   )}
+      // </div>
+
   );
 }
 

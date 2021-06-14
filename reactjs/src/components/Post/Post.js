@@ -76,7 +76,7 @@ function Post({ type, book }) {
           <Typography variant="subtitle1">
             By{" "}
             <a href={`/profile/${book.author}`} className={classes.authorName}>
-              {book.author}
+              author id of {book.author_id}
             </a>
           </Typography>
         </CardContent>
