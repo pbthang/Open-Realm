@@ -100,7 +100,6 @@ function Create() {
           <form noValidate autoComplete="off">
             <TextField
               label="Title"
-              variant="outlined"
               className={classes.title}
               value={title}
               onChange={(e) => {
@@ -135,7 +134,6 @@ function Create() {
           <form noValidate autoComplete="off">
             <TextField
               label="Title"
-              variant="outlined"
               className={classes.title}
               value={title}
               onChange={(e) => {
@@ -146,14 +144,14 @@ function Create() {
             <Autocomplete
               options={promptList}
               getOptionLabel={(option) => `${option.id} - ${option.title}`}
-              id="disable-close-on-select"
-              disableCloseOnSelect
+              openOnFocus
+              noOptionsText="No prompt available"
               renderInput={(params) => (
                 <TextField
                   {...params}
                   multiline
                   rowsMax={3}
-                  label="prompt"
+                  label="Prompt"
                   margin="normal"
                 />
               )}
