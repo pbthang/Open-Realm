@@ -38,16 +38,7 @@ function Profile() {
   const [startedStories, setStartedStories] = useState([]);
   const [publishedChapters, setPublishedChapters] = useState([]);
 
-  console.log(sub);
-  // get user
-  var options = {
-    method: "GET",
-    url: "https://dev-d1rzgdpx.jp.auth0.com/api/v2/users",
-    params: { q: 'user_id: "' + sub + '"', search_engine: "v3" },
-    headers: {
-      authorization: `Bearer ${process.env.REACT_APP_MGMT_API_ACCESS_TOKEN}`,
-    },
-  };
+  // console.log(sub);
 
   // axios.request(options).then(function (response) {
   //   console.log(response.data[0].user_id);
@@ -58,15 +49,26 @@ function Profile() {
   const userString = JSON.stringify(user);
   useEffect(() => {
     const getUser = async () => {
-      const response = await axios.request(options);
+      const response = await axios.request({
+        method: "GET",
+        url: "https://dev-d1rzgdpx.jp.auth0.com/api/v2/users",
+        params: { q: 'user_id: "' + sub + '"', search_engine: "v3" },
+        headers: {
+          authorization: `Bearer ${process.env.REACT_APP_MGMT_API_ACCESS_TOKEN}`,
+        },
+      });
       return response.data[0];
     };
-    (async () => {
-      const user = await getUser();
-      if (user) {
-        setUser(user);
-      }
-    })();
+    try {
+      (async () => {
+        const user = await getUser();
+        if (user) {
+          setUser(user);
+        }
+      })();
+    } catch (error) {
+      console.error(error);
+    }
   }, [userString, sub]);
 
   // useEffect(() => {
