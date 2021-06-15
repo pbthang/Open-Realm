@@ -49,12 +49,23 @@ function Profile() {
   const userString = JSON.stringify(user);
   useEffect(() => {
     const getUser = async () => {
+      const MGMT_API_ACCESS_TOKEN = await axios.post(
+        "https://dev-d1rzgdpx.jp.auth0.com/oauth/token",
+        {
+          client_id: "BAhbwdqvE0H4AJsipKsGbd8oJnsKXujZ",
+          client_secret:
+            "xtdHTnZzQERByW4wmxM0lVnp1ns9oSa-NZSv2E35_93UQg9zxw3yzHCIkaHwt8QH",
+          audience: "https://dev-d1rzgdpx.jp.auth0.com/api/v2/",
+          grant_type: "client_credentials",
+        }
+      );
+
       const response = await axios.request({
         method: "GET",
         url: "https://dev-d1rzgdpx.jp.auth0.com/api/v2/users",
         params: { q: 'user_id: "' + sub + '"', search_engine: "v3" },
         headers: {
-          authorization: `Bearer ${process.env.REACT_APP_MGMT_API_ACCESS_TOKEN}`,
+          authorization: `Bearer ${MGMT_API_ACCESS_TOKEN.data.access_token}`,
         },
       });
       return response.data[0];
