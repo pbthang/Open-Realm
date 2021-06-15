@@ -6,7 +6,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import api from "../api/api";
 import Post from "../components/Post";
 import { useAuth0 } from "@auth0/auth0-react";
-var axios = require("axios").default;
+import axios from "axios";
+import ACCESS_TOKEN from "../auth0MgmtAPIToken";
 
 const useStyles = makeStyles({
   user: {
@@ -34,7 +35,7 @@ function Profile() {
   const classes = useStyles();
   const { sub } = useParams();
   // const { user } = useAuth0();
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
   const [startedStories, setStartedStories] = useState([]);
   const [publishedChapters, setPublishedChapters] = useState([]);
 
@@ -49,37 +50,21 @@ function Profile() {
   const userString = JSON.stringify(user);
   useEffect(() => {
     const getUser = async () => {
-      const MGMT_API_ACCESS_TOKEN = await axios.post(
-        "https://dev-d1rzgdpx.jp.auth0.com/oauth/token",
-        {
-          client_id: "BAhbwdqvE0H4AJsipKsGbd8oJnsKXujZ",
-          client_secret:
-            "xtdHTnZzQERByW4wmxM0lVnp1ns9oSa-NZSv2E35_93UQg9zxw3yzHCIkaHwt8QH",
-          audience: "https://dev-d1rzgdpx.jp.auth0.com/api/v2/",
-          grant_type: "client_credentials",
-        }
-      );
-
+      // get user id
       const response = await axios.request({
         method: "GET",
         url: "https://dev-d1rzgdpx.jp.auth0.com/api/v2/users",
         params: { q: 'user_id: "' + sub + '"', search_engine: "v3" },
         headers: {
-          authorization: `Bearer ${MGMT_API_ACCESS_TOKEN.data.access_token}`,
+          authorization: `Bearer ${await ACCESS_TOKEN}`,
         },
       });
       return response.data[0];
     };
-    try {
-      (async () => {
-        const user = await getUser();
-        if (user) {
-          setUser(user);
-        }
-      })();
-    } catch (error) {
-      console.error(error);
-    }
+
+    getUser()
+      .then((user) => user && setUser(user))
+      .catch((err) => console.error(err));
   }, [userString, sub]);
 
   // useEffect(() => {
