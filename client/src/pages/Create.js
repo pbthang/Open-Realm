@@ -62,6 +62,19 @@ function Create() {
 
   const [promptList, setPromptList] = useState([]);
 
+  // const [currentPromptId, setCurrentPromptId] = useState(
+  //   window.localStorage.getItem("promptCache") ?? 0
+  // );
+
+  const [currentPrompt, setCurrentPrompt] = useState(
+    JSON.parse(window.localStorage.getItem("promptCache")) ?? null
+  );
+
+  // useEffect(() => {
+  //   setCurrentPrompt(promptList.find((p) => p.id == currentPromptId));
+  //   // eslint-disable-next-line
+  // }, [currentPromptId, JSON.stringify(promptList)]);
+
   const handleOnTypeChange = (e) => {
     setType(e.target.value);
     window.localStorage.setItem("type", e.target.value);
@@ -71,6 +84,12 @@ function Create() {
     const data = editor.getData();
     setContent(data);
     window.localStorage.setItem("createCache", data);
+  };
+
+  const handleOnPromptChange = (e, newVal) => {
+    console.log(newVal);
+    window.localStorage.setItem("promptCache", JSON.stringify(newVal));
+    setCurrentPrompt(newVal);
   };
 
   useEffect(() => {
@@ -141,21 +160,28 @@ function Create() {
                 window.localStorage.setItem("titleCache", e.target.value);
               }}
             />
-            <Autocomplete
-              options={promptList}
-              getOptionLabel={(option) => `${option.id} - ${option.title}`}
-              openOnFocus
-              noOptionsText="No prompt available"
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  multiline
-                  rowsMax={3}
-                  label="Prompt"
-                  margin="normal"
-                />
-              )}
-            />
+            <FormControl fullWidth>
+              <Autocomplete
+                options={promptList}
+                getOptionLabel={(option) => `${option.id} - ${option.title}`}
+                getOptionSelected={(option, val) =>
+                  option.id === val.id && option.title === val.title
+                }
+                openOnFocus
+                onChange={handleOnPromptChange}
+                value={currentPrompt}
+                noOptionsText="No prompt available"
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    multiline
+                    rowsMax={3}
+                    label="Prompt"
+                    margin="normal"
+                  />
+                )}
+              />
+            </FormControl>
             <Paper className={classes.editorContainer}>
               <CKEditor
                 editor={ClassicEditor}
