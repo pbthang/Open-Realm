@@ -1,4 +1,3 @@
-import http from "../http-common";
 import axios from "axios";
 import ACCESS_TOKEN from "../auth0MgmtAPIToken";
 
@@ -12,19 +11,19 @@ class UserDataService {
         authorization: `Bearer ${await ACCESS_TOKEN}`,
       },
     });
-    return response.data;
+    return response;
   }
 
   async get(id) {
     const response = await axios.request({
       method: "GET",
-      url: "https://dev-d1rzgdpx.jp.auth0.com/api/v2/users",
-      params: { q: 'user_id: "' + id + '"', search_engine: "v3" },
+      url: `https://dev-d1rzgdpx.jp.auth0.com/api/v2/users/${id}`,
       headers: {
         authorization: `Bearer ${await ACCESS_TOKEN}`,
       },
     });
-    return response.data[0];
+    console.log(response.data);
+    return response;
   }
 
   async patch(id, data) {
@@ -36,6 +35,8 @@ class UserDataService {
         authorization: `Bearer ${await ACCESS_TOKEN}`,
       }
     );
-    return response.data[0];
+    return response;
   }
 }
+
+export default new UserDataService();

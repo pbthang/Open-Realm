@@ -18,6 +18,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { makeStyles } from "@material-ui/core/styles";
 import api from "../api/api";
 import BookDataService from "../services/book.service";
+import UserDataService from "../services/user.service";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -133,11 +134,11 @@ function Story() {
   };
 
   const getBookAuthor = async (id) => {
-    const response = await api.get(`/users/${id}`);
+    const response = await UserDataService.get(id);
     return response.data;
   };
 
-  const getComments = async (ids) => {
+  const getComments = async (ids = []) => {
     const queryString = ids.map((id) => `id=${id}`).join("&");
     if (queryString?.length) {
       const response = await api.get("/comments?" + queryString);
@@ -147,7 +148,7 @@ function Story() {
     }
   };
 
-  const getCommentAuthors = async (cmts) => {
+  const getCommentAuthors = async (cmts = []) => {
     const queryString = cmts.map((cmt) => `id=${cmt.author}`).join("&");
     if (queryString?.length) {
       const response = await api.get("/users?" + queryString);
@@ -157,7 +158,7 @@ function Story() {
     }
   };
 
-  const getNextChapters = async (ids) => {
+  const getNextChapters = async (ids = []) => {
     const queryString = ids.map((id) => `id=${id}`).join("&");
     if (queryString?.length) {
       const response = await api.get("/chapters?" + queryString);
@@ -171,6 +172,7 @@ function Story() {
     const getInfo = async () => {
       const book = await getBook(bookId);
       setBook(book);
+      console.log(book);
       const bookAuthor = await getBookAuthor(book.author);
       setBookAuthor(bookAuthor);
       const comments = await getComments(book.comments);
