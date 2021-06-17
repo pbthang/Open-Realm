@@ -16,6 +16,7 @@ exports.create = (req, res) => {
   const writing = {
     title: req.body.title,
     author_id: req.body.author_id,
+    prompt_id: req.body.prompt_id,
     content: req.body.content,
     numberOfBookmarks: 0,
     comments_id: [],
@@ -38,7 +39,16 @@ exports.create = (req, res) => {
 // Retrieve all writing from the database.
 exports.findAll = (req, res) => {
   const title = req.query.title;
-  var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
+  const content = req.query.content;
+  const author_id = req.query.author_id;
+  const prompt_id = req.query.prompt_id;
+
+  var condition = (title || content || author_id || prompt_id) ? {
+    title: { [Op.iLike]: `%${title ? title : ""}%`},
+    content: { [Op.iLike]: `%${content ? content : ""}%`},
+    author_id: { [Op.like]: `${author_id ? author_id : "%"}`},
+    prompt_id: { [Op.like]: `${prompt_id ? prompt_id : "%"}`}
+  } : null;
 
   Writing.findAll({ where: condition })
   .then(data => {

@@ -20,6 +20,10 @@ class PromptCommentDataService {
   delete(id) {
     return http.delete(`/promptComments/${id}`);
   }
+
+  findByPost(postID) {
+    return http.get(`/promptComments?post_id=${postID}`)
+  }
 }
 
 export default new PromptCommentDataService();

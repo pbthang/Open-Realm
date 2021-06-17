@@ -100,7 +100,15 @@ exports.delete = (req, res) => {
 
 // Get all Prompt comment
 exports.findAll = (req, res) => {
-  var condition = null;
+  const post_id = req.query.post_id;
+  const content = req.query.content;
+  const author_id = req.query.author_id;
+
+  var condition = (post_id || content || author_id) ? {
+    post_id: { [Op.like]: `${post_id ? post_id : "%"}`},
+    content: { [Op.iLike]: `%${content ? content : ""}%`},
+    author_id: { [Op.like]: `${author_id ? author_id : "%"}`}
+  } : null;
 
   PromptComment.findAll({ where: condition })
   .then(data => {

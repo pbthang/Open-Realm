@@ -39,7 +39,14 @@ exports.create = (req, res) => {
 // Retrieve all prompt from the database.
 exports.findAll = (req, res) => {
   const title = req.query.title;
-  var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
+  const content = req.query.content;
+  const author_id = req.query.author_id;
+
+  var condition = (title || content || author_id) ? {
+    title: { [Op.iLike]: `%${title ? title : ""}%`},
+    content: { [Op.iLike]: `%${content ? content : ""}%`},
+    author_id: { [Op.like]: `${author_id ? author_id : "%"}`}
+  } : null;
 
   Prompt.findAll({ where: condition })
   .then(data => {
