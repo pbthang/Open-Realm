@@ -25,6 +25,9 @@ const useStyle = makeStyles((theme) => ({
   root: {
     margin: "1rem",
   },
+  bookId: {
+    display: "inline",
+  },
   title: {
     display: "inline-block",
     fontSize: "3rem",
@@ -190,8 +193,10 @@ function Story() {
   return (
     <AppShell>
       <div className={classes.root}>
-        <Typography variant="h6">
-          Id: {book.id}
+        <div>
+          <Typography variant="h6" className={classes.bookId}>
+            Id: {book.id}
+          </Typography>
           <span className={classes.optionBtn}>
             <IconButton onClick={handleOptionBtnClick}>
               <MoreVertIcon />
@@ -212,7 +217,7 @@ function Story() {
               </MenuItem>
             </Menu>
           </span>
-        </Typography>
+        </div>
         <Typography variant="h2" className={classes.title}>
           {book.title}
           {/* - Chapter {book.chapter} */}
@@ -223,19 +228,19 @@ function Story() {
             src={bookAuthor.picture}
             className={classes.img}
             component="a"
-            href={`/profile/${bookAuthor.sub}`}
+            href={`/profile/${bookAuthor.user_id}`}
           />
           <Typography
             variant="h6"
             className={classes.authorName}
             component="a"
-            href={`/profile/${bookAuthor.sub}`}
+            href={`/profile/${bookAuthor.user_id}`}
           >
             {bookAuthor.nickname}
           </Typography>
         </span>
         <Typography variant="body1" className={classes.content}>
-          {parse(book.content)}
+          {parse(book.content ?? "")}
         </Typography>
         <Bookmark type="book" book={book} />
         {nextChapters.length === 0 || (

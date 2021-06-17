@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import AppShell from "../components/AppShell";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -17,7 +18,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import parse from "html-react-parser";
 import http from "../http-common";
 import PromptDataService from "../services/prompt.service";
-import WritingDataService from "../services/writing.service"
+import WritingDataService from "../services/writing.service";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const useStyles = makeStyles({
@@ -48,6 +49,7 @@ const useStyles = makeStyles({
 function Create() {
   const classes = useStyles();
 
+  const history = useHistory();
   const { user } = useAuth0();
 
   const [content, setContent] = useState(
@@ -92,7 +94,6 @@ function Create() {
   };
 
   const handleOnPromptChange = (e, newVal) => {
-    console.log(newVal);
     window.localStorage.setItem("promptCache", JSON.stringify(newVal));
     setCurrentPrompt(newVal);
   };
@@ -110,19 +111,19 @@ function Create() {
       author_id: user?.sub,
       title: title,
       content: content,
-      published: true
+      published: true,
     };
 
-    console.log(data);
-
     PromptDataService.create(data)
-    .then(response => {
+      .then((response) => {
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
-  }
+    window.localStorage.clear();
+    history.push("/home");
+  };
 
   return (
     <AppShell>
@@ -167,7 +168,12 @@ function Create() {
           >
             {parse(content)}
           </Paper>
-          <Button variant="contained" color="primary" className={classes.btn} onClick={addPrompt}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.btn}
+            onClick={addPrompt}
+          >
             Publish
           </Button>
         </div>
@@ -223,7 +229,14 @@ function Create() {
           >
             {parse(content)}
           </Paper>
-          <Button variant="contained" color="primary" className={classes.btn} onClick={() => {console.log("button clicked")}}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.btn}
+            onClick={() => {
+              console.log("button clicked");
+            }}
+          >
             Publish
           </Button>
         </div>

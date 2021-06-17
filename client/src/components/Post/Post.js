@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import Bookmark from "./Bookmark";
 import { makeStyles } from "@material-ui/core/styles";
+import UserDataService from "../../services/user.service";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,6 +60,16 @@ const useStyles = makeStyles((theme) => ({
 
 function Post({ type, book }) {
   const classes = useStyles();
+  const [author, setAuthor] = useState({});
+
+  useEffect(() => {
+    const getAuthorInfo = async () => {
+      const response = await UserDataService.get(book.author_id);
+      setAuthor(response.data);
+    };
+
+    getAuthorInfo();
+  }, [book.author_id]);
 
   if (type === "prompt") {
     return (
@@ -68,15 +79,18 @@ function Post({ type, book }) {
           <a href={`/home/${book.id}`} className={classes.link}>
             <Tooltip title={book.title} placement="top">
               <Typography noWrap className={classes.title}>
-                {book.title}
+                {book?.title}
               </Typography>
             </Tooltip>
           </a>
 
           <Typography variant="subtitle1">
             By{" "}
-            <a href={`/profile/${book.author}`} className={classes.authorName}>
-              created by {book.author_id}
+            <a
+              href={`/profile/${book.author_id}`}
+              className={classes.authorName}
+            >
+              {author?.nickname}
             </a>
           </Typography>
         </CardContent>
@@ -106,8 +120,11 @@ function Post({ type, book }) {
 
           <Typography variant="subtitle1">
             By{" "}
-            <a href={`/profile/${book.author}`} className={classes.authorName}>
-              {book.author}
+            <a
+              href={`/profile/${book.author_id}`}
+              className={classes.authorName}
+            >
+              {author.nickname}
             </a>
           </Typography>
         </CardContent>

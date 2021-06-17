@@ -22,7 +22,6 @@ class UserDataService {
         authorization: `Bearer ${await ACCESS_TOKEN}`,
       },
     });
-    console.log(response.data);
     return response;
   }
 

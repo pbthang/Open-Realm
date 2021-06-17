@@ -19,7 +19,6 @@ function Home() {
 
   const retrievePrompts = async () => {
     const response = await PromptDataService.getAll();
-    console.log(response.data);
     return response.data;
   };
 
