@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AppShell from "../components/AppShell";
 import Bookmark from "../components/Post/Bookmark";
 import Post from "../components/Post";
+import parse from "html-react-parser";
 import { useParams } from "react-router-dom";
 import {
   Avatar,
@@ -17,7 +18,7 @@ import {
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { makeStyles } from "@material-ui/core/styles";
 import api from "../api/api";
-import BookDataService from "../services/book.service";
+import PromptDataService from "../services/prompt.service";
 import UserDataService from "../services/user.service";
 
 const useStyle = makeStyles((theme) => ({
@@ -129,7 +130,7 @@ function Story() {
   };
 
   const getBook = async (id) => {
-    const response = await BookDataService.get(id);
+    const response = await PromptDataService.get(id);
     return response.data;
   };
 
@@ -173,7 +174,7 @@ function Story() {
       const book = await getBook(bookId);
       setBook(book);
       console.log(book);
-      const bookAuthor = await getBookAuthor(book.author);
+      const bookAuthor = await getBookAuthor(book.author_id);
       setBookAuthor(bookAuthor);
       const comments = await getComments(book.comments);
       setComments(comments);
@@ -222,19 +223,19 @@ function Story() {
             src={bookAuthor.picture}
             className={classes.img}
             component="a"
-            href={`/profile/${bookAuthor.id}`}
+            href={`/profile/${bookAuthor.sub}`}
           />
           <Typography
             variant="h6"
             className={classes.authorName}
             component="a"
-            href={`/profile/${bookAuthor.id}`}
+            href={`/profile/${bookAuthor.sub}`}
           >
-            {bookAuthor.id}
+            {bookAuthor.nickname}
           </Typography>
         </span>
         <Typography variant="body1" className={classes.content}>
-          {book.description}
+          {parse(book.content)}
         </Typography>
         <Bookmark type="book" book={book} />
         {nextChapters.length === 0 || (
