@@ -16,6 +16,9 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import parse from "html-react-parser";
 import http from "../http-common";
+import PromptDataService from "../services/prompt.service";
+import WritingDataService from "../services/writing.service"
+import { useAuth0 } from "@auth0/auth0-react";
 
 const useStyles = makeStyles({
   root: {
@@ -44,6 +47,8 @@ const useStyles = makeStyles({
 
 function Create() {
   const classes = useStyles();
+
+  const { user } = useAuth0();
 
   const [content, setContent] = useState(
     window.localStorage.getItem("createCache") ?? ""
@@ -100,6 +105,25 @@ function Create() {
     fetchPrompts();
   }, []);
 
+  const addPrompt = () => {
+    var data = {
+      author_id: user?.sub,
+      title: title,
+      content: content,
+      published: true
+    };
+
+    console.log(data);
+
+    PromptDataService.create(data)
+    .then(response => {
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
+
   return (
     <AppShell>
       <FormControl className={classes.typeChoose}>
@@ -143,7 +167,7 @@ function Create() {
           >
             {parse(content)}
           </Paper>
-          <Button variant="contained" color="primary" className={classes.btn}>
+          <Button variant="contained" color="primary" className={classes.btn} onClick={addPrompt}>
             Publish
           </Button>
         </div>
@@ -199,7 +223,7 @@ function Create() {
           >
             {parse(content)}
           </Paper>
-          <Button variant="contained" color="primary" className={classes.btn}>
+          <Button variant="contained" color="primary" className={classes.btn} onClick={() => {console.log("button clicked")}}>
             Publish
           </Button>
         </div>

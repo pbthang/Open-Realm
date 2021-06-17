@@ -6,9 +6,6 @@ module.exports = app => {
   // Create a new Chapter
   router.post("/", promptComments.create);
 
-  // Retrieve all Chapters
-  router.get("/", promptComments.findAll);
-
   // Retrieve all published Chapters
   router.get("/published", promptComments.findAllPublished);
 

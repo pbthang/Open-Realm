@@ -50,7 +50,6 @@ function Profile() {
   const userString = JSON.stringify(user);
   useEffect(() => {
     const getUser = async () => {
-      console.log(ACCESS_TOKEN);
       // get user id
       const response = await axios.request({
         method: "GET",

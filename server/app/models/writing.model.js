@@ -4,7 +4,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING
     },
     author_id: {
-      type: Sequelize.INTEGER
+      type: Sequelize.STRING
     },
     content: {
       type: Sequelize.TEXT

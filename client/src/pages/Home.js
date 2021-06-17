@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AppShell from "../components/AppShell";
 import Post from "../components/Post";
 import { makeStyles } from "@material-ui/core/styles";
-import BookDataService from "../services/book.service";
+import PromptDataService from "../services/prompt.service";
 
 const useStyles = makeStyles({
   root: {
@@ -15,27 +15,27 @@ const useStyles = makeStyles({
 
 function Home() {
   const classes = useStyles();
-  const [books, setBooks] = useState([]);
+  const [prompts, setPrompts] = useState([]);
 
-  const retrieveBooks = async () => {
-    const response = await BookDataService.getAll();
+  const retrievePrompts = async () => {
+    const response = await PromptDataService.getAll();
     console.log(response.data);
     return response.data;
   };
 
   useEffect(() => {
-    const getAllBooks = async () => {
-      const allBooks = await retrieveBooks();
-      if (allBooks) setBooks(allBooks);
+    const getAllPrompts = async () => {
+      const allPrompts = await retrievePrompts();
+      if (allPrompts) setPrompts(allPrompts);
     };
 
-    getAllBooks();
+    getAllPrompts();
   }, []);
 
   return (
     <AppShell className={classes.root}>
-      {books.map((book, idx) => (
-        <Post type="prompt" book={book} author={book.author} key={idx} />
+      {prompts.map((prompt, idx) => (
+        <Post type="prompt" book={prompt} author={prompt.author} key={idx} />
       ))}
     </AppShell>
   );
