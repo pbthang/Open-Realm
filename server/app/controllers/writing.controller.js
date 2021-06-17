@@ -1,8 +1,8 @@
 const db = require("../models");
-const Chapter = db.chapters;
+const Writing = db.writings;
 const Op = db.Sequelize.Op;
 
-// Create new chapter
+// Create new writing
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.title) {
@@ -12,141 +12,138 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a chapter
-  const chapter = {
-    book_id: req.body.book_id,
-    pre_chapter_id: req.body.pre_chapter_id,
+  // Create a writing
+  const writing = {
     title: req.body.title,
     author_id: req.body.author_id,
     content: req.body.content,
-    numberOfChapters: 0,
     numberOfBookmarks: 0,
     comments_id: [],
     published: req.body.published
   };
 
-  // Save Chapter in the database
-  Chapter.create(chapter)
+  // Save Writing in the database
+  Writing.create(writing)
   .then(data => {
     res.send(data);
   })
   .catch(err => {
     res.status(500).send({
       message:
-      err.message || "Some error occurred while creating the Chapter."
+      err.message || "Some error occurred while creating the Writing."
     });
   });
 };
 
-// Retrieve all chapter from the database.
+// Retrieve all writing from the database.
 exports.findAll = (req, res) => {
   const title = req.query.title;
   var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
 
-  Chapter.findAll({ where: condition })
+  Writing.findAll({ where: condition })
   .then(data => {
     res.send(data);
   })
   .catch(err => {
     res.status(500).send({
       message:
-      err.message || "Some error occurred while retrieving chapters."
+      err.message || "Some error occurred while retrieving writings."
     });
   });
 };
 
-// Find a single Chapter with an id
+// Find a single Writing with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Chapter.findByPk(id)
+  Writing.findByPk(id)
   .then(data => {
     res.send(data);
   })
   .catch(err => {
     res.status(500).send({
-      message: "Error retrieving Chapter with id=" + id
+      message: "Error retrieving Writing with id=" + id
     });
   });
 };
 
-// Update a Chapter by the id in the request
+// Update a Writing by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Chapter.update(req.body, {
+  Writing.update(req.body, {
     where: { id: id }
   })
   .then(num => {
     if (num == 1) {
       res.send({
-        message: "Chapter was updated successfully."
+        message: "Writing was updated successfully."
       });
     } else {
       res.send({
-        message: `Cannot update Chapter with id=${id}. Maybe Chapter was not found or req.body is empty!`
+        message: `Cannot update Writing with id=${id}. Maybe Writing was not found or req.body is empty!`
       });
     }
   })
   .catch(err => {
     res.status(500).send({
-      message: "Error updating Chapter with id=" + id
+      message: "Error updating Writing with id=" + id
     });
   });
 };
 
-// Delete a Chapter with the specified id in the request
+// Delete a Writing with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Chapter.destroy({
+  Writing.destroy({
     where: { id: id }
   })
   .then(num => {
     if (num == 1) {
       res.send({
-        message: "Chapter was deleted successfully!"
+        message: "Writing was deleted successfully!"
       });
     } else {
       res.send({
-        message: `Cannot delete Chapter with id=${id}. Maybe Chapter was not found!`
+        message: `Cannot delete Writing with id=${id}. Maybe Writing was not found!`
       });
     }
   })
   .catch(err => {
     res.status(500).send({
-      message: "Could not delete Chapter with id=" + id
+      message: "Could not delete Writing with id=" + id
     });
   });
 };
 
-// Delete all Chapters from the database.
+// Delete all Writings from the database.
 exports.deleteAll = (req, res) => {
-  Chapter.destroy({
+  Writing.destroy({
     where: {},
     truncate: false
   })
   .then(nums => {
-    res.send({ message: `${nums} Chapters were deleted successfully!` });
+    res.send({ message: `${nums} Writings were deleted successfully!` });
   })
   .catch(err => {
     res.status(500).send({
       message:
-      err.message || "Some error occurred while removing all chapters."
+      err.message || "Some error occurred while removing all writings."
     });
   });
 };
 
-// Find all published Chapters
+// Find all published Writings
 exports.findAllPublished = (req, res) => {
-  Chapter.findAll({ where: { published: true } })
+  Writing.findAll({ where: { published: true } })
   .then(data => {
     res.send(data);
   })
   .catch(err => {
     res.status(500).send({
       message:
-      err.message || "Some error occurred while retrieving chapters."
+      err.message || "Some error occurred while retrieving writings."
     });
   });
 };

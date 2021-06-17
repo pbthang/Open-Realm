@@ -1,8 +1,8 @@
 const db = require("../models");
-const Chapter = db.chapters;
+const WritingComment = db.writingComments;
 const Op = db.Sequelize.Op;
 
-// Create new chapter
+// Create new writingComment
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.title) {
@@ -12,141 +12,136 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a chapter
-  const chapter = {
-    book_id: req.body.book_id,
-    pre_chapter_id: req.body.pre_chapter_id,
-    title: req.body.title,
+  // Create a writingComment
+  const writingComment = {
+    post_id: req.body.post_id,
     author_id: req.body.author_id,
     content: req.body.content,
-    numberOfChapters: 0,
-    numberOfBookmarks: 0,
-    comments_id: [],
     published: req.body.published
   };
 
-  // Save Chapter in the database
-  Chapter.create(chapter)
+  // Save WritingComment in the database
+  WritingComment.create(writingComment)
   .then(data => {
     res.send(data);
   })
   .catch(err => {
     res.status(500).send({
       message:
-      err.message || "Some error occurred while creating the Chapter."
+      err.message || "Some error occurred while creating the WritingComment."
     });
   });
 };
 
-// Retrieve all chapter from the database.
+// Retrieve all writingComment from the database.
 exports.findAll = (req, res) => {
   const title = req.query.title;
   var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
 
-  Chapter.findAll({ where: condition })
+  WritingComment.findAll({ where: condition })
   .then(data => {
     res.send(data);
   })
   .catch(err => {
     res.status(500).send({
       message:
-      err.message || "Some error occurred while retrieving chapters."
+      err.message || "Some error occurred while retrieving writingComments."
     });
   });
 };
 
-// Find a single Chapter with an id
+// Find a single WritingComment with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Chapter.findByPk(id)
+  WritingComment.findByPk(id)
   .then(data => {
     res.send(data);
   })
   .catch(err => {
     res.status(500).send({
-      message: "Error retrieving Chapter with id=" + id
+      message: "Error retrieving WritingComment with id=" + id
     });
   });
 };
 
-// Update a Chapter by the id in the request
+// Update a WritingComment by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Chapter.update(req.body, {
+  WritingComment.update(req.body, {
     where: { id: id }
   })
   .then(num => {
     if (num == 1) {
       res.send({
-        message: "Chapter was updated successfully."
+        message: "WritingComment was updated successfully."
       });
     } else {
       res.send({
-        message: `Cannot update Chapter with id=${id}. Maybe Chapter was not found or req.body is empty!`
+        message: `Cannot update WritingComment with id=${id}. Maybe WritingComment was not found or req.body is empty!`
       });
     }
   })
   .catch(err => {
     res.status(500).send({
-      message: "Error updating Chapter with id=" + id
+      message: "Error updating WritingComment with id=" + id
     });
   });
 };
 
-// Delete a Chapter with the specified id in the request
+// Delete a WritingComment with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Chapter.destroy({
+  WritingComment.destroy({
     where: { id: id }
   })
   .then(num => {
     if (num == 1) {
       res.send({
-        message: "Chapter was deleted successfully!"
+        message: "WritingComment was deleted successfully!"
       });
     } else {
       res.send({
-        message: `Cannot delete Chapter with id=${id}. Maybe Chapter was not found!`
+        message: `Cannot delete WritingComment with id=${id}. Maybe WritingComment was not found!`
       });
     }
   })
   .catch(err => {
     res.status(500).send({
-      message: "Could not delete Chapter with id=" + id
+      message: "Could not delete WritingComment with id=" + id
     });
   });
 };
 
-// Delete all Chapters from the database.
+// Delete all WritingComments from the database.
 exports.deleteAll = (req, res) => {
-  Chapter.destroy({
+  WritingComment.destroy({
     where: {},
     truncate: false
   })
   .then(nums => {
-    res.send({ message: `${nums} Chapters were deleted successfully!` });
+    res.send({ message: `${nums} WritingComments were deleted successfully!` });
   })
   .catch(err => {
     res.status(500).send({
       message:
-      err.message || "Some error occurred while removing all chapters."
+      err.message || "Some error occurred while removing all writingComments."
     });
   });
 };
 
-// Find all published Chapters
+// Find all published WritingComments
 exports.findAllPublished = (req, res) => {
-  Chapter.findAll({ where: { published: true } })
+  WritingComment.findAll({ where: { published: true } })
   .then(data => {
     res.send(data);
   })
   .catch(err => {
     res.status(500).send({
       message:
-      err.message || "Some error occurred while retrieving chapters."
+      err.message || "Some error occurred while retrieving writingComments."
     });
   });
 };

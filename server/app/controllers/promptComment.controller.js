@@ -1,8 +1,8 @@
 const db = require("../models");
-const Chapter = db.chapters;
+const PromptComment = db.promptComments;
 const Op = db.Sequelize.Op;
 
-// Create new chapter
+// Create new promptComment
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.title) {
@@ -12,141 +12,136 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a chapter
-  const chapter = {
-    book_id: req.body.book_id,
-    pre_chapter_id: req.body.pre_chapter_id,
-    title: req.body.title,
+  // Create a promptComment
+  const promptComment = {
+    post_id: req.body.post_id,
     author_id: req.body.author_id,
     content: req.body.content,
-    numberOfChapters: 0,
-    numberOfBookmarks: 0,
-    comments_id: [],
     published: req.body.published
   };
 
-  // Save Chapter in the database
-  Chapter.create(chapter)
+  // Save PromptComment in the database
+  PromptComment.create(promptComment)
   .then(data => {
     res.send(data);
   })
   .catch(err => {
     res.status(500).send({
       message:
-      err.message || "Some error occurred while creating the Chapter."
+      err.message || "Some error occurred while creating the PromptComment."
     });
   });
 };
 
-// Retrieve all chapter from the database.
+// Retrieve all promptComment from the database.
 exports.findAll = (req, res) => {
   const title = req.query.title;
   var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
 
-  Chapter.findAll({ where: condition })
+  PromptComment.findAll({ where: condition })
   .then(data => {
     res.send(data);
   })
   .catch(err => {
     res.status(500).send({
       message:
-      err.message || "Some error occurred while retrieving chapters."
+      err.message || "Some error occurred while retrieving promptComments."
     });
   });
 };
 
-// Find a single Chapter with an id
+// Find a single PromptComment with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Chapter.findByPk(id)
+  PromptComment.findByPk(id)
   .then(data => {
     res.send(data);
   })
   .catch(err => {
     res.status(500).send({
-      message: "Error retrieving Chapter with id=" + id
+      message: "Error retrieving PromptComment with id=" + id
     });
   });
 };
 
-// Update a Chapter by the id in the request
+// Update a PromptComment by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Chapter.update(req.body, {
+  PromptComment.update(req.body, {
     where: { id: id }
   })
   .then(num => {
     if (num == 1) {
       res.send({
-        message: "Chapter was updated successfully."
+        message: "PromptComment was updated successfully."
       });
     } else {
       res.send({
-        message: `Cannot update Chapter with id=${id}. Maybe Chapter was not found or req.body is empty!`
+        message: `Cannot update PromptComment with id=${id}. Maybe PromptComment was not found or req.body is empty!`
       });
     }
   })
   .catch(err => {
     res.status(500).send({
-      message: "Error updating Chapter with id=" + id
+      message: "Error updating PromptComment with id=" + id
     });
   });
 };
 
-// Delete a Chapter with the specified id in the request
+// Delete a PromptComment with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
 
-  Chapter.destroy({
+  PromptComment.destroy({
     where: { id: id }
   })
   .then(num => {
     if (num == 1) {
       res.send({
-        message: "Chapter was deleted successfully!"
+        message: "PromptComment was deleted successfully!"
       });
     } else {
       res.send({
-        message: `Cannot delete Chapter with id=${id}. Maybe Chapter was not found!`
+        message: `Cannot delete PromptComment with id=${id}. Maybe PromptComment was not found!`
       });
     }
   })
   .catch(err => {
     res.status(500).send({
-      message: "Could not delete Chapter with id=" + id
+      message: "Could not delete PromptComment with id=" + id
     });
   });
 };
 
-// Delete all Chapters from the database.
+// Delete all PromptComments from the database.
 exports.deleteAll = (req, res) => {
-  Chapter.destroy({
+  PromptComment.destroy({
     where: {},
     truncate: false
   })
   .then(nums => {
-    res.send({ message: `${nums} Chapters were deleted successfully!` });
+    res.send({ message: `${nums} PromptComments were deleted successfully!` });
   })
   .catch(err => {
     res.status(500).send({
       message:
-      err.message || "Some error occurred while removing all chapters."
+      err.message || "Some error occurred while removing all promptComments."
     });
   });
 };
 
-// Find all published Chapters
+// Find all published PromptComments
 exports.findAllPublished = (req, res) => {
-  Chapter.findAll({ where: { published: true } })
+  PromptComment.findAll({ where: { published: true } })
   .then(data => {
     res.send(data);
   })
   .catch(err => {
     res.status(500).send({
       message:
-      err.message || "Some error occurred while retrieving chapters."
+      err.message || "Some error occurred while retrieving promptComments."
     });
   });
 };

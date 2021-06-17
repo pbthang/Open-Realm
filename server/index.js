@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "http://localhost:8081",
 };
 
 app.use(cors(corsOptions));
@@ -28,6 +28,10 @@ db.sequelize.sync();
 
 require("./app/routes/book.route.js")(app);
 require("./app/routes/chapter.route.js")(app);
+require("./app/routes/prompt.route.js")(app);
+require("./app/routes/promptComment.route.js")(app);
+require("./app/routes/writing.route.js")(app);
+require("./app/routes/writingComment.route.js")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
