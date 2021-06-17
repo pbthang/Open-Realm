@@ -98,6 +98,22 @@ exports.delete = (req, res) => {
   });
 };
 
+// Get all Prompt comment
+exports.findAll = (req, res) => {
+  var condition = null;
+
+  Prompt.findAll({ where: condition })
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+      err.message || "Some error occurred while retrieving comments."
+    });
+  });
+};
+
 // Delete all PromptComments from the database.
 exports.deleteAll = (req, res) => {
   PromptComment.destroy({

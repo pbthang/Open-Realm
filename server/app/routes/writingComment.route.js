@@ -12,6 +12,8 @@ module.exports = app => {
   // Retrieve a single Chapter with id
   router.get("/:id", writingComments.findOne);
 
+  router.get("/", writingComments.findAll);
+
   // Update a Chapter with id
   router.put("/:id", writingComments.update);
 
