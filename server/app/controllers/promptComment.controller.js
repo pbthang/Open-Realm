@@ -102,7 +102,7 @@ exports.delete = (req, res) => {
 exports.findAll = (req, res) => {
   var condition = null;
 
-  Prompt.findAll({ where: condition })
+  PromptComment.findAll({ where: condition })
   .then(data => {
     res.send(data);
   })

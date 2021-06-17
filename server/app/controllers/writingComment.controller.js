@@ -52,7 +52,7 @@ exports.findOne = (req, res) => {
 exports.findAll = (req, res) => {
   var condition = null;
 
-  Prompt.findAll({ where: condition })
+  WritingComment.findAll({ where: condition })
   .then(data => {
     res.send(data);
   })
