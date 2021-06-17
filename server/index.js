@@ -22,9 +22,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // sync tables
 const db = require("./app/models");
 // db.sequelize.sync();
-db.sequelize.sync({ force: true }).then(() => {
-  console.log("Drop and re-sync db.");
-});
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log("Drop and re-sync db.");
+// });
 
 require("./app/routes/book.route.js")(app);
 require("./app/routes/chapter.route.js")(app);
