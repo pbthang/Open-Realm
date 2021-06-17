@@ -10,7 +10,11 @@ import {
   Typography,
   TextField,
   Button,
+  Menu,
+  MenuItem,
+  IconButton,
 } from "@material-ui/core";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { makeStyles } from "@material-ui/core/styles";
 import api from "../api/api";
 import BookDataService from "../services/book.service";
@@ -90,11 +94,26 @@ const useStyle = makeStyles((theme) => ({
   nextChapters: {
     margin: "1rem 0",
   },
+  optionBtn: {
+    float: "right",
+  },
+  danger: {
+    color: theme.palette.error.main,
+  },
 }));
 
 function Story() {
   const classes = useStyle();
   const { bookId } = useParams();
+
+  // For Option Btn
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleOptionBtnClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleOptionBtnClose = () => {
+    setAnchorEl(null);
+  };
 
   const [book, setBook] = useState({});
   const [bookAuthor, setBookAuthor] = useState({});
@@ -168,7 +187,29 @@ function Story() {
   return (
     <AppShell>
       <div className={classes.root}>
-        <Typography variant="h6">Id: {book.id}</Typography>
+        <Typography variant="h6">
+          Id: {book.id}
+          <span className={classes.optionBtn}>
+            <IconButton onClick={handleOptionBtnClick}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleOptionBtnClose}
+            >
+              <MenuItem onClick={handleOptionBtnClose}>Edit</MenuItem>
+              <MenuItem
+                onClick={handleOptionBtnClose}
+                className={classes.danger}
+              >
+                Delete
+              </MenuItem>
+            </Menu>
+          </span>
+        </Typography>
         <Typography variant="h2" className={classes.title}>
           {book.title}
           {/* - Chapter {book.chapter} */}
