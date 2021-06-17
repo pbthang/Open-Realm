@@ -37,8 +37,7 @@ function AddCommentForm({ type, postId, addComment }) {
           published: true,
         };
         const response = await PromptCommentDataService.create(data);
-        addComment(data);
-        console.log(response.data);
+        addComment(response.data);
         setNewComment("");
       }
     } catch (error) {

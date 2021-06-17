@@ -61,7 +61,7 @@ function Bookmark({ type, book }) {
       ) : (
         <BookmarkBorderIcon className={classes.icon} onClick={handleClick} />
       )}
-      <span className={classes.number}>{number || ""}</span>
+      <span className={classes.number}>{!!number ?? ""}</span>
     </span>
   );
 }

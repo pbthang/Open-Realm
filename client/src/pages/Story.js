@@ -130,7 +130,10 @@ function Story() {
   const [nextWritings, setNextWritings] = useState([]);
 
   const addComment = (cmt) => {
-    setComments([cmt, ...comments]);
+    setComments((comments) => [cmt, ...comments]);
+  };
+  const deleteComment = (cmtId) => {
+    setComments((comments) => comments.filter((cmt) => cmt.id !== cmtId));
   };
 
   const getBook = async (id) => {
@@ -151,9 +154,9 @@ function Story() {
     }
   };
 
-  const getComments = async (ids = []) => {
+  const getComments = async (postId) => {
     try {
-      const response = await PromptCommentDataService.getAll();
+      const response = await PromptCommentDataService.findByPost(postId);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -180,7 +183,7 @@ function Story() {
       setBook(book);
       const bookAuthor = await getBookAuthor(book.author_id);
       setBookAuthor(bookAuthor);
-      const comments = await getComments(book.comments);
+      const comments = await getComments(book.id);
       setComments(comments.reverse());
       // const nextWritings = await getNextWritings(book.nextWritings);
       // setNextWritings(nextWritings);
@@ -201,7 +204,6 @@ function Story() {
               <MoreVertIcon />
             </IconButton>
             <Menu
-              id="simple-menu"
               anchorEl={anchorEl}
               keepMounted
               open={Boolean(anchorEl)}
@@ -265,7 +267,14 @@ function Story() {
             addComment={addComment}
           />
           {comments.map((cmt, idx) => {
-            return <Comment comment={cmt} key={idx} />;
+            return (
+              <Comment
+                type="prompt"
+                comment={cmt}
+                deleteComment={deleteComment}
+                key={idx}
+              />
+            );
           })}
         </div>
       </div>

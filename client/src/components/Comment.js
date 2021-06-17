@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Paper, Typography, Avatar } from "@material-ui/core";
+import {
+  Paper,
+  Typography,
+  Avatar,
+  Menu,
+  MenuItem,
+  IconButton,
+} from "@material-ui/core";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import UserDataService from "../services/user.service";
+import promptCommentDataService from "../services/promptComment.service";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -12,11 +21,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   img: {
-    display: "inline-block",
+    display: "inline",
     marginRight: "1rem",
   },
   usernameAndCmt: {
-    display: "inline-block",
+    display: "inline",
   },
   username: {
     textDecoration: "none",
@@ -34,12 +43,34 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.primary.main,
     },
   },
+  optionBtn: {
+    flexGrow: 1,
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  danger: {
+    color: theme.palette.error.main,
+  },
 }));
 
-function Comment({ comment }) {
+function Comment({ type, comment, deleteComment }) {
   const classes = useStyles();
 
   const [cmtAuthor, setCmtAuthor] = useState({});
+
+  // For Option Btn
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleOptionBtnClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleOptionBtnClose = () => {
+    setAnchorEl(null);
+  };
+  const handleCommentDelete = async () => {
+    setAnchorEl(null);
+    await promptCommentDataService.delete(comment.id);
+    deleteComment(comment.id);
+  };
 
   useEffect(() => {
     const getCommentAuthorInfo = async () => {
@@ -70,6 +101,22 @@ function Comment({ comment }) {
         <Typography variant="body1" className={classes.cmtText}>
           {comment?.content}
         </Typography>
+      </span>
+      <span className={classes.optionBtn}>
+        <IconButton onClick={handleOptionBtnClick}>
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleOptionBtnClose}
+        >
+          <MenuItem onClick={handleOptionBtnClose}>Edit</MenuItem>
+          <MenuItem onClick={handleCommentDelete} className={classes.danger}>
+            Delete
+          </MenuItem>
+        </Menu>
       </span>
     </Paper>
   );
