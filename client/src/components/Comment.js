@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Comment({ comment, key }) {
+function Comment({ comment }) {
   const classes = useStyles();
 
   const [cmtAuthor, setCmtAuthor] = useState({});
@@ -51,19 +51,19 @@ function Comment({ comment, key }) {
   }, [comment.author_id]);
 
   return (
-    <Paper className={classes.comment} key={key}>
+    <Paper className={classes.comment}>
       <Avatar
         src={cmtAuthor?.picture}
         className={classes.img}
         component="a"
-        href={`/profile/${cmtAuthor?.id}`}
+        href={`/profile/${cmtAuthor?.user_id}`}
       />
       <span className={classes.usernameAndCmt}>
         <Typography
           variant="body2"
           className={classes.username}
           component="a"
-          href={`/profile/${cmtAuthor?.id}`}
+          href={`/profile/${cmtAuthor?.user_id}`}
         >
           {cmtAuthor?.nickname}
         </Typography>

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import AppShell from "../components/AppShell";
 import Bookmark from "../components/Post/Bookmark";
 import Post from "../components/Post";
+import Comment from "../components/Comment";
+import AddCommentForm from "../components/AddCommentForm";
 import parse from "html-react-parser";
 import { useParams } from "react-router-dom";
 import {
@@ -20,6 +22,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import api from "../api/api";
 import PromptDataService from "../services/prompt.service";
 import UserDataService from "../services/user.service";
+import PromptCommentDataService from "../services/promptComment.service";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -35,6 +38,7 @@ const useStyle = makeStyles((theme) => ({
   content: {
     marginTop: "2rem",
     marginBottom: "2rem",
+    wordWrap: "normal",
   },
   authorInfo: {
     display: "flex",
@@ -96,7 +100,7 @@ const useStyle = makeStyles((theme) => ({
     marginLeft: "1rem",
     height: "100%",
   },
-  nextChapters: {
+  nextWritings: {
     margin: "1rem 0",
   },
   optionBtn: {
@@ -123,68 +127,63 @@ function Story() {
   const [book, setBook] = useState({});
   const [bookAuthor, setBookAuthor] = useState({});
   const [comments, setComments] = useState([]);
-  const [commentAuthors, setCommentAuthors] = useState([]);
-  const [nextChapters, setNextChapters] = useState([]);
+  const [nextWritings, setNextWritings] = useState([]);
 
-  const [newComment, setNewComment] = useState("");
-
-  const addComment = (e) => {
-    setNewComment("");
+  const addComment = (cmt) => {
+    setComments([cmt, ...comments]);
   };
 
   const getBook = async (id) => {
-    const response = await PromptDataService.get(id);
-    return response.data;
+    try {
+      const response = await PromptDataService.get(id);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const getBookAuthor = async (id) => {
-    const response = await UserDataService.get(id);
-    return response.data;
+    try {
+      const response = await UserDataService.get(id);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const getComments = async (ids = []) => {
-    const queryString = ids.map((id) => `id=${id}`).join("&");
-    if (queryString?.length) {
-      const response = await api.get("/comments?" + queryString);
+    try {
+      const response = await PromptCommentDataService.getAll();
       return response.data;
-    } else {
-      return [];
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  const getCommentAuthors = async (cmts = []) => {
-    const queryString = cmts.map((cmt) => `id=${cmt.author}`).join("&");
-    if (queryString?.length) {
-      const response = await api.get("/users?" + queryString);
-      return response.data;
-    } else {
-      return [];
-    }
-  };
-
-  const getNextChapters = async (ids = []) => {
-    const queryString = ids.map((id) => `id=${id}`).join("&");
-    if (queryString?.length) {
-      const response = await api.get("/chapters?" + queryString);
-      return response.data;
-    } else {
-      return [];
-    }
+  const getNextWritings = async (ids = []) => {
+    // try {
+    //   const queryString = ids.map((id) => `id=${id}`).join("&");
+    //   if (queryString?.length) {
+    //     const response = await api.get("/chapters?" + queryString);
+    //     return response.data;
+    //   } else {
+    //     return [];
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
 
   useEffect(() => {
     const getInfo = async () => {
       const book = await getBook(bookId);
       setBook(book);
-      console.log(book);
       const bookAuthor = await getBookAuthor(book.author_id);
       setBookAuthor(bookAuthor);
       const comments = await getComments(book.comments);
-      setComments(comments);
-      const commentAuthors = await getCommentAuthors(comments);
-      setCommentAuthors(commentAuthors);
-      const nextChapters = await getNextChapters(book.nextChapters);
-      setNextChapters(nextChapters);
+      setComments(comments.reverse());
+      // const nextWritings = await getNextWritings(book.nextWritings);
+      // setNextWritings(nextWritings);
     };
 
     getInfo();
@@ -220,7 +219,6 @@ function Story() {
         </div>
         <Typography variant="h2" className={classes.title}>
           {book.title}
-          {/* - Chapter {book.chapter} */}
         </Typography>
 
         <span className={classes.authorInfo}>
@@ -239,17 +237,15 @@ function Story() {
             {bookAuthor.nickname}
           </Typography>
         </span>
-        <Typography variant="body1" className={classes.content}>
-          {parse(book.content ?? "")}
-        </Typography>
+        <div className={classes.content}>{parse(book.content ?? "")}</div>
         <Bookmark type="book" book={book} />
-        {nextChapters.length === 0 || (
+        {nextWritings.length === 0 || (
           <>
             <Divider />
-            <div className={classes.nextChapters}>
+            <div className={classes.nextWritings}>
               <Typography variant="h3">Next chapters</Typography>
               <div>
-                {nextChapters.map((chapter, idx) => (
+                {nextWritings.map((chapter, idx) => (
                   <Post
                     type="chapter"
                     book={chapter}
@@ -263,51 +259,13 @@ function Story() {
         )}
         <Divider />
         <div className={classes.comments}>
-          <form className={classes.addCmt} noValidate autoComplete="off">
-            <TextField
-              label="Add comment"
-              name="addComment"
-              fullWidth
-              multiline
-              variant="outlined"
-              className={classes.input}
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.btn}
-              onClick={addComment}
-            >
-              Add
-            </Button>
-          </form>
+          <AddCommentForm
+            type="prompt"
+            postId={book.id}
+            addComment={addComment}
+          />
           {comments.map((cmt, idx) => {
-            const cmtAuthor = commentAuthors.find((x) => x.id === cmt.author);
-            return (
-              <Paper className={classes.comment} key={idx}>
-                <Avatar
-                  src={cmtAuthor?.picture}
-                  className={classes.img}
-                  component="a"
-                  href={`/profile/${cmtAuthor?.id}`}
-                />
-                <span className={classes.usernameAndCmt}>
-                  <Typography
-                    variant="body2"
-                    className={classes.username}
-                    component="a"
-                    href={`/profile/${cmtAuthor?.id}`}
-                  >
-                    {cmtAuthor?.id}
-                  </Typography>
-                  <Typography variant="body1" className={classes.cmtText}>
-                    {cmt.content}
-                  </Typography>
-                </span>
-              </Paper>
-            );
+            return <Comment comment={cmt} key={idx} />;
           })}
         </div>
       </div>
