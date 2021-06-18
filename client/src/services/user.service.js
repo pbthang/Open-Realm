@@ -3,35 +3,39 @@ import ACCESS_TOKEN from "../auth0MgmtAPIToken";
 
 class UserDataService {
   async getAll() {
+    const TOKEN = await ACCESS_TOKEN;
     const response = await axios.request({
       method: "GET",
       url: "https://dev-d1rzgdpx.jp.auth0.com/api/v2/users",
       params: { search_engine: "v3" },
       headers: {
-        authorization: `Bearer ${await ACCESS_TOKEN}`,
+        authorization: `Bearer ${TOKEN}`,
       },
     });
     return response;
   }
 
   async get(id) {
+    const TOKEN = await ACCESS_TOKEN;
     const response = await axios.request({
       method: "GET",
       url: `https://dev-d1rzgdpx.jp.auth0.com/api/v2/users/${id}`,
       headers: {
-        authorization: `Bearer ${await ACCESS_TOKEN}`,
+        Authorization: `Bearer ${TOKEN}`,
       },
     });
     return response;
   }
 
   async patch(id, data) {
-    // return http.put(`/books/${id}`, data);
+    const TOKEN = await ACCESS_TOKEN;
     const response = await axios.patch(
       `https://dev-d1rzgdpx.jp.auth0.com/api/v2/users/${id}`,
       data,
       {
-        authorization: `Bearer ${await ACCESS_TOKEN}`,
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
       }
     );
     return response;

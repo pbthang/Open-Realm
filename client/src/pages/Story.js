@@ -5,7 +5,7 @@ import Post from "../components/Post";
 import Comment from "../components/Comment";
 import AddCommentForm from "../components/AddCommentForm";
 import parse from "html-react-parser";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import {
   Avatar,
   Divider,
@@ -20,6 +20,7 @@ import {
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { makeStyles } from "@material-ui/core/styles";
 import api from "../api/api";
+import { useAuth0 } from "@auth0/auth0-react";
 import PromptDataService from "../services/prompt.service";
 import UserDataService from "../services/user.service";
 import PromptCommentDataService from "../services/promptComment.service";
@@ -109,11 +110,19 @@ const useStyle = makeStyles((theme) => ({
   danger: {
     color: theme.palette.error.main,
   },
+  iconBtn: {
+    opacity: 0.3,
+    "&:hover": {
+      opacity: 1,
+    },
+  },
 }));
 
 function Story() {
   const classes = useStyle();
   const { bookId } = useParams();
+  const { user } = useAuth0();
+  const history = useHistory();
 
   // For Option Btn
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -134,6 +143,11 @@ function Story() {
   };
   const deleteComment = (cmtId) => {
     setComments((comments) => comments.filter((cmt) => cmt.id !== cmtId));
+  };
+
+  const handlePromptDelete = async () => {
+    await PromptDataService.delete(bookId);
+    history.push("/home");
   };
 
   const getBook = async (id) => {
@@ -199,25 +213,30 @@ function Story() {
           <Typography variant="h6" className={classes.bookId}>
             Id: {book.id}
           </Typography>
-          <span className={classes.optionBtn}>
-            <IconButton onClick={handleOptionBtnClick}>
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleOptionBtnClose}
-            >
-              <MenuItem onClick={handleOptionBtnClose}>Edit</MenuItem>
-              <MenuItem
-                onClick={handleOptionBtnClose}
-                className={classes.danger}
+          {user.sub === book.author_id && (
+            <span className={classes.optionBtn}>
+              <IconButton
+                onClick={handleOptionBtnClick}
+                className={classes.iconBtn}
               >
-                Delete
-              </MenuItem>
-            </Menu>
-          </span>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleOptionBtnClose}
+              >
+                <MenuItem onClick={handleOptionBtnClose}>Edit</MenuItem>
+                <MenuItem
+                  onClick={handlePromptDelete}
+                  className={classes.danger}
+                >
+                  Delete
+                </MenuItem>
+              </Menu>
+            </span>
+          )}
         </div>
         <Typography variant="h2" className={classes.title}>
           {book.title}
@@ -240,7 +259,7 @@ function Story() {
           </Typography>
         </span>
         <div className={classes.content}>{parse(book.content ?? "")}</div>
-        <Bookmark type="book" book={book} />
+        <Bookmark type="prompt" book={book} />
         {nextWritings.length === 0 || (
           <>
             <Divider />

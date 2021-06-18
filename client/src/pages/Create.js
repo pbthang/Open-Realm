@@ -116,14 +116,15 @@ function Create() {
 
     PromptDataService.create(data)
       .then((response) => {
-        console.log(response.data);
+        window.localStorage.clear();
+        history.push("/home");
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
       });
-    window.localStorage.clear();
-    history.push("/home");
   };
+
+  const addWriting = () => {};
 
   return (
     <AppShell>

@@ -11,6 +11,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import UserDataService from "../services/user.service";
 import promptCommentDataService from "../services/promptComment.service";
 import { makeStyles } from "@material-ui/core/styles";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const useStyles = makeStyles((theme) => ({
   comments: {},
@@ -56,7 +57,10 @@ const useStyles = makeStyles((theme) => ({
 function Comment({ type, comment, deleteComment }) {
   const classes = useStyles();
 
+  const { user } = useAuth0();
+
   const [cmtAuthor, setCmtAuthor] = useState({});
+  // const [optionBtnRendered, setOptionBtnRendered] = useState(false);
 
   // For Option Btn
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -102,22 +106,24 @@ function Comment({ type, comment, deleteComment }) {
           {comment?.content}
         </Typography>
       </span>
-      <span className={classes.optionBtn}>
-        <IconButton onClick={handleOptionBtnClick}>
-          <MoreVertIcon />
-        </IconButton>
-        <Menu
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleOptionBtnClose}
-        >
-          <MenuItem onClick={handleOptionBtnClose}>Edit</MenuItem>
-          <MenuItem onClick={handleCommentDelete} className={classes.danger}>
-            Delete
-          </MenuItem>
-        </Menu>
-      </span>
+      {user.sub === comment.author_id && (
+        <span className={classes.optionBtn}>
+          <IconButton onClick={handleOptionBtnClick}>
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleOptionBtnClose}
+          >
+            <MenuItem onClick={handleOptionBtnClose}>Edit</MenuItem>
+            <MenuItem onClick={handleCommentDelete} className={classes.danger}>
+              Delete
+            </MenuItem>
+          </Menu>
+        </span>
+      )}
     </Paper>
   );
 }
