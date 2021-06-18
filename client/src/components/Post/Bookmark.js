@@ -29,18 +29,15 @@ function Bookmark({ type, book }) {
   const [marked, setMarked] = useState(false);
   const [number, setNumber] = useState(book.numberOfBookmarks ?? 0);
 
-  const [userBookmarkedPrompts, setuserBookmarkedPrompts] = useState([]);
-  const [userBookmarkedWritings, setuserBookmarkedWritings] = useState([]);
-
-  const [userMetadata, setUserMetaData] = useState({});
+  const [userBookmarkedPrompts, setUserBookmarkedPrompts] = useState([]);
+  const [userBookmarkedWritings, setUserBookmarkedWritings] = useState([]);
 
   useEffect(() => {
     const getUserInfo = async () => {
       const response = await UserDataService.get(user.sub);
       const userMetadata = response.data.user_metadata;
-      setUserMetaData(userMetadata);
-      setuserBookmarkedPrompts(userMetadata.bookmarkedPrompts);
-      setuserBookmarkedWritings(userMetadata.bookmarkedWritings);
+      setUserBookmarkedPrompts(userMetadata.bookmarkedPrompts);
+      setUserBookmarkedWritings(userMetadata.bookmarkedWritings);
       setMarked(
         type === "prompt"
           ? userMetadata.bookmarkedPrompts.find((id) => id === book.id) >= 0
@@ -64,7 +61,7 @@ function Bookmark({ type, book }) {
     } else if (type === "writing") {
       getWritingInfo();
     }
-  }, [user.sub, book.id, type, marked]);
+  }, [user.sub, book.id, type]);
 
   const handleClick = async () => {
     if (type === "prompt") {
@@ -73,24 +70,24 @@ function Bookmark({ type, book }) {
         newUserBookmarkedPrompts = newUserBookmarkedPrompts.filter(
           (promptId) => promptId !== book.id
         );
+        PromptDataService.update(book.id, {
+          ...book,
+          numberOfBookmarks: number - 1,
+        });
         setNumber((number) => {
-          PromptDataService.update(book.id, {
-            ...book,
-            numberOfBookmarks: number - 1,
-          });
           return number - 1;
         });
-        setMarked(!marked);
+        setMarked((marked) => !marked);
       } else {
         newUserBookmarkedPrompts = [book.id, ...newUserBookmarkedPrompts];
-        setNumber((number) => {
-          PromptDataService.update(book.id, {
-            ...book,
-            numberOfBookmarks: number + 1,
-          });
-          return number - 1;
+        PromptDataService.update(book.id, {
+          ...book,
+          numberOfBookmarks: number + 1,
         });
-        setMarked(!marked);
+        setNumber((number) => {
+          return number + 1;
+        });
+        setMarked((marked) => !marked);
       }
       try {
         const response = await UserDataService.patch(user.sub, {
@@ -98,7 +95,6 @@ function Bookmark({ type, book }) {
             bookmarkedPrompts: newUserBookmarkedPrompts,
           },
         });
-        console.log(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -108,21 +104,21 @@ function Bookmark({ type, book }) {
         newUserBookmarkedWritings = newUserBookmarkedWritings.filter(
           (writingId) => writingId !== book.id
         );
+        PromptDataService.update(book.id, {
+          ...book,
+          numberOfBookmarks: number - 1,
+        });
         setNumber((number) => {
-          PromptDataService.update(book.id, {
-            ...book,
-            numberOfBookmarks: number - 1,
-          });
           return number - 1;
         });
         setMarked(!marked);
       } else {
         newUserBookmarkedWritings = [book.id, ...newUserBookmarkedWritings];
+        PromptDataService.update(book.id, {
+          ...book,
+          numberOfBookmarks: number + 1,
+        });
         setNumber((number) => {
-          PromptDataService.update(book.id, {
-            ...book,
-            numberOfBookmarks: number - 1,
-          });
           return number + 1;
         });
         setMarked(!marked);
@@ -133,7 +129,6 @@ function Bookmark({ type, book }) {
             bookmarkedWritings: newUserBookmarkedWritings,
           },
         });
-        console.log(response.data);
       } catch (error) {
         console.error(error);
       }

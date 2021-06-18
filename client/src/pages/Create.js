@@ -100,7 +100,7 @@ function Create() {
 
   useEffect(() => {
     const fetchPrompts = async () => {
-      const response = await http.get("/books");
+      const response = await http.get("/prompts");
       setPromptList(response.data);
     };
     fetchPrompts();
@@ -108,23 +108,38 @@ function Create() {
 
   const addPrompt = () => {
     var data = {
-      author_id: user?.sub,
+      author_id: user.sub,
       title: title,
       content: content,
       published: true,
     };
 
     PromptDataService.create(data)
-      .then((response) => {
+      .then(() => {
         window.localStorage.clear();
         history.push("/home");
       })
-      .catch((e) => {
-        console.error(e);
+      .catch((err) => {
+        console.error(err);
       });
   };
 
-  const addWriting = () => {};
+  const addWriting = () => {
+    const data = {
+      title: title,
+      author_id: user.sub,
+      promptId: currentPrompt.id,
+      content: content,
+      published: true,
+    };
+
+    WritingDataService.create(data)
+      .then(() => {
+        window.localStorage.clear();
+        history.push("/home");
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <AppShell>
@@ -234,9 +249,7 @@ function Create() {
             variant="contained"
             color="primary"
             className={classes.btn}
-            onClick={() => {
-              console.log("button clicked");
-            }}
+            onClick={addWriting}
           >
             Publish
           </Button>

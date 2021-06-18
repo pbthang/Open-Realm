@@ -24,6 +24,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import PromptDataService from "../services/prompt.service";
 import UserDataService from "../services/user.service";
 import PromptCommentDataService from "../services/promptComment.service";
+import WritingDataService from "../services/writing.service";
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -146,8 +147,12 @@ function Story() {
   };
 
   const handlePromptDelete = async () => {
-    await PromptDataService.delete(bookId);
-    history.push("/home");
+    try {
+      await PromptDataService.delete(bookId);
+      history.push("/home");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const getBook = async (id) => {
@@ -177,33 +182,35 @@ function Story() {
     }
   };
 
-  const getNextWritings = async (ids = []) => {
-    // try {
-    //   const queryString = ids.map((id) => `id=${id}`).join("&");
-    //   if (queryString?.length) {
-    //     const response = await api.get("/chapters?" + queryString);
-    //     return response.data;
-    //   } else {
-    //     return [];
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
+  const getNextWritings = async (promptId) => {
+    try {
+      const response = await WritingDataService.getAll();
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
     const getInfo = async () => {
       const book = await getBook(bookId);
       setBook(book);
+
       const bookAuthor = await getBookAuthor(book.author_id);
       setBookAuthor(bookAuthor);
+
       const comments = await getComments(book.id);
       setComments(comments.reverse());
-      // const nextWritings = await getNextWritings(book.nextWritings);
+      // const nextWritings = await getNextWritings(book.id);
       // setNextWritings(nextWritings);
     };
 
-    getInfo();
+    try {
+      getInfo();
+    } catch (error) {
+      console.err(error);
+    }
   }, [bookId]);
 
   return (
