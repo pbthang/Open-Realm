@@ -131,7 +131,7 @@ function Post({ type, book }) {
 
         <CardActions className={classes.action}>
           <Bookmark type={type} book={book} />
-          <Button size="small" component="a" href={`/chapter/${book.id}`}>
+          <Button size="small" component="a" href={`/writings/${book.id}`}>
             Read
           </Button>
         </CardActions>

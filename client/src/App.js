@@ -9,14 +9,16 @@ import Create from "./pages/Create";
 import Bookmarked from "./pages/Bookmarked";
 import Story from "./pages/Story";
 import FourOFour from "./pages/FourOFour";
+import Writing from "./pages/Writing";
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Switch>
-          <PrivateRoute exact path="/home/:bookId" component={Story} />
+          <PrivateRoute exact path="/home/:promptId" component={Story} />
           <PrivateRoute exact path="/home" component={Home} />
+          <PrivateRoute exact path="/writings/:writingId" component={Writing} />
           <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/profile/:sub" component={Profile} />
           <PrivateRoute exact path="/create" component={Create} />

@@ -21,7 +21,7 @@ class WritingCommentDataService {
     return http.delete(`/writingComments/${id}`);
   }
 
-  findByTitle(postID) {
+  findByPost(postID) {
     return http.get(`/writingComments?post_id=${postID}`);
   }
 }

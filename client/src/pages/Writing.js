@@ -17,16 +17,15 @@ import {
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuth0 } from "@auth0/auth0-react";
-import PromptDataService from "../services/prompt.service";
 import UserDataService from "../services/user.service";
-import PromptCommentDataService from "../services/promptComment.service";
+import WritingCommentDataService from "../services/writingComment.service";
 import WritingDataService from "../services/writing.service";
 
 const useStyle = makeStyles((theme) => ({
   root: {
-    // margin: "1rem",
+    margin: "1rem",
   },
-  promptId: {
+  writingId: {
     display: "inline",
   },
   title: {
@@ -115,9 +114,9 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-function Story() {
+function Writing() {
   const classes = useStyle();
-  const { promptId } = useParams();
+  const { writingId } = useParams();
   const { user } = useAuth0();
   const history = useHistory();
 
@@ -133,7 +132,6 @@ function Story() {
   const [book, setBook] = useState({});
   const [bookAuthor, setBookAuthor] = useState({});
   const [comments, setComments] = useState([]);
-  const [nextWritings, setNextWritings] = useState([]);
 
   const addComment = (cmt) => {
     setComments((comments) => [cmt, ...comments]);
@@ -142,9 +140,9 @@ function Story() {
     setComments((comments) => comments.filter((cmt) => cmt.id !== cmtId));
   };
 
-  const handlePromptDelete = async () => {
+  const handleWritingDelete = async () => {
     try {
-      await PromptDataService.delete(promptId);
+      await WritingDataService.delete(writingId);
       history.push("/home");
     } catch (error) {
       console.error(error);
@@ -153,7 +151,7 @@ function Story() {
 
   const getBook = async (id) => {
     try {
-      const response = await PromptDataService.get(id);
+      const response = await WritingDataService.get(id);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -171,16 +169,7 @@ function Story() {
 
   const getComments = async (postId) => {
     try {
-      const response = await PromptCommentDataService.findByPost(postId);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getNextWritings = async (promptId) => {
-    try {
-      const response = await WritingDataService.getAll();
+      const response = await WritingCommentDataService.findByPost(postId);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -189,7 +178,7 @@ function Story() {
 
   useEffect(() => {
     const getInfo = async () => {
-      const book = await getBook(promptId);
+      const book = await getBook(writingId);
       setBook(book);
 
       const bookAuthor = await getBookAuthor(book.author_id);
@@ -197,8 +186,6 @@ function Story() {
 
       const comments = await getComments(book.id);
       setComments(comments.reverse());
-      const nextWritings = await getNextWritings(book.id);
-      setNextWritings(nextWritings);
     };
 
     try {
@@ -206,13 +193,13 @@ function Story() {
     } catch (error) {
       console.err(error);
     }
-  }, [promptId]);
+  }, [writingId]);
 
   return (
     <AppShell>
       <div className={classes.root}>
         <div>
-          <Typography variant="h6" className={classes.promptId}>
+          <Typography variant="h6" className={classes.writingId}>
             Id: {book.id}
           </Typography>
           {user.sub === book.author_id && (
@@ -231,7 +218,7 @@ function Story() {
               >
                 <MenuItem onClick={handleOptionBtnClose}>Edit</MenuItem>
                 <MenuItem
-                  onClick={handlePromptDelete}
+                  onClick={handleWritingDelete}
                   className={classes.danger}
                 >
                   Delete
@@ -261,20 +248,7 @@ function Story() {
           </Typography>
         </span>
         <div className={classes.content}>{parse(book.content ?? "")}</div>
-        <Bookmark type="prompt" book={book} />
-        {nextWritings.length === 0 || (
-          <>
-            <Divider />
-            <div className={classes.nextWritings}>
-              <Typography variant="h3">Following Writings</Typography>
-              <div>
-                {nextWritings.map((writing, idx) => (
-                  <Post type="writing" book={writing} key={idx} />
-                ))}
-              </div>
-            </div>
-          </>
-        )}
+        <Bookmark type="writing" book={book} />
         <Divider />
         <div className={classes.comments}>
           <AddCommentForm
@@ -285,7 +259,7 @@ function Story() {
           {comments.map((cmt, idx) => {
             return (
               <Comment
-                type="prompt"
+                type="writing"
                 comment={cmt}
                 deleteComment={deleteComment}
                 key={idx}
@@ -298,4 +272,4 @@ function Story() {
   );
 }
 
-export default Story;
+export default Writing;
