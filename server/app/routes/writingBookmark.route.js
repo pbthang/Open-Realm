@@ -21,5 +21,8 @@ module.exports = app => {
   // Delete a Chapter with id
   router.delete("/:id", writingBookmarks.delete);
 
+  // Delete by user and prompt // IDEA:
+  router.delete("/", writingBookmarks.deleteByPara);
+
   app.use('/api/writingBookmarks', router);
 };

@@ -96,6 +96,29 @@ exports.delete = (req, res) => {
   });
 };
 
+exports.deleteByPara = (req, res) => {
+  const user_id = req.query.user_id;
+  const writing_id = req.query.writing_id;
+
+  WritingBookmark.destroy({
+    where: {
+      user_id: user_id,
+      writing_id: writing_id
+    }
+  })
+  .then(num => {
+      res.send({
+        message: `${num} WritingBookmark was deleted successfully!`
+      });
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: "Could not delete WritingBookmark with id=" + id
+    });
+  });
+};
+
+
 // Get all Writing comment
 exports.findAll = (req, res) => {
   const user_id = req.query.user_id;

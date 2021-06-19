@@ -96,6 +96,28 @@ exports.delete = (req, res) => {
   });
 };
 
+exports.deleteByPara = (req, res) => {
+  const user_id = req.query.user_id;
+  const prompt_id = req.query.prompt_id;
+
+  PromptBookmark.destroy({
+    where: {
+      user_id: user_id,
+      prompt_id: prompt_id
+    }
+  })
+  .then(num => {
+      res.send({
+        message: `${num} promptBookmark was deleted successfully!`
+      });
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: "Could not delete PromptBookmark with id=" + id
+    });
+  });
+};
+
 // Get all Prompt comment
 exports.findAll = (req, res) => {
   const user_id = req.query.user_id;
@@ -108,7 +130,7 @@ exports.findAll = (req, res) => {
   if (prompt_id) {
     condition.prompt_id = { [Op.eq]: `${prompt_id}`};
   }
-  
+
   PromptBookmark.findAll({ where: condition })
   .then(data => {
     res.send(data);

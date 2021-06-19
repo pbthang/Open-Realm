@@ -26,11 +26,9 @@ class PromptBookmarkDataService {
   }
 
   deleteByUserAndPrompt(user_id, prompt_id) {
-    const promptBookmarkIds = http.get(
+    return http.delete(
       `/promptBookmarks?user_id=${user_id}&prompt_id=${prompt_id}`
     );
-    console.log(promptBookmarkIds.data);
-    return promptBookmarkIds.data.map((id) => this.delete(id));
   }
 }
 

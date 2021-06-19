@@ -24,11 +24,11 @@ class WritingBookmarkDataService {
   findByUserId(id) {
     return http.get(`/writingBookmarks?user_id=${id}`);
   }
-  deleteByUserAndPrompt(user_id, writing_id) {
-    const writingBookmarkId = http.get(
+
+  deleteByUserAndWriting(user_id, writing_id) {
+    return http.delete(
       `/writingBookmarks?user_id=${user_id}&writing_id=${writing_id}`
-    ).id;
-    return this.delete(writingBookmarkId);
+    );
   }
 }
 
