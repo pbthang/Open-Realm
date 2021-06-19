@@ -30,8 +30,9 @@ const useStyle = makeStyles((theme) => ({
     display: "inline",
   },
   title: {
-    display: "inline-block",
+    display: "block",
     fontSize: "3rem",
+    wordWrap: "normal",
   },
   content: {
     marginTop: "2rem",

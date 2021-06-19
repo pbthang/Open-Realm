@@ -117,14 +117,16 @@ function Create() {
       published: true,
     };
 
-    PromptDataService.create(data)
-      .then(() => {
-        window.localStorage.clear();
-        history.push("/home");
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    if (title.length > 0 && content.length > 0) {
+      PromptDataService.create(data)
+        .then(() => {
+          window.localStorage.clear();
+          history.push("/home");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   };
 
   const addWriting = () => {
