@@ -181,6 +181,7 @@ function Story() {
   const getNextWritings = async (promptId) => {
     try {
       const response = await WritingDataService.findByPromptId(promptId);
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -212,8 +213,8 @@ function Story() {
     <AppShell>
       <div className={classes.root}>
         <div>
-          <Typography variant="h6" className={classes.promptId}>
-            Id: {book.id}
+          <Typography variant="body1" className={classes.promptId}>
+            Id: #{book.id}
           </Typography>
           {user.sub === book.author_id && (
             <span className={classes.optionBtn}>

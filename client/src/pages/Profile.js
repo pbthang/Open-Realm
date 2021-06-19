@@ -3,7 +3,9 @@ import { useParams } from "react-router-dom";
 import AppShell from "../components/AppShell";
 import { Typography, Avatar, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import api from "../api/api";
+import PromptDataService from "../services/prompt.service";
+import WritingDataService from "../services/writing.service";
+import UserDataService from "../services/user.service";
 import Post from "../components/Post";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
@@ -36,8 +38,11 @@ function Profile() {
   const { sub } = useParams();
   // const { user } = useAuth0();
   const [user, setUser] = useState();
-  const [startedStories, setStartedStories] = useState([]);
-  const [publishedChapters, setPublishedChapters] = useState([]);
+  // const [startedStories, setStartedStories] = useState([]);
+  // const [publishedChapters, setPublishedChapters] = useState([]);
+
+  const [publishedPrompts, setPublishedPrompts] = useState([]);
+  const [publishedWritings, setPublishedWritings] = useState([]);
 
   // console.log(sub);
 
@@ -51,21 +56,31 @@ function Profile() {
   useEffect(() => {
     const getUser = async () => {
       // get user id
-      const response = await axios.request({
-        method: "GET",
-        url: "https://dev-d1rzgdpx.jp.auth0.com/api/v2/users",
-        params: { q: 'user_id: "' + sub + '"', search_engine: "v3" },
-        headers: {
-          authorization: `Bearer ${await ACCESS_TOKEN}`,
-        },
-      });
-      return response.data[0];
+      const response = await UserDataService.get(sub);
+      return response.data;
     };
 
     getUser()
       .then((user) => user && setUser(user))
       .catch((err) => console.error(err));
   }, [userString, sub]);
+
+  useEffect(() => {
+    const getPrompts = async () => {
+      const response = await PromptDataService.findByAuthorId(sub);
+      console.log(response);
+      setPublishedPrompts(response.data);
+    };
+
+    const getWritings = async () => {
+      const response = await WritingDataService.findByAuthorId(sub);
+      console.log(response);
+      setPublishedWritings(response.data);
+    };
+
+    getPrompts();
+    getWritings();
+  }, [sub]);
 
   // useEffect(() => {
   //   const getStartedStories = async () => {
@@ -107,47 +122,37 @@ function Profile() {
           </Typography>
         </span>
       </div>
+      <div className={classes.yourWorks}>
+        {publishedPrompts.length === 0 || (
+          <>
+            <Divider />
+            <Typography variant="h3" className={classes.title}>
+              Published Prompts
+            </Typography>
+            <div>
+              {publishedPrompts.map((prompt, idx) => (
+                <Post type="prompt" book={prompt} key={idx} />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+      <div className={classes.yourWorks}>
+        {publishedWritings.length === 0 || (
+          <>
+            <Divider />
+            <Typography variant="h3" className={classes.title}>
+              Published Writings
+            </Typography>
+            <div>
+              {publishedWritings.map((writing, idx) => (
+                <Post type="writing" book={writing} key={idx} />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     </AppShell>
-    // <div className={classes.yourWorks}>
-    //   {Object.keys(startedStories).length === 0 || (
-    //     <>
-    //       <Divider />
-    //       <Typography variant="h3" className={classes.title}>
-    //         Stories started
-    //       </Typography>
-    //       <div>
-    //         {startedStories.map((story, idx) => (
-    //           <Post
-    //             type="book"
-    //             book={story}
-    //             author={story.author}
-    //             key={idx}
-    //           />
-    //         ))}
-    //       </div>
-    //     </>
-    //   )}
-    // </div>
-    // <div className={classes.yourWorks}>
-    //   {Object.keys(publishedChapters).length === 0 || (
-    //     <>
-    //       <Divider />
-    //       <Typography variant="h3" className={classes.title}>
-    //         Chapters published
-    //       </Typography>
-    //       <div>
-    //         {publishedChapters.map((chapter, idx) => (
-    //           <Post
-    //             type="chapter"
-    //             book={chapter}
-    //             author={chapter.author}
-    //             key={idx}
-    //           />
-    //         ))}
-    //       </div>
-    //     </>
-    //   )}
-    // </div>
   );
 }
 

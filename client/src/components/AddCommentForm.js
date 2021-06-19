@@ -45,7 +45,23 @@ function AddCommentForm({ type, postId, addComment }) {
     }
   };
 
-  const addWritingComment = async () => {};
+  const addWritingComment = async () => {
+    try {
+      if (newComment.length > 0) {
+        const data = {
+          post_id: postId,
+          author_id: user.sub,
+          content: newComment,
+          published: true,
+        };
+        const response = await WritingCommentDataService.create(data);
+        addComment(response.data);
+        setNewComment("");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <form className={classes.addCmt} noValidate autoComplete="off">
