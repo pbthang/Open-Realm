@@ -3,12 +3,12 @@ import axios from "axios";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import { makeStyles } from "@material-ui/core/styles";
-import api from "../../api/api";
 import { useAuth0 } from "@auth0/auth0-react";
 import UserDataService from "../../services/user.service";
 import PromptDataService from "../../services/prompt.service";
 import WritingDataService from "../../services/writing.service";
-import { CircularProgress } from "@material-ui/core";
+import PromptBookmarkDataService from "../../services/promptBookmark.service";
+import WritingBookmarkDataService from "../../services/writingBookmark.service";
 
 const useStyles = makeStyles({
   root: {
@@ -30,20 +30,21 @@ function Bookmark({ type, book }) {
   const [marked, setMarked] = useState(false);
   const [number, setNumber] = useState(book.numberOfBookmarks ?? 0);
 
-  const [userBookmarkedPrompts, setUserBookmarkedPrompts] = useState([]);
-  const [userBookmarkedWritings, setUserBookmarkedWritings] = useState([]);
-
   useEffect(() => {
     const getUserInfo = async () => {
-      const response = await UserDataService.get(user.sub);
-      const userMetadata = response.data.user_metadata;
-      setUserBookmarkedPrompts(userMetadata.bookmarkedPrompts);
-      setUserBookmarkedWritings(userMetadata.bookmarkedWritings);
-      setMarked(
-        type === "prompt"
-          ? userMetadata.bookmarkedPrompts.find((id) => id === book.id) >= 0
-          : userMetadata.bookmarkedWritings.find((id) => id === book.id) >= 0
-      );
+      if (type === "prompt") {
+        const promptResponse = await PromptBookmarkDataService.findByUserId(
+          user.sub
+        );
+        setMarked(promptResponse.data.find((obj) => obj.prompt_id === book.id));
+      } else if (type === "writing") {
+        const writingResponse = await WritingBookmarkDataService.findByUserId(
+          user.sub
+        );
+        setMarked(
+          writingResponse.data.find((obj) => obj.prompt_id === book.id)
+        );
+      }
     };
 
     const getPromptInfo = async () => {
@@ -64,53 +65,46 @@ function Bookmark({ type, book }) {
     }
   }, [book.id, type, user.sub]);
 
-  useEffect(() => {
-    const updateNumberOfBookmarks = async () => {
-      PromptDataService.update(book.id, { numberOfBookmarks: number });
-    };
-
-    updateNumberOfBookmarks();
-    // eslint-disable-next-line
-  }, [number, JSON.stringify(userBookmarkedPrompts)]);
-
-  useEffect(() => {
-    const updateBookmarkedPrompts = async () => {
-      const response = await UserDataService.patch(user.sub, {
-        user_metadata: {
-          bookmarkedPrompts: userBookmarkedPrompts,
-        },
-      });
-      console.log(response.data);
-    };
-    updateBookmarkedPrompts();
-  }, [user.sub, JSON.stringify(userBookmarkedPrompts)]);
-
   // for BookmarkIcon
   const handleClickMarked = async () => {
     if (type === "prompt") {
-      console.log("Previous (marked): ", userBookmarkedPrompts);
-      setUserBookmarkedPrompts((prompts) => {
-        return prompts.filter((id) => id !== book.id);
+      await PromptBookmarkDataService.deleteByUserAndPrompt(user.sub, book.id);
+      await PromptDataService.update(book.id, {
+        numberOfBookmarks: number - 1,
       });
-      console.log("After (marked): ", userBookmarkedPrompts);
-      setNumber((num) => num - 1);
-      setMarked((mark) => !mark);
     } else if (type === "writing") {
+      await WritingBookmarkDataService.deleteByUserAndPrompt(user.sub, book.id);
+      await WritingDataService.update(book.id, {
+        numberOfBookmarks: number - 1,
+      });
     }
+    setNumber((num) => num - 1);
+    setMarked((mark) => !mark);
   };
 
   // for BookmarkIconBorder
   const handleClickNotMarked = async () => {
     if (type === "prompt") {
-      console.log("Previous (not marked): ", userBookmarkedPrompts);
-      setUserBookmarkedPrompts((prompts) => {
-        return [...prompts, book.id];
+      await PromptBookmarkDataService.create({
+        user_id: user.sub,
+        prompt_id: book.id,
       });
-      console.log("After (not marked): ", userBookmarkedPrompts);
-      setNumber((num) => num + 1);
-      setMarked((mark) => !mark);
+      const response = await PromptDataService.update(book.id, {
+        numberOfBookmarks: number + 1,
+      });
+      console.log(response.data);
     } else if (type === "writing") {
+      await WritingBookmarkDataService.create({
+        user_id: user.sub,
+        prompt_id: book.id,
+      });
+      const response = await WritingDataService.update(book.id, {
+        numberOfBookmarks: number + 1,
+      });
+      console.log(response.data);
     }
+    setNumber((num) => num + 1);
+    setMarked((mark) => !mark);
   };
 
   return (
