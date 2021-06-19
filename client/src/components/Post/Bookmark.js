@@ -30,8 +30,8 @@ function Bookmark({ type, book }) {
   const [marked, setMarked] = useState(false);
   const [number, setNumber] = useState(book.numberOfBookmarks ?? 0);
 
-  const [userBookmarkedPrompts, setUserBookmarkedPrompts] = useState();
-  const [userBookmarkedWritings, setUserBookmarkedWritings] = useState();
+  const [userBookmarkedPrompts, setUserBookmarkedPrompts] = useState([]);
+  const [userBookmarkedWritings, setUserBookmarkedWritings] = useState([]);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -62,129 +62,54 @@ function Bookmark({ type, book }) {
     } else if (type === "writing") {
       getWritingInfo();
     }
-  }, []);
+  }, [book.id, type, user.sub]);
 
+  useEffect(() => {
+    const updateNumberOfBookmarks = async () => {
+      PromptDataService.update(book.id, { numberOfBookmarks: number });
+    };
+
+    updateNumberOfBookmarks();
+    // eslint-disable-next-line
+  }, [number, JSON.stringify(userBookmarkedPrompts)]);
+
+  useEffect(() => {
+    const updateBookmarkedPrompts = async () => {
+      const response = await UserDataService.patch(user.sub, {
+        user_metadata: {
+          bookmarkedPrompts: userBookmarkedPrompts,
+        },
+      });
+      console.log(response.data);
+    };
+    updateBookmarkedPrompts();
+  }, [user.sub, JSON.stringify(userBookmarkedPrompts)]);
+
+  // for BookmarkIcon
   const handleClickMarked = async () => {
     if (type === "prompt") {
       console.log("Previous (marked): ", userBookmarkedPrompts);
-      setUserBookmarkedPrompts((prompts) =>
-        prompts.filter((id) => id !== book.id)
-      );
+      setUserBookmarkedPrompts((prompts) => {
+        return prompts.filter((id) => id !== book.id);
+      });
       console.log("After (marked): ", userBookmarkedPrompts);
-      console.log(userBookmarkedPrompts);
       setNumber((num) => num - 1);
       setMarked((mark) => !mark);
-      PromptDataService.update(book.id, { numberOfBookmarks: number });
-      const response = await UserDataService.patch(user.sub, {
-        user_metadata: {
-          bookmarkedPrompts: userBookmarkedPrompts,
-        },
-      });
-      console.log(response.data);
     } else if (type === "writing") {
     }
   };
 
+  // for BookmarkIconBorder
   const handleClickNotMarked = async () => {
     if (type === "prompt") {
       console.log("Previous (not marked): ", userBookmarkedPrompts);
-      setUserBookmarkedPrompts((prompts) => [...prompts, book.id]);
+      setUserBookmarkedPrompts((prompts) => {
+        return [...prompts, book.id];
+      });
       console.log("After (not marked): ", userBookmarkedPrompts);
-      console.log(userBookmarkedPrompts);
       setNumber((num) => num + 1);
       setMarked((mark) => !mark);
-      PromptDataService.update(book.id, { numberOfBookmarks: number - 1 });
-      const response = await UserDataService.patch(user.sub, {
-        user_metadata: {
-          bookmarkedPrompts: userBookmarkedPrompts,
-        },
-      });
-      console.log(response.data);
     } else if (type === "writing") {
-    }
-  };
-
-  const handleClick = async () => {
-    if (type === "prompt") {
-      let newUserBookmarkedPrompts = userBookmarkedPrompts;
-
-      if (marked) {
-        newUserBookmarkedPrompts = userBookmarkedPrompts.filter(
-          (promptId) => promptId !== book.id
-        );
-
-        console.log(userBookmarkedPrompts);
-        console.log(newUserBookmarkedPrompts);
-
-        setUserBookmarkedPrompts(newUserBookmarkedPrompts);
-        PromptDataService.update(book.id, {
-          numberOfBookmarks: number - 1,
-        });
-        setNumber((number) => {
-          return number - 1;
-        });
-        setMarked((marked) => !marked);
-      } else {
-        newUserBookmarkedPrompts = [...userBookmarkedPrompts, book.id];
-
-        console.log(userBookmarkedPrompts);
-        console.log(newUserBookmarkedPrompts);
-
-        setUserBookmarkedPrompts(newUserBookmarkedPrompts);
-        PromptDataService.update(book.id, {
-          numberOfBookmarks: number + 1,
-        });
-        setNumber((number) => {
-          return number + 1;
-        });
-        setMarked((marked) => !marked);
-      }
-      try {
-        const response = await UserDataService.patch(user.sub, {
-          user_metadata: {
-            bookmarkedPrompts: newUserBookmarkedPrompts,
-          },
-        });
-        console.log(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    } else if (type === "writing") {
-      let newUserBookmarkedWritings = userBookmarkedWritings;
-
-      if (marked) {
-        newUserBookmarkedWritings = newUserBookmarkedWritings.filter(
-          (writingId) => writingId !== book.id
-        );
-        setUserBookmarkedWritings(newUserBookmarkedWritings);
-        WritingDataService.update(book.id, {
-          numberOfBookmarks: number - 1,
-        });
-        setNumber((number) => {
-          return number - 1;
-        });
-        setMarked(!marked);
-      } else {
-        newUserBookmarkedWritings = [book.id, ...newUserBookmarkedWritings];
-        setUserBookmarkedWritings(newUserBookmarkedWritings);
-        WritingDataService.update(book.id, {
-          numberOfBookmarks: number + 1,
-        });
-        setNumber((number) => {
-          return number + 1;
-        });
-        setMarked(!marked);
-      }
-      try {
-        const response = await UserDataService.patch(user.sub, {
-          user_metadata: {
-            bookmarkedWritings: newUserBookmarkedWritings,
-          },
-        });
-        console.log(response.data);
-      } catch (error) {
-        console.error(error);
-      }
     }
   };
 

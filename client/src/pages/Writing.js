@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AppShell from "../components/AppShell";
 import Bookmark from "../components/Post/Bookmark";
-import Post from "../components/Post";
 import Comment from "../components/Comment";
 import AddCommentForm from "../components/AddCommentForm";
 import parse from "html-react-parser";
@@ -15,18 +14,35 @@ import {
   IconButton,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuth0 } from "@auth0/auth0-react";
 import UserDataService from "../services/user.service";
 import WritingCommentDataService from "../services/writingComment.service";
 import WritingDataService from "../services/writing.service";
+import PromptDataService from "../services/prompt.service";
 
 const useStyle = makeStyles((theme) => ({
   root: {
     margin: "1rem",
   },
   writingId: {
-    display: "inline",
+    // display: "inline",
+  },
+  previousPrompt: {
+    textDecoration: "none",
+    color: "inherit",
+    transition: "color 0.2s ease",
+    "&:visited": {
+      textDecoration: "none",
+      color: "inherit",
+    },
+    "&:hover": {
+      textDecoration: "none",
+      color: theme.palette.primary.main,
+    },
+    display: "flex",
+    alignItems: "center",
   },
   title: {
     display: "inline-block",
@@ -132,6 +148,7 @@ function Writing() {
   const [book, setBook] = useState({});
   const [bookAuthor, setBookAuthor] = useState({});
   const [comments, setComments] = useState([]);
+  const [prompt, setPrompt] = useState({});
 
   const addComment = (cmt) => {
     setComments((comments) => [cmt, ...comments]);
@@ -167,6 +184,15 @@ function Writing() {
     }
   };
 
+  const getPrompt = async (id) => {
+    try {
+      const response = await PromptDataService.get(id);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const getComments = async (postId) => {
     try {
       const response = await WritingCommentDataService.findByPost(postId);
@@ -184,6 +210,9 @@ function Writing() {
       const bookAuthor = await getBookAuthor(book.author_id);
       setBookAuthor(bookAuthor);
 
+      const prompt = await getPrompt(book.prompt_id);
+      setPrompt(prompt);
+
       const comments = await getComments(book.id);
       setComments(comments.reverse());
     };
@@ -199,8 +228,20 @@ function Writing() {
     <AppShell>
       <div className={classes.root}>
         <div>
-          <Typography variant="h6" className={classes.writingId}>
-            Id: {book.id}
+          <Typography
+            variant="body1"
+            className={classes.previousPrompt}
+            component="a"
+            href={`/home/${book.prompt_id}`}
+          >
+            <ArrowBackIosIcon />
+            <b>
+              Prompt #{prompt.id}: {prompt.title}
+            </b>
+          </Typography>
+          <br /> <br />
+          <Typography variant="body1" className={classes.writingId}>
+            Id: #{book.id}
           </Typography>
           {user.sub === book.author_id && (
             <span className={classes.optionBtn}>
@@ -252,7 +293,7 @@ function Writing() {
         <Divider />
         <div className={classes.comments}>
           <AddCommentForm
-            type="prompt"
+            type="writing"
             postId={book.id}
             addComment={addComment}
           />

@@ -44,6 +44,9 @@ const useStyles = makeStyles({
   typeChoose: {
     marginBottom: "1rem",
   },
+  promptOption: {
+    // wordWrap: "normal",
+  },
 });
 
 function Create() {
@@ -128,7 +131,7 @@ function Create() {
     const data = {
       title: title,
       author_id: user.sub,
-      promptId: currentPrompt.id,
+      prompt_id: currentPrompt.id,
       content: content,
       published: true,
     };
@@ -159,8 +162,16 @@ function Create() {
           </Typography>
           <form noValidate autoComplete="off">
             <TextField
+              error={title.length > 255}
+              helperText={
+                title.length > 255
+                  ? "Title should have less than 255 characters"
+                  : ""
+              }
               label="Title"
               className={classes.title}
+              multiline
+              fullWidth
               value={title}
               onChange={(e) => {
                 setTitle(e.target.value);
@@ -198,9 +209,16 @@ function Create() {
           <Typography>Create a new writing for a prompt</Typography>
           <form noValidate autoComplete="off">
             <TextField
+              error={title.length > 255}
+              helperText={
+                title.length > 255
+                  ? "Title should have less than 255 characters"
+                  : ""
+              }
               label="Title"
               className={classes.title}
               value={title}
+              multiline
               onChange={(e) => {
                 setTitle(e.target.value);
                 window.localStorage.setItem("titleCache", e.target.value);
@@ -214,15 +232,19 @@ function Create() {
                   option.id === val.id && option.title === val.title
                 }
                 openOnFocus
+                forcePopupIcon={true}
                 onChange={handleOnPromptChange}
                 value={currentPrompt}
                 noOptionsText="No prompt available"
+                // ListboxProps={{
+                //   className: classes.promptOption,
+                // }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     multiline
-                    rowsMax={3}
-                    label="Prompt"
+                    rowsMax={4}
+                    label="Prompt input"
                     margin="normal"
                   />
                 )}
