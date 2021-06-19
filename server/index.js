@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // sync tables
 const db = require("./app/models");
-// db.sequelize.sync();
+db.sequelize.sync();
 // db.sequelize.sync({ force: true }).then(() => {
 //   console.log("Drop and re-sync db.");
 // });
@@ -32,6 +32,8 @@ require("./app/routes/prompt.route.js")(app);
 require("./app/routes/promptComment.route.js")(app);
 require("./app/routes/writing.route.js")(app);
 require("./app/routes/writingComment.route.js")(app);
+require("./app/routes/promptBookmark.route.js")(app);
+require("./app/routes/writingBookmark.route.js")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

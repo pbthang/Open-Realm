@@ -25,5 +25,7 @@ db.prompts = require("./prompt.model.js")(sequelize, Sequelize);
 db.promptComments = require("./promptComment.model.js")(sequelize, Sequelize);
 db.writings = require("./writing.model.js")(sequelize, Sequelize);
 db.writingComments = require("./writingComment.model.js")(sequelize, Sequelize);
+db.promptBookmarks = require("./promptBookmark.model.js")(sequelize, Sequelize);
+db.writingBookmarks = require("./writingBookmark.model.js")(sequelize, Sequelize);
 
 module.exports = db;
