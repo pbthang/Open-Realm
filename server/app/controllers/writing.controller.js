@@ -47,7 +47,7 @@ exports.findAll = (req, res) => {
     title: { [Op.iLike]: `%${title ? title : ""}%`},
     content: { [Op.iLike]: `%${content ? content : ""}%`},
     author_id: { [Op.like]: `${author_id ? author_id : "%"}`},
-    prompt_id: { [Op.like]: `${prompt_id ? prompt_id : "%"}`}
+    prompt_id: { [Op.eq]: `${prompt_id ? prompt_id : "%"}`}
   } : null;
 
   Writing.findAll({ where: condition })

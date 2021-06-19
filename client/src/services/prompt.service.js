@@ -24,6 +24,10 @@ class PromptDataService {
   findByTitle(title) {
     return http.get(`/prompts?title=${title}`);
   }
+
+  findByAuthorId(id) {
+    return http.get(`/prompts?author_id=${id}`);
+  }
 }
 
 export default new PromptDataService();

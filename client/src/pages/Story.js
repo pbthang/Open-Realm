@@ -180,7 +180,7 @@ function Story() {
 
   const getNextWritings = async (promptId) => {
     try {
-      const response = await WritingDataService.getAll();
+      const response = await WritingDataService.findByPromptId(promptId);
       return response.data;
     } catch (error) {
       console.error(error);
