@@ -46,9 +46,12 @@ exports.findAll = (req, res) => {
   var condition = (title || content || author_id || prompt_id) ? {
     title: { [Op.iLike]: `%${title ? title : ""}%`},
     content: { [Op.iLike]: `%${content ? content : ""}%`},
-    author_id: { [Op.like]: `${author_id ? author_id : "%"}`},
-    prompt_id: { [Op.eq]: `${prompt_id ? prompt_id : "%"}`}
+    author_id: { [Op.like]: `${author_id ? author_id : "%"}`}
   } : null;
+
+  if (prompt_id) {
+    condition.prompt_id = { [Op.eq]: `${prompt_id}`};
+  }
 
   Writing.findAll({ where: condition })
   .then(data => {

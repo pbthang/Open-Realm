@@ -24,6 +24,10 @@ class WritingBookmarkDataService {
   findByUserId(id) {
     return http.get(`/writingBookmarks?user_id=${id}`);
   }
+  delete(user_id, writing_id) {
+    const writingBookmarkId = http.get(`/writingBookmarks?user_id=${user_id}&writing_id=${writing_id}`).id;
+    return delete(writingBookmarkId);
+  }
 }
 
 export default new WritingBookmarkDataService();

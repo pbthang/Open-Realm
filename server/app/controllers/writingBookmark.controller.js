@@ -99,10 +99,15 @@ exports.delete = (req, res) => {
 // Get all Writing comment
 exports.findAll = (req, res) => {
   const user_id = req.query.user_id;
+  const writing_id = req.query.writing_id;
 
-  var condition = user_id ? {
-    user_id: { [Op.like]: `${user_id}`},
+  var condition = (user_id || writing_id) ? {
+    user_id: { [Op.like]: `${user_id ? user_id : "%"}`}
   } : null;
+
+  if (writing_id) {
+    condition.writing_id = { [Op.eq]: `${writing_id}`};
+  }
 
   WritingBookmark.findAll({ where: condition })
   .then(data => {

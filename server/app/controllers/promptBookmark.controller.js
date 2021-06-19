@@ -99,11 +99,16 @@ exports.delete = (req, res) => {
 // Get all Prompt comment
 exports.findAll = (req, res) => {
   const user_id = req.query.user_id;
+  const prompt_id = req.query.prompt_id;
 
-  var condition = user_id ? {
-    user_id: { [Op.like]: `${user_id}`},
+  var condition = (user_id || prompt_id) ? {
+    user_id: { [Op.like]: `${user_id ? user_id : "%"}`}
   } : null;
 
+  if (prompt_id) {
+    condition.prompt_id = { [Op.eq]: `${prompt_id}`};
+  }
+  
   PromptBookmark.findAll({ where: condition })
   .then(data => {
     res.send(data);
