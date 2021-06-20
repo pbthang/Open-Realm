@@ -3,6 +3,7 @@ import AppShell from "../components/AppShell";
 import { Typography, Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import orbital_logo from "../resources/orbital_logo.png"
+import nus_logo from "../resources/nus_coatofarm.png";
 
 const useStyles = makeStyles( (theme) => ({
   large: {
@@ -16,7 +17,10 @@ function About() {
   return (
     <AppShell>
       <div>
-        <Avatar src={orbital_logo} alt="Orbital 2021" className={classes.large}/>
+        <div>
+          <Avatar src={orbital_logo} alt="Orbital 2021" className={classes.large}/>
+          <Avatar src={nus_logo} alt="Orbital 2021" className={classes.large}/>
+        </div>
         <Typography variant="h2">About Open Realms</Typography>
         <Typography variant="body1">
           GitHub Repo:{" "}

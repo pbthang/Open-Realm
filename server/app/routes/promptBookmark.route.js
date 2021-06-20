@@ -6,9 +6,6 @@ module.exports = app => {
   // Create a new Chapter
   router.post("/", promptBookmarks.create);
 
-  // Retrieve all published Chapters
-  router.get("/published", promptBookmarks.findAllPublished);
-
   // Retrieve a single Chapter with id
   router.get("/:id", promptBookmarks.findOne);
 
@@ -23,6 +20,9 @@ module.exports = app => {
 
   // Delete by user and prompt // IDEA:
   router.delete("/", promptBookmarks.deleteByPara);
+
+  // Get promptBy user_id
+  router.get("/getbyuser/getprompts", promptBookmarks.getPromptByUser);
 
   app.use('/api/promptBookmarks', router);
 };

@@ -6,9 +6,6 @@ module.exports = app => {
   // Create a new Chapter
   router.post("/", writingBookmarks.create);
 
-  // Retrieve all published Chapters
-  router.get("/published", writingBookmarks.findAllPublished);
-
   // Retrieve a single Chapter with id
   router.get("/:id", writingBookmarks.findOne);
 
@@ -21,7 +18,10 @@ module.exports = app => {
   // Delete a Chapter with id
   router.delete("/:id", writingBookmarks.delete);
 
-  // Delete by user and prompt // IDEA:
+  // Get writingBy user_id
+  router.get("/getbyuser/getwritings", writingBookmarks.getWritingByUser);
+
+  // Delete by user and writing // IDEA:
   router.delete("/", writingBookmarks.deleteByPara);
 
   app.use('/api/writingBookmarks', router);
