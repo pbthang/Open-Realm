@@ -3,7 +3,7 @@ import AppShell from "../components/AppShell";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
@@ -16,15 +16,15 @@ const useStyles = makeStyles({
   },
   link: {
     color: "inherit",
-    cursor: "pointer",
+    transition: "color 0.2s ease",
     "&:visited": {
       color: "inherit",
     },
     "&:hover": {
-      color: "inherit",
+      color: theme.palette.secondary.main,
     },
   },
-});
+}));
 
 function FourOFour() {
   const classes = useStyles();

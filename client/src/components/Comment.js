@@ -9,7 +9,8 @@ import {
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import UserDataService from "../services/user.service";
-import promptCommentDataService from "../services/promptComment.service";
+import PromptCommentDataService from "../services/promptComment.service";
+import WritingCommentDataService from "../services/writingComment.service";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       textDecoration: "none",
       fontWeight: 700,
-      color: theme.palette.primary.main,
+      color: theme.palette.secondary.main,
     },
   },
   optionBtn: {
@@ -72,7 +73,12 @@ function Comment({ type, comment, deleteComment }) {
   };
   const handleCommentDelete = async () => {
     setAnchorEl(null);
-    await promptCommentDataService.delete(comment.id);
+    if (type === "prompt") {
+      await PromptCommentDataService.delete(comment.id);
+    } else if (type === "writing") {
+      await WritingCommentDataService.delete(comment.id);
+    }
+
     deleteComment(comment.id);
   };
 

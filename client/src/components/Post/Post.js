@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
       color: "inherit",
     },
     "&:hover": {
-      color: theme.palette.primary.main,
+      color: theme.palette.secondary.main,
     },
   },
 }));

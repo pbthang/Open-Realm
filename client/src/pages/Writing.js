@@ -165,6 +165,9 @@ function Writing() {
       console.error(error);
     }
   };
+  const handleWritingEdit = () => {
+    handleOptionBtnClose();
+  };
 
   const getBook = async (id) => {
     try {
@@ -257,7 +260,7 @@ function Writing() {
                 open={Boolean(anchorEl)}
                 onClose={handleOptionBtnClose}
               >
-                <MenuItem onClick={handleOptionBtnClose}>Edit</MenuItem>
+                <MenuItem onClick={handleWritingEdit}>Edit</MenuItem>
                 <MenuItem
                   onClick={handleWritingDelete}
                   className={classes.danger}

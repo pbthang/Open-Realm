@@ -41,8 +41,9 @@ function Bookmark({ type, book }) {
         const writingResponse = await WritingBookmarkDataService.findByUserId(
           user.sub
         );
+        console.log("writingRes", writingResponse.data);
         setMarked(
-          writingResponse.data.find((obj) => obj.prompt_id === book.id)
+          writingResponse.data.find((obj) => obj.writing_id === book.id)
         );
       }
     };
@@ -68,12 +69,19 @@ function Bookmark({ type, book }) {
   // for BookmarkIcon
   const handleClickMarked = async () => {
     if (type === "prompt") {
-      await PromptBookmarkDataService.deleteByUserAndPrompt(user.sub, book.id);
+      const response = await PromptBookmarkDataService.deleteByUserAndPrompt(
+        user.sub,
+        book.id
+      );
+      console.log(response.data);
       await PromptDataService.update(book.id, {
         numberOfBookmarks: number - 1,
       });
     } else if (type === "writing") {
-      await WritingBookmarkDataService.deleteByUserAndPrompt(user.sub, book.id);
+      await WritingBookmarkDataService.deleteByUserAndWriting(
+        user.sub,
+        book.id
+      );
       await WritingDataService.update(book.id, {
         numberOfBookmarks: number - 1,
       });
@@ -92,16 +100,15 @@ function Bookmark({ type, book }) {
       const response = await PromptDataService.update(book.id, {
         numberOfBookmarks: number + 1,
       });
-      console.log(response.data);
     } else if (type === "writing") {
-      await WritingBookmarkDataService.create({
+      const response = await WritingBookmarkDataService.create({
         user_id: user.sub,
-        prompt_id: book.id,
+        writing_id: book.id,
       });
-      const response = await WritingDataService.update(book.id, {
+      console.log(response.data);
+      await WritingDataService.update(book.id, {
         numberOfBookmarks: number + 1,
       });
-      console.log(response.data);
     }
     setNumber((num) => num + 1);
     setMarked((mark) => !mark);

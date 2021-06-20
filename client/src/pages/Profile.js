@@ -82,29 +82,6 @@ function Profile() {
     getWritings();
   }, [sub]);
 
-  // useEffect(() => {
-  //   const getStartedStories = async () => {
-  //     const queryString = user.startedStories?.map((x) => `id=${x}`).join("&");
-  //     if (queryString?.length) {
-  //       const response = await api.get("/stories?" + queryString);
-  //       setStartedStories(response.data);
-  //     }
-  //   };
-  //   const getPublishedChapters = async () => {
-  //     const queryString = user.publishedChapters
-  //     ?.map((x) => `id=${x}`)
-  //     .join("&");
-  //     if (queryString?.length) {
-  //       const response = await api.get("/chapters?" + queryString);
-  //       setPublishedChapters(response.data);
-  //     }
-  //   };
-  //
-  //   getStartedStories();
-  //   getPublishedChapters();
-  //   // eslint-disable-next-line
-  // }, [userString]);
-
   return (
     <AppShell>
       <Typography variant="h2">User Profile</Typography>

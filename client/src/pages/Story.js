@@ -54,7 +54,7 @@ const useStyle = makeStyles((theme) => ({
     },
     "&:hover": {
       textDecoration: "none",
-      color: theme.palette.primary.main,
+      color: theme.palette.secondary.main,
     },
   },
   comments: {},
@@ -84,7 +84,7 @@ const useStyle = makeStyles((theme) => ({
     "&:hover": {
       textDecoration: "none",
       fontWeight: 700,
-      color: theme.palette.primary.main,
+      color: theme.palette.secondary.main,
     },
   },
   addCmt: {
@@ -151,6 +151,9 @@ function Story() {
       console.error(error);
     }
   };
+  const handlePromptEdit = async () => {
+    handleOptionBtnClose();
+  };
 
   const getBook = async (id) => {
     try {
@@ -182,7 +185,6 @@ function Story() {
   const getNextWritings = async (promptId) => {
     try {
       const response = await WritingDataService.findByPromptId(promptId);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -231,7 +233,7 @@ function Story() {
                 open={Boolean(anchorEl)}
                 onClose={handleOptionBtnClose}
               >
-                <MenuItem onClick={handleOptionBtnClose}>Edit</MenuItem>
+                <MenuItem onClick={handlePromptEdit}>Edit</MenuItem>
                 <MenuItem
                   onClick={handlePromptDelete}
                   className={classes.danger}
