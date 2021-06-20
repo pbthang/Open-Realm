@@ -22,7 +22,7 @@ class WritingBookmarkDataService {
   }
 
   findByUserId(id) {
-    return http.get(`/writingBookmarks?user_id=${id}`);
+    return http.get(`/writingBookmarks/getbyuser/getwritings?user_id=${id}`);
   }
 
   deleteByUserAndWriting(user_id, writing_id) {

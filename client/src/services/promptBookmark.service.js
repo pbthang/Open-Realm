@@ -22,7 +22,7 @@ class PromptBookmarkDataService {
   }
 
   findByUserId(id) {
-    return http.get(`/promptBookmarks?user_id=${id}`);
+    return http.get(`/promptBookmarks/getbyuser/getprompts?user_id=${id}`);
   }
 
   deleteByUserAndPrompt(user_id, prompt_id) {

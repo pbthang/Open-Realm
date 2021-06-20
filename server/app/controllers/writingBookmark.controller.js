@@ -1,5 +1,6 @@
 const db = require("../models");
 const WritingBookmark = db.writingBookmarks;
+const Writing = db.writings;
 const Op = db.Sequelize.Op;
 
 // Create new writingBookmark
@@ -133,6 +134,31 @@ exports.findAll = (req, res) => {
   }
 
   WritingBookmark.findAll({ where: condition })
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+      err.message || "Some error occurred while retrieving comments."
+    });
+  });
+};
+
+exports.getWritingByUser = (req, res) => {
+  const user_id = req.query.user_id;
+
+  var condition = (user_id) ? {
+    user_id: { [Op.like]: `${user_id ? user_id : "%"}`}
+  } : null;
+
+  WritingBookmark.findAll({ where: condition })
+  .then(data => data.map(cell => cell.writing_id))
+  .then(writing_ids => {
+    return Writing.findAll({
+      where: { id: { [Op.in]: writing_ids}}
+    })
+  })
   .then(data => {
     res.send(data);
   })
