@@ -28,6 +28,7 @@ const useStyles = makeStyles({
   title: {
     width: "100%",
     marginTop: "1rem",
+    marginBottom: "1rem",
   },
   content: {
     width: "100%",
@@ -42,7 +43,7 @@ const useStyles = makeStyles({
     margin: "0 0.5rem",
   },
   typeChoose: {
-    marginBottom: "1rem",
+    marginTop: "1rem",
   },
   promptOption: {
     // wordWrap: "normal",
@@ -141,13 +142,16 @@ function Create() {
     WritingDataService.create(data)
       .then(() => {
         window.localStorage.clear();
-        history.push("/home");
+        history.push(`/home/${currentPrompt.id}`);
       })
       .catch((err) => console.error(err));
   };
 
   return (
     <AppShell>
+      <Typography variant="h3">
+        Create a {type === PROMPT ? "prompt" : "writing"}
+      </Typography>
       <FormControl className={classes.typeChoose}>
         <InputLabel shrink id="type">
           Type
@@ -159,9 +163,6 @@ function Create() {
       </FormControl>
       {type === PROMPT ? (
         <div className={classes.root}>
-          <Typography>
-            Create a new prompt for people to write about it
-          </Typography>
           <form noValidate autoComplete="off">
             <TextField
               error={title.length > 255}
@@ -208,7 +209,29 @@ function Create() {
         </div>
       ) : (
         <div className={classes.root}>
-          <Typography>Create a new writing for a prompt</Typography>
+          <FormControl fullWidth>
+            <Autocomplete
+              options={promptList}
+              getOptionLabel={(option) => `${option.id} - ${option.title}`}
+              getOptionSelected={(option, val) =>
+                option.id === val.id && option.title === val.title
+              }
+              openOnFocus
+              forcePopupIcon={true}
+              onChange={handleOnPromptChange}
+              value={currentPrompt}
+              noOptionsText="No prompt available"
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  multiline
+                  rowsMax={4}
+                  label="Choose prompt to write about"
+                  margin="normal"
+                />
+              )}
+            />
+          </FormControl>
           <form noValidate autoComplete="off">
             <TextField
               error={title.length > 255}
@@ -226,32 +249,7 @@ function Create() {
                 window.localStorage.setItem("titleCache", e.target.value);
               }}
             />
-            <FormControl fullWidth>
-              <Autocomplete
-                options={promptList}
-                getOptionLabel={(option) => `${option.id} - ${option.title}`}
-                getOptionSelected={(option, val) =>
-                  option.id === val.id && option.title === val.title
-                }
-                openOnFocus
-                forcePopupIcon={true}
-                onChange={handleOnPromptChange}
-                value={currentPrompt}
-                noOptionsText="No prompt available"
-                // ListboxProps={{
-                //   className: classes.promptOption,
-                // }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    multiline
-                    rowsMax={4}
-                    label="Prompt input"
-                    margin="normal"
-                  />
-                )}
-              />
-            </FormControl>
+
             <Paper className={classes.editorContainer}>
               <CKEditor
                 editor={ClassicEditor}

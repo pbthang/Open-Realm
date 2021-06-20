@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    margin: "1rem",
     padding: "2rem 2rem",
     display: "inline-flex",
     flexDirection: "column",

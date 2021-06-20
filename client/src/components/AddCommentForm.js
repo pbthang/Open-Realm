@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   input: {
-    wordWrap: "break-word",
+    wordWrap: "normal",
   },
   btn: {
     marginLeft: "1rem",

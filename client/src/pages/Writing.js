@@ -3,20 +3,12 @@ import AppShell from "../components/AppShell";
 import Bookmark from "../components/Post/Bookmark";
 import Comment from "../components/Comment";
 import AddCommentForm from "../components/AddCommentForm";
+import EditDeleteOptionBtn from "../components/EditDeleteOptionBtn";
 import parse from "html-react-parser";
-import { useParams, useHistory } from "react-router-dom";
-import {
-  Avatar,
-  Divider,
-  Typography,
-  Menu,
-  MenuItem,
-  IconButton,
-} from "@material-ui/core";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { useParams } from "react-router-dom";
+import { Avatar, Divider, Typography } from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { makeStyles } from "@material-ui/core/styles";
-import { useAuth0 } from "@auth0/auth0-react";
 import UserDataService from "../services/user.service";
 import WritingCommentDataService from "../services/writingComment.service";
 import WritingDataService from "../services/writing.service";
@@ -39,7 +31,7 @@ const useStyle = makeStyles((theme) => ({
     },
     "&:hover": {
       textDecoration: "none",
-      color: theme.palette.primary.main,
+      color: theme.palette.secondary.main,
     },
     display: "flex",
     alignItems: "center",
@@ -68,7 +60,7 @@ const useStyle = makeStyles((theme) => ({
     },
     "&:hover": {
       textDecoration: "none",
-      color: theme.palette.primary.main,
+      color: theme.palette.secondary.main,
     },
   },
   comments: {},
@@ -98,7 +90,7 @@ const useStyle = makeStyles((theme) => ({
     "&:hover": {
       textDecoration: "none",
       fontWeight: 700,
-      color: theme.palette.primary.main,
+      color: theme.palette.secondary.main,
     },
   },
   addCmt: {
@@ -133,17 +125,6 @@ const useStyle = makeStyles((theme) => ({
 function Writing() {
   const classes = useStyle();
   const { writingId } = useParams();
-  const { user } = useAuth0();
-  const history = useHistory();
-
-  // For Option Btn
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleOptionBtnClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleOptionBtnClose = () => {
-    setAnchorEl(null);
-  };
 
   const [book, setBook] = useState({});
   const [bookAuthor, setBookAuthor] = useState({});
@@ -155,18 +136,6 @@ function Writing() {
   };
   const deleteComment = (cmtId) => {
     setComments((comments) => comments.filter((cmt) => cmt.id !== cmtId));
-  };
-
-  const handleWritingDelete = async () => {
-    try {
-      await WritingDataService.delete(writingId);
-      history.push("/home");
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const handleWritingEdit = () => {
-    handleOptionBtnClose();
   };
 
   const getBook = async (id) => {
@@ -246,7 +215,8 @@ function Writing() {
           <Typography variant="body1" className={classes.writingId}>
             Id: #{book.id}
           </Typography>
-          {user.sub === book.author_id && (
+          <EditDeleteOptionBtn type="writing" book={book} />
+          {/* {user.sub === book.author_id && (
             <span className={classes.optionBtn}>
               <IconButton
                 onClick={handleOptionBtnClick}
@@ -269,7 +239,7 @@ function Writing() {
                 </MenuItem>
               </Menu>
             </span>
-          )}
+          )} */}
         </div>
         <Typography variant="h2" className={classes.title}>
           {book.title}

@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from "react";
 import AppShell from "../components/AppShell";
+import EditDeleteOptionBtn from "../components/EditDeleteOptionBtn";
 import Bookmark from "../components/Post/Bookmark";
 import Post from "../components/Post";
 import Comment from "../components/Comment";
 import AddCommentForm from "../components/AddCommentForm";
 import parse from "html-react-parser";
-import { useParams, useHistory } from "react-router-dom";
-import {
-  Avatar,
-  Divider,
-  Typography,
-  Menu,
-  MenuItem,
-  IconButton,
-} from "@material-ui/core";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { useParams } from "react-router-dom";
+import { Avatar, Divider, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useAuth0 } from "@auth0/auth0-react";
 import PromptDataService from "../services/prompt.service";
 import UserDataService from "../services/user.service";
 import PromptCommentDataService from "../services/promptComment.service";
@@ -93,7 +85,7 @@ const useStyle = makeStyles((theme) => ({
     alignItems: "center",
   },
   input: {
-    wordWrap: "break-word",
+    wordWrap: "normal",
   },
   btn: {
     marginLeft: "1rem",
@@ -119,17 +111,6 @@ const useStyle = makeStyles((theme) => ({
 function Story() {
   const classes = useStyle();
   const { promptId } = useParams();
-  const { user } = useAuth0();
-  const history = useHistory();
-
-  // For Option Btn
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleOptionBtnClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleOptionBtnClose = () => {
-    setAnchorEl(null);
-  };
 
   const [book, setBook] = useState({});
   const [bookAuthor, setBookAuthor] = useState({});
@@ -141,18 +122,6 @@ function Story() {
   };
   const deleteComment = (cmtId) => {
     setComments((comments) => comments.filter((cmt) => cmt.id !== cmtId));
-  };
-
-  const handlePromptDelete = async () => {
-    try {
-      await PromptDataService.delete(promptId);
-      history.push("/home");
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const handlePromptEdit = async () => {
-    handleOptionBtnClose();
   };
 
   const getBook = async (id) => {
@@ -219,30 +188,7 @@ function Story() {
           <Typography variant="body1" className={classes.promptId}>
             Id: #{book.id}
           </Typography>
-          {user.sub === book.author_id && (
-            <span className={classes.optionBtn}>
-              <IconButton
-                onClick={handleOptionBtnClick}
-                className={classes.iconBtn}
-              >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleOptionBtnClose}
-              >
-                <MenuItem onClick={handlePromptEdit}>Edit</MenuItem>
-                <MenuItem
-                  onClick={handlePromptDelete}
-                  className={classes.danger}
-                >
-                  Delete
-                </MenuItem>
-              </Menu>
-            </span>
-          )}
+          <EditDeleteOptionBtn type="prompt" book={book} />
         </div>
         <Typography variant="h2" className={classes.title}>
           {book.title}
@@ -272,8 +218,8 @@ function Story() {
             <div className={classes.nextWritings}>
               <Typography variant="h3">Following Writings</Typography>
               <div>
-                {nextWritings.map((writing, idx) => (
-                  <Post type="writing" book={writing} key={idx} />
+                {nextWritings.map((writing) => (
+                  <Post type="writing" book={writing} key={writing.id} />
                 ))}
               </div>
             </div>
@@ -286,13 +232,14 @@ function Story() {
             postId={book.id}
             addComment={addComment}
           />
-          {comments.map((cmt, idx) => {
+          {comments.map((cmt) => {
+            console.log(cmt.id);
             return (
               <Comment
                 type="prompt"
                 comment={cmt}
                 deleteComment={deleteComment}
-                key={idx}
+                key={cmt.id}
               />
             );
           })}

@@ -7,9 +7,6 @@ import PromptDataService from "../services/prompt.service";
 import WritingDataService from "../services/writing.service";
 import UserDataService from "../services/user.service";
 import Post from "../components/Post";
-import { useAuth0 } from "@auth0/auth0-react";
-import axios from "axios";
-import ACCESS_TOKEN from "../auth0MgmtAPIToken";
 
 const useStyles = makeStyles({
   user: {

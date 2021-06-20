@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuth0 } from "@auth0/auth0-react";
-import UserDataService from "../../services/user.service";
 import PromptDataService from "../../services/prompt.service";
 import WritingDataService from "../../services/writing.service";
 import PromptBookmarkDataService from "../../services/promptBookmark.service";
@@ -33,29 +31,44 @@ function Bookmark({ type, book }) {
   useEffect(() => {
     const getUserInfo = async () => {
       if (type === "prompt") {
-        const promptResponse = await PromptBookmarkDataService.findByUserId(
-          user.sub
-        );
-        setMarked(promptResponse.data.find((obj) => obj.prompt_id === book.id));
+        try {
+          const promptResponse = await PromptBookmarkDataService.findByUserId(
+            user.sub
+          );
+          setMarked(promptResponse.data.find((obj) => obj.id === book.id));
+        } catch (error) {
+          console.error(error);
+        }
       } else if (type === "writing") {
-        const writingResponse = await WritingBookmarkDataService.findByUserId(
-          user.sub
-        );
-        console.log("writingRes", writingResponse.data);
-        setMarked(
-          writingResponse.data.find((obj) => obj.writing_id === book.id)
-        );
+        try {
+          const writingResponse = await WritingBookmarkDataService.findByUserId(
+            user.sub
+          );
+          setMarked(writingResponse.data.find((obj) => obj.id === book.id));
+        } catch (error) {
+          console.error(error);
+        }
       }
     };
 
     const getPromptInfo = async () => {
-      const response = await PromptDataService.get(book.id);
-      setNumber(response.data.numberOfBookmarks);
+      if (!book.id) return;
+      try {
+        const response = await PromptDataService.get(book.id);
+        setNumber(response.data.numberOfBookmarks);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     const getWritingInfo = async () => {
-      const response = await WritingDataService.get(book.id);
-      setNumber(response.data.numberOfBookmarks);
+      try {
+        if (!book.id) return;
+        const response = await WritingDataService.get(book.id);
+        setNumber(response.data.numberOfBookmarks);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     getUserInfo();
@@ -69,22 +82,29 @@ function Bookmark({ type, book }) {
   // for BookmarkIcon
   const handleClickMarked = async () => {
     if (type === "prompt") {
-      const response = await PromptBookmarkDataService.deleteByUserAndPrompt(
-        user.sub,
-        book.id
-      );
-      console.log(response.data);
-      await PromptDataService.update(book.id, {
-        numberOfBookmarks: number - 1,
-      });
+      try {
+        await PromptBookmarkDataService.deleteByUserAndPrompt(
+          user.sub,
+          book.id
+        );
+        await PromptDataService.update(book.id, {
+          numberOfBookmarks: number - 1,
+        });
+      } catch (error) {
+        console.error(error);
+      }
     } else if (type === "writing") {
-      await WritingBookmarkDataService.deleteByUserAndWriting(
-        user.sub,
-        book.id
-      );
-      await WritingDataService.update(book.id, {
-        numberOfBookmarks: number - 1,
-      });
+      try {
+        await WritingBookmarkDataService.deleteByUserAndWriting(
+          user.sub,
+          book.id
+        );
+        await WritingDataService.update(book.id, {
+          numberOfBookmarks: number - 1,
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
     setNumber((num) => num - 1);
     setMarked((mark) => !mark);
@@ -93,22 +113,29 @@ function Bookmark({ type, book }) {
   // for BookmarkIconBorder
   const handleClickNotMarked = async () => {
     if (type === "prompt") {
-      await PromptBookmarkDataService.create({
-        user_id: user.sub,
-        prompt_id: book.id,
-      });
-      const response = await PromptDataService.update(book.id, {
-        numberOfBookmarks: number + 1,
-      });
+      try {
+        await PromptBookmarkDataService.create({
+          user_id: user.sub,
+          prompt_id: book.id,
+        });
+        await PromptDataService.update(book.id, {
+          numberOfBookmarks: number + 1,
+        });
+      } catch (error) {
+        console.error(error);
+      }
     } else if (type === "writing") {
-      const response = await WritingBookmarkDataService.create({
-        user_id: user.sub,
-        writing_id: book.id,
-      });
-      console.log(response.data);
-      await WritingDataService.update(book.id, {
-        numberOfBookmarks: number + 1,
-      });
+      try {
+        await WritingBookmarkDataService.create({
+          user_id: user.sub,
+          writing_id: book.id,
+        });
+        await WritingDataService.update(book.id, {
+          numberOfBookmarks: number + 1,
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
     setNumber((num) => num + 1);
     setMarked((mark) => !mark);

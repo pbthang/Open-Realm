@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import AppShell from "../components/AppShell";
+import Post from "../components/Post";
 import { Typography, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuth0 } from "@auth0/auth0-react";
-import PromptDataService from "../services/prompt.service";
-import WritingDataService from "../services/writing.service";
 import PromptBookmarkDataService from "../services/promptBookmark.service";
 import WritingBookmarkDataService from "../services/writingBookmark.service";
 
 const useStyles = makeStyles((theme) => ({
   title: {
     margin: "1rem",
+  },
+  bookmarkedWorks: {
+    marginBottom: "1rem",
   },
 }));
 
@@ -24,12 +26,32 @@ function Bookmarked() {
   useEffect(() => {
     const getBookmarkedPrompts = async () => {
       const response = await PromptBookmarkDataService.findByUserId(user.sub);
-      setBookmarkedPrompts(response.data.map((item) => item.prompt_id));
+      setBookmarkedPrompts(
+        response.data.map((item) => ({
+          id: item.id,
+          title: item.title,
+          author_id: item.author_id,
+          numberOfBookmarks: item.numberOfBookmarks,
+          published: item.published,
+          comments_id: item.comments_id,
+        }))
+      );
     };
 
     const getBookmarkedWritings = async () => {
       const response = await WritingBookmarkDataService.findByUserId(user.sub);
-      setBookmarkedWritings(response.data.map((item) => item.writing_id));
+      setBookmarkedWritings(
+        response.data.map((item) => ({
+          id: item.id,
+          title: item.title,
+          author_id: item.author_id,
+          numberOfBookmarks: item.numberOfBookmarks,
+          published: item.published,
+          createdAt: item.createdAt,
+          updatedAt: item.updatedAt,
+          comments_id: item.comments_id,
+        }))
+      );
     };
 
     getBookmarkedPrompts();
@@ -39,17 +61,24 @@ function Bookmarked() {
   return (
     <AppShell>
       <div>
-        <Typography variant="h2">Bookmarked Works</Typography>
         <Divider />
         <Typography variant="h3" className={classes.title}>
           Bookmarked Prompts
         </Typography>
-        <div>{JSON.stringify(bookmarkedPrompts)}</div>
+        <div className={classes.bookmarkedWorks}>
+          {bookmarkedPrompts.map((prompt, idx) => (
+            <Post type="prompt" book={prompt} key={idx} />
+          ))}
+        </div>
         <Divider />
         <Typography variant="h3" className={classes.title}>
           Bookmarked Writings
         </Typography>
-        <div>{JSON.stringify(bookmarkedWritings)}</div>
+        <div className={classes.bookmarkedWorks}>
+          {bookmarkedWritings.map((writing, idx) => (
+            <Post type="writing" book={writing} key={idx} />
+          ))}
+        </div>
       </div>
     </AppShell>
   );
