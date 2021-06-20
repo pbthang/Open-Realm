@@ -86,19 +86,29 @@ function CreatorInfo({ imgSrc, name, major, email, linkedIn, gitHub }) {
             </Typography>
           </td>
           <td>
-            <Typography component="a" href={linkedIn} className={classes.link}>
+            <Typography
+              component="a"
+              href={linkedIn}
+              target="__blank"
+              className={classes.link}
+            >
               {linkedIn.split("/").slice(-1)[0]}
             </Typography>
           </td>
         </tr>
         <tr>
           <td>
-            <Typography variant="body1" lassName={classes.contactItem}>
+            <Typography variant="body1" className={classes.contactItem}>
               <b>GitHub:</b>
             </Typography>
           </td>
           <td>
-            <Typography component="a" href={gitHub} className={classes.link}>
+            <Typography
+              component="a"
+              href={gitHub}
+              target="__blank"
+              className={classes.link}
+            >
               {gitHub.split("/").slice(-1)[0]}
             </Typography>
           </td>

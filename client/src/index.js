@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import ThemeContextProvider from "./ThemeContextProvider";
 import reportWebVitals from "./reportWebVitals";
 import AuthProviderWithHistory from "./AuthProviderWithHistory";
 import { CssBaseline } from "@material-ui/core";
@@ -13,7 +14,7 @@ import {
 const theme = responsiveFontSizes(
   createMuiTheme({
     palette: {
-      type: "light",
+      type: "dark",
       primary: {
         main: "#563d7c",
       },
@@ -44,10 +45,9 @@ const theme = responsiveFontSizes(
 
 ReactDOM.render(
   <AuthProviderWithHistory>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <ThemeContextProvider>
       <App />
-    </ThemeProvider>
+    </ThemeContextProvider>
   </AuthProviderWithHistory>,
   document.getElementById("root")
 );

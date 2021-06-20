@@ -1,9 +1,9 @@
 import "./App.css";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import Create from "./pages/Create";
 import Bookmarked from "./pages/Bookmarked";

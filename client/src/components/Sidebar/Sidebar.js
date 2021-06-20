@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -9,7 +9,10 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  FormControlLabel,
+  Switch,
 } from "@material-ui/core";
+import { ThemeContext } from "../../ThemeContextProvider";
 import HomeIcon from "@material-ui/icons/Home";
 import PersonIcon from "@material-ui/icons/Person";
 import InfoIcon from "@material-ui/icons/Info";
@@ -35,6 +38,12 @@ const useStyles = makeStyles((theme) => ({
 function Sidebar() {
   const classes = useStyles();
   const { logout, user } = useAuth0();
+
+  const { theme, setThemeLocally } = useContext(ThemeContext);
+  const handleSwitchChange = (e) => {
+    const newTheme = e.target.checked ? "dark" : "light";
+    setThemeLocally(newTheme);
+  };
 
   return (
     <Drawer
@@ -78,7 +87,21 @@ function Sidebar() {
           </ListItem>
         </List>
         <Divider />
+
         <List>
+          <ListItem key="Theme">
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={theme === "dark"}
+                  onChange={handleSwitchChange}
+                  name="isDarkTheme"
+                />
+              }
+              label={theme === "dark" ? "Dark Theme" : "Light Theme"}
+            />
+          </ListItem>
+
           <ListItem button key="About" component="a" href="/about">
             <ListItemIcon>
               <InfoIcon />

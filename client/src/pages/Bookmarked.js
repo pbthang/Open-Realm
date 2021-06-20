@@ -26,6 +26,7 @@ function Bookmarked() {
   useEffect(() => {
     const getBookmarkedPrompts = async () => {
       const response = await PromptBookmarkDataService.findByUserId(user.sub);
+
       setBookmarkedPrompts(
         response.data.map((item) => ({
           id: item.id,
@@ -40,6 +41,7 @@ function Bookmarked() {
 
     const getBookmarkedWritings = async () => {
       const response = await WritingBookmarkDataService.findByUserId(user.sub);
+      console.log(response.data);
       setBookmarkedWritings(
         response.data.map((item) => ({
           id: item.id,
@@ -50,6 +52,7 @@ function Bookmarked() {
           createdAt: item.createdAt,
           updatedAt: item.updatedAt,
           comments_id: item.comments_id,
+          prompt_id: item.prompt_id,
         }))
       );
     };

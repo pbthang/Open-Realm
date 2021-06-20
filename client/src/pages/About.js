@@ -97,6 +97,7 @@ function About() {
               University of Singapore. GitHub Repo:{" "}
               <a
                 href="https://github.com/pbthang/Open-Realm"
+                target="__blank"
                 className={classes.link}
               >
                 https://github.com/pbthang/Open-Realm
@@ -117,7 +118,7 @@ function About() {
           <CreatorInfo
             imgSrc={lvmAvatar}
             name="Lê Văn Minh"
-            major="Information System"
+            major="Information Systems"
             email="larby2409@gmail.com"
             linkedIn="https://www.linkedin.com/in/hedgehog0409"
             gitHub="https://github.com/IntrovertHedgehog"

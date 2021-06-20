@@ -22,7 +22,7 @@ class PromptCommentDataService {
   }
 
   findByPost(postID) {
-    return http.get(`/promptComments?post_id=${postID}`)
+    return http.get(`/promptComments?post_id=${postID}`);
   }
 }
 
