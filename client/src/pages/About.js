@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import poster from "../resources/poster.png";
 import CreatorInfo from "../components/CreatorInfo";
 import pbtAvatar from "../resources/pbtAvatar.jpg";
-// import lvmAvatar from "../resources/lvmAvatar.jpg";
+import lvmAvatar from "../resources/lvmAvatar.jpg";
 
 const posterSize = [1587, 2245];
 const posterScale = 0.2;
@@ -115,7 +115,7 @@ function About() {
             gitHub="https://github.com/pbthang"
           />
           <CreatorInfo
-            imgSrc={null}
+            imgSrc={lvmAvatar}
             name="Lê Văn Minh"
             major="Information System"
             email="larby2409@gmail.com"
