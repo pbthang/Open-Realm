@@ -216,30 +216,6 @@ function Writing() {
             Id: #{book.id}
           </Typography>
           <EditDeleteOptionBtn type="writing" book={book} />
-          {/* {user.sub === book.author_id && (
-            <span className={classes.optionBtn}>
-              <IconButton
-                onClick={handleOptionBtnClick}
-                className={classes.iconBtn}
-              >
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleOptionBtnClose}
-              >
-                <MenuItem onClick={handleWritingEdit}>Edit</MenuItem>
-                <MenuItem
-                  onClick={handleWritingDelete}
-                  className={classes.danger}
-                >
-                  Delete
-                </MenuItem>
-              </Menu>
-            </span>
-          )} */}
         </div>
         <Typography variant="h2" className={classes.title}>
           {book.title}
@@ -276,7 +252,7 @@ function Writing() {
                 type="writing"
                 comment={cmt}
                 deleteComment={deleteComment}
-                key={idx}
+                key={cmt.id}
               />
             );
           })}
