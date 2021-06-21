@@ -81,8 +81,10 @@ function Post({ type, book }) {
       <Card className={classes.root}>
         <CardContent className={classes.content}>
           <div className={classes.idAndDate}>
-            <Typography variant="subtitle1">Id: #{book.id}</Typography>
-            <Typography variant="caption">{book.createdAt}</Typography>
+            <Typography variant="subtitle2">Id: #{book.id}</Typography>
+            <Typography variant="caption">
+              {book.createdAt.split("T")[0]}
+            </Typography>
           </div>
           <a href={`/home/${book.id}`} className={classes.link}>
             <Tooltip title={book.title} placement="top">
@@ -115,9 +117,14 @@ function Post({ type, book }) {
     return (
       <Card className={classes.root}>
         <CardContent className={classes.content}>
-          <Typography variant="subtitle1">
-            Id: #{book.id} - Prompt #{book.prompt_id}
-          </Typography>
+          <div className={classes.idAndDate}>
+            <Typography variant="subtitle2">
+              Id: #{book.id} - Prompt #{book.prompt_id}
+            </Typography>
+            <Typography variant="caption">
+              {book.createdAt.split("T")[0]}
+            </Typography>
+          </div>
           <a href={`/writings/${book.id}`} className={classes.link}>
             <Tooltip title={book.title} placement="top">
               <Typography noWrap className={classes.title}>
