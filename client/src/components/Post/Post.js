@@ -56,6 +56,11 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.secondary.main,
     },
   },
+  idAndDate: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
 }));
 
 function Post({ type, book }) {
@@ -75,7 +80,10 @@ function Post({ type, book }) {
     return (
       <Card className={classes.root}>
         <CardContent className={classes.content}>
-          <Typography variant="subtitle1">Id: #{book.id}</Typography>
+          <div className={classes.idAndDate}>
+            <Typography variant="subtitle1">Id: #{book.id}</Typography>
+            <Typography variant="caption">{book.createdAt}</Typography>
+          </div>
           <a href={`/home/${book.id}`} className={classes.link}>
             <Tooltip title={book.title} placement="top">
               <Typography noWrap className={classes.title}>

@@ -32,10 +32,12 @@ function Home() {
   }, []);
 
   return (
-    <AppShell className={classes.root}>
-      {prompts.map((prompt, idx) => (
-        <Post type="prompt" book={prompt} key={idx} />
-      ))}
+    <AppShell>
+      <div className={classes.root}>
+        {prompts.map((prompt, idx) => (
+          <Post type="prompt" book={prompt} key={idx} />
+        ))}
+      </div>
     </AppShell>
   );
 }

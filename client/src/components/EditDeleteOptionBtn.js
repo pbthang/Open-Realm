@@ -16,6 +16,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { makeStyles } from "@material-ui/core/styles";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import ckeditorConfig from "../config/ckeditorConfig";
 import { useAuth0 } from "@auth0/auth0-react";
 import PromptDataService from "../services/prompt.service";
 import WritingDataService from "../services/writing.service";
@@ -39,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
   },
   titleInput: {
     marginBottom: "2rem",
+  },
+  editorContainer: {
+    color: "#000",
+    width: "100%",
   },
 }));
 
@@ -154,7 +159,7 @@ function EditDeleteOptionBtn({ type, book }) {
       <Dialog
         open={editDialogOpen}
         onClose={handleEditDialogClose}
-        maxWidth="lg"
+        maxWidth="md"
         className={classes.editDialog}
       >
         <DialogTitle>
@@ -173,15 +178,18 @@ function EditDeleteOptionBtn({ type, book }) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <CKEditor
-            editor={ClassicEditor}
-            data={content}
-            defaultValue={book.content}
-            onChange={(e, editor) => {
-              console.log(editor.getData());
-              setContent(editor.getData());
-            }}
-          />
+          <div className={classes.editorContainer}>
+            <CKEditor
+              editor={ClassicEditor}
+              config={ckeditorConfig}
+              data={content}
+              defaultValue={book.content}
+              onChange={(e, editor) => {
+                console.log(editor.getData());
+                setContent(editor.getData());
+              }}
+            />
+          </div>
         </DialogContent>
         <DialogActions>
           <Button

@@ -15,6 +15,7 @@ import {
 import { Autocomplete } from "@material-ui/lab";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import ckeditorConfig from "../config/ckeditorConfig";
 import parse from "html-react-parser";
 import http from "../http-common";
 import PromptDataService from "../services/prompt.service";
@@ -38,6 +39,7 @@ const useStyles = makeStyles({
     marginTop: "1rem",
     marginBottom: "1rem",
     padding: "5px",
+    color: "#000",
   },
   btn: {
     margin: "0 0.5rem",
@@ -138,13 +140,14 @@ function Create() {
       content: content,
       published: true,
     };
-
-    WritingDataService.create(data)
-      .then(() => {
-        window.localStorage.clear();
-        history.push(`/home/${currentPrompt.id}`);
-      })
-      .catch((err) => console.error(err));
+    if (title.length > 0 && content.length > 0) {
+      WritingDataService.create(data)
+        .then(() => {
+          window.localStorage.clear();
+          history.push(`/home/${currentPrompt.id}`);
+        })
+        .catch((err) => console.error(err));
+    }
   };
 
   return (
@@ -181,13 +184,14 @@ function Create() {
                 window.localStorage.setItem("titleCache", e.target.value);
               }}
             />
-            <Paper className={classes.editorContainer}>
+            <div className={classes.editorContainer}>
               <CKEditor
+                config={ckeditorConfig}
                 editor={ClassicEditor}
                 data={content}
                 onChange={handleOnContentChange}
               />
-            </Paper>
+            </div>
           </form>
           <Paper
             style={{

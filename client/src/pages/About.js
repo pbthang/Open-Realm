@@ -93,7 +93,7 @@ function About() {
               idea from one author can inspire thousands of stories.
             </Typography>
             <Typography variant="body1">
-              This is a project under the Orbital Programme in the National
+              This is a project under the Orbital Programme at the National
               University of Singapore. GitHub Repo:{" "}
               <a
                 href="https://github.com/pbthang/Open-Realm"
