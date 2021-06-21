@@ -22,7 +22,7 @@ import PromptDataService from "../services/prompt.service";
 import WritingDataService from "../services/writing.service";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: "block",
   },
@@ -40,6 +40,13 @@ const useStyles = makeStyles({
     marginBottom: "1rem",
     padding: "5px",
     color: "#000",
+    transition: "all 0.3 ease",
+    "& a": {
+      color: "inherit",
+    },
+    "& a:hover": {
+      color: theme.palette.secondary.main,
+    },
   },
   btn: {
     margin: "0 0.5rem",
@@ -48,9 +55,21 @@ const useStyles = makeStyles({
     marginTop: "1rem",
   },
   promptOption: {
-    // wordWrap: "normal",
+    wordWrap: "normal",
   },
-});
+  preview: {
+    padding: "1rem",
+    margin: "1rem 0",
+    wordWrap: "normal",
+    transition: "all 0.3 ease",
+    "& a": {
+      color: "inherit",
+    },
+    "& a:hover": {
+      color: theme.palette.secondary.main,
+    },
+  },
+}));
 
 function Create() {
   const classes = useStyles();
@@ -59,48 +78,39 @@ function Create() {
   const { user } = useAuth0();
 
   const [content, setContent] = useState(
-    window.localStorage.getItem("createCache") ?? ""
+    window.sessionStorage.getItem("createCache") ?? ""
   );
 
   const [title, setTitle] = useState(
-    window.localStorage.getItem("titleCache") ?? ""
+    window.sessionStorage.getItem("titleCache") ?? ""
   );
 
   // type can be PROMPT | WRITING
   const PROMPT = "prompt_type";
   const WRITING = "writing_type";
   const [type, setType] = useState(
-    window.localStorage.getItem("type") ?? PROMPT
+    window.sessionStorage.getItem("type") ?? PROMPT
   );
 
   const [promptList, setPromptList] = useState([]);
 
-  // const [currentPromptId, setCurrentPromptId] = useState(
-  //   window.localStorage.getItem("promptCache") ?? 0
-  // );
-
   const [currentPrompt, setCurrentPrompt] = useState(
-    JSON.parse(window.localStorage.getItem("promptCache")) ?? null
+    JSON.parse(window.sessionStorage.getItem("promptCache")) ?? null
   );
-
-  // useEffect(() => {
-  //   setCurrentPrompt(promptList.find((p) => p.id == currentPromptId));
-  //   // eslint-disable-next-line
-  // }, [currentPromptId, JSON.stringify(promptList)]);
 
   const handleOnTypeChange = (e) => {
     setType(e.target.value);
-    window.localStorage.setItem("type", e.target.value);
+    window.sessionStorage.setItem("type", e.target.value);
   };
 
   const handleOnContentChange = (e, editor) => {
     const data = editor.getData();
     setContent(data);
-    window.localStorage.setItem("createCache", data);
+    window.sessionStorage.setItem("createCache", data);
   };
 
   const handleOnPromptChange = (e, newVal) => {
-    window.localStorage.setItem("promptCache", JSON.stringify(newVal));
+    window.sessionStorage.setItem("promptCache", JSON.stringify(newVal));
     setCurrentPrompt(newVal);
   };
 
@@ -123,7 +133,7 @@ function Create() {
     if (title.length > 0 && content.length > 0) {
       PromptDataService.create(data)
         .then(() => {
-          window.localStorage.clear();
+          window.sessionStorage.clear();
           history.push("/home");
         })
         .catch((err) => {
@@ -143,7 +153,7 @@ function Create() {
     if (title.length > 0 && content.length > 0) {
       WritingDataService.create(data)
         .then(() => {
-          window.localStorage.clear();
+          window.sessionStorage.clear();
           history.push(`/home/${currentPrompt.id}`);
         })
         .catch((err) => console.error(err));
@@ -181,7 +191,7 @@ function Create() {
               value={title}
               onChange={(e) => {
                 setTitle(e.target.value);
-                window.localStorage.setItem("titleCache", e.target.value);
+                window.sessionStorage.setItem("titleCache", e.target.value);
               }}
             />
             <div className={classes.editorContainer}>
@@ -193,15 +203,7 @@ function Create() {
               />
             </div>
           </form>
-          <Paper
-            style={{
-              padding: "1rem",
-              margin: "1rem 0",
-              wordWrap: "break-word",
-            }}
-          >
-            {parse(content)}
-          </Paper>
+          <Paper className={classes.preview}>{parse(content)}</Paper>
           <Button
             variant="contained"
             color="primary"
@@ -250,27 +252,20 @@ function Create() {
               multiline
               onChange={(e) => {
                 setTitle(e.target.value);
-                window.localStorage.setItem("titleCache", e.target.value);
+                window.sessionStorage.setItem("titleCache", e.target.value);
               }}
             />
 
             <Paper className={classes.editorContainer}>
               <CKEditor
+                config={ckeditorConfig}
                 editor={ClassicEditor}
                 data={content}
                 onChange={handleOnContentChange}
               />
             </Paper>
           </form>
-          <Paper
-            style={{
-              padding: "1rem",
-              margin: "1rem 0",
-              wordWrap: "normal",
-            }}
-          >
-            {parse(content)}
-          </Paper>
+          <Paper className={classes.preview}>{parse(content)}</Paper>
           <Button
             variant="contained"
             color="primary"

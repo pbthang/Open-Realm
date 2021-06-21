@@ -113,7 +113,7 @@ function Sidebar() {
             key="Logout"
             onClick={() => {
               logout();
-              window.localStorage.clear();
+              window.sessionStorage.clear();
             }}
           >
             <ListItemIcon>

@@ -2,7 +2,7 @@ let dotenv = require("dotenv");
 dotenv.config();
 
 module.exports = {
-  HOST: "localhost",
+  HOST: process.env.HOST,
   USER: process.env.POSTGRES_USERNAME,
   PASSWORD: process.env.POSTGRES_PASSWORD,
   DB: process.env.POSTGRES_DB,

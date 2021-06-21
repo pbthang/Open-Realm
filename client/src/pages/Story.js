@@ -30,6 +30,12 @@ const useStyle = makeStyles((theme) => ({
     marginTop: "2rem",
     marginBottom: "2rem",
     wordWrap: "normal",
+    "& a": {
+      color: "inherit",
+    },
+    "& a:hover": {
+      color: theme.palette.secondary.main,
+    },
   },
   authorInfo: {
     display: "flex",
