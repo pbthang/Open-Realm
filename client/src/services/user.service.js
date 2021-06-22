@@ -27,19 +27,19 @@ class UserDataService {
     return response;
   }
 
-  async patch(id, data) {
-    const TOKEN = await ACCESS_TOKEN;
-    const response = await axios.patch(
-      `https://dev-d1rzgdpx.jp.auth0.com/api/v2/users/${id}`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${TOKEN}`,
-        },
-      }
-    );
-    return response;
-  }
+  // async patch(id, data) {
+  //   const TOKEN = await ACCESS_TOKEN;
+  //   const response = await axios.patch(
+  //     `https://dev-d1rzgdpx.jp.auth0.com/api/v2/users/${id}`,
+  //     data,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${TOKEN}`,
+  //       },
+  //     }
+  //   );
+  //   return response;
+  // }
 }
 
 export default new UserDataService();

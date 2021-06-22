@@ -83,7 +83,7 @@ function Post({ type, book }) {
           <div className={classes.idAndDate}>
             <Typography variant="subtitle2">Id: #{book.id}</Typography>
             <Typography variant="caption">
-              {book.createdAt.split("T")[0]}
+              {book.createdAt?.split("T")[0]}
             </Typography>
           </div>
           <a href={`/home/${book.id}`} className={classes.link}>
@@ -122,7 +122,7 @@ function Post({ type, book }) {
               Id: #{book.id} - Prompt #{book.prompt_id}
             </Typography>
             <Typography variant="caption">
-              {book.createdAt.split("T")[0]}
+              {book.createdAt?.split("T")[0]}
             </Typography>
           </div>
           <a href={`/writings/${book.id}`} className={classes.link}>

@@ -33,9 +33,9 @@ class WritingDataService {
     return http.get(`/writings?prompt_id=${id}`);
   }
 
-  getPrompt(writingId) {
-    const promptId = this.get(writingId).prompt_id;
-    return http.get(`/prompts/${promptId}`);
+  async getPrompt(writingId) {
+    const response = await this.get(writingId);
+    return http.get(`/prompts/${response.data.prompt_id}`);
   }
 }
 
