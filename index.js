@@ -2,8 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const compression = require("compression")
-const helmet = require("helmet")
+const compression = require("compression");
+const helmet = require("helmet");
+const path = require("path");
 
 dotenv.config();
 
@@ -21,7 +22,7 @@ app.use(compression());
 // protect from well-known vulnerability
 app.use(helmet());
 
-// serve static build 
+// serve static build
 app.use(express.static(path.join(__dirname, 'client/build')))
 
 // parse requests of content-type - application/json
@@ -29,6 +30,12 @@ app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 // sync tables
 const db = require("./app/models");
