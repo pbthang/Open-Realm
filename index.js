@@ -23,19 +23,13 @@ app.use(compression());
 app.use(helmet());
 
 // serve static build
-app.use(express.static(path.join(__dirname, 'client/build')))
+app.use(express.static(path.join(__dirname, "client", "build")));
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
 
 // sync tables
 const db = require("./app/models");
@@ -52,6 +46,12 @@ require("./app/routes/writing.route.js")(app);
 require("./app/routes/writingComment.route.js")(app);
 require("./app/routes/promptBookmark.route.js")(app);
 require("./app/routes/writingBookmark.route.js")(app);
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
