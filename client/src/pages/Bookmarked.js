@@ -34,6 +34,8 @@ function Bookmarked() {
           author_id: item.author_id,
           numberOfBookmarks: item.numberOfBookmarks,
           published: item.published,
+          createdAt: item.createdAt,
+          updatedAt: item.updatedAt,
           comments_id: item.comments_id,
         }))
       );
