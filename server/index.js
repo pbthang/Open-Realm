@@ -2,6 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const compression = require("compression")
+const helmet = require("helmet")
 
 dotenv.config();
 
@@ -12,6 +14,12 @@ const app = express();
 // };
 
 app.use(cors());
+
+// comprpess http
+app.use(compression());
+
+// protect from well-known vulnerability
+app.use(helmet());
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
