@@ -21,6 +21,9 @@ app.use(compression());
 // protect from well-known vulnerability
 app.use(helmet());
 
+// serve static build 
+app.use(express.static(path.join(__dirname, 'client/build')))
+
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 
