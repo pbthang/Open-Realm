@@ -13,6 +13,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Tooltip,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import UserDataService from "../services/user.service";
@@ -81,6 +82,12 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.error.main,
     borderColor: theme.palette.error.main,
   },
+  // cmtAndDate: {
+  //   display: "flex",
+  //   alignItems: "center",
+  //   justifyContent: "space-between",
+  // },
+  date: {},
 }));
 
 function Comment({ type, comment, deleteComment }) {
@@ -156,51 +163,59 @@ function Comment({ type, comment, deleteComment }) {
 
   return (
     <>
-      <Paper className={classes.comment}>
-        <Avatar
-          src={cmtAuthor?.picture}
-          className={classes.img}
-          component="a"
-          href={`/profile/${cmtAuthor?.user_id}`}
-        />
-        <span className={classes.usernameAndCmt}>
-          <Typography
-            variant="body2"
-            className={classes.username}
+      <Tooltip
+        title={!!comment?.createdAt && `on ${comment.createdAt?.split("T")[0]}`}
+        placement="top-start"
+      >
+        <Paper className={classes.comment}>
+          <Avatar
+            src={cmtAuthor?.picture}
+            className={classes.img}
             component="a"
             href={`/profile/${cmtAuthor?.user_id}`}
-          >
-            {cmtAuthor?.nickname}
-          </Typography>
-          <Typography variant="body1" className={classes.cmtText}>
-            {commentContent}
-          </Typography>
-        </span>
-        {user.sub === comment.author_id && (
-          <span className={classes.optionBtn}>
-            <IconButton
-              onClick={handleOptionBtnClick}
-              className={classes.iconBtn}
-            >
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleOptionBtnClose}
-            >
-              <MenuItem onClick={handleEditClick}>Edit</MenuItem>
-              <MenuItem
-                onClick={handleOpenDeleteDialog}
-                className={classes.danger}
+          />
+          <span className={classes.usernameAndCmt}>
+            <div className={classes.cmtAndDate}>
+              <Typography
+                variant="body2"
+                className={classes.username}
+                component="a"
+                href={`/profile/${cmtAuthor?.user_id}`}
               >
-                Delete
-              </MenuItem>
-            </Menu>
+                {cmtAuthor?.nickname}
+              </Typography>
+            </div>
+
+            <Typography variant="body1" className={classes.cmtText}>
+              {commentContent}
+            </Typography>
           </span>
-        )}
-      </Paper>
+          {user.sub === comment.author_id && (
+            <span className={classes.optionBtn}>
+              <IconButton
+                onClick={handleOptionBtnClick}
+                className={classes.iconBtn}
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleOptionBtnClose}
+              >
+                <MenuItem onClick={handleEditClick}>Edit</MenuItem>
+                <MenuItem
+                  onClick={handleOpenDeleteDialog}
+                  className={classes.danger}
+                >
+                  Delete
+                </MenuItem>
+              </Menu>
+            </span>
+          )}
+        </Paper>
+      </Tooltip>
       {editFormRendered && (
         <form className={classes.editCmt} noValidate autoComplete="off">
           <TextField

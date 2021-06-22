@@ -1,13 +1,4 @@
 import PromptCommentDataService from "../../services/promptComment.service";
-import { server } from "./handlers";
-
-// Establish API mocking before all tests.
-beforeAll(() => server.listen());
-// Reset any request handlers that we may add during the tests,
-// so they don't affect other tests.
-afterEach(() => server.resetHandlers());
-// Clean up after the tests are finished.
-afterAll(() => server.close());
 
 it("Get all prompt comments", async () => {
   const response = await PromptCommentDataService.getAll();

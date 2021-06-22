@@ -33,6 +33,8 @@ function Bookmarked() {
           title: item.title,
           author_id: item.author_id,
           numberOfBookmarks: item.numberOfBookmarks,
+          createdAt: item.createdAt,
+          updatedAt: item.updatedAt,
           published: item.published,
           comments_id: item.comments_id,
         }))
