@@ -56,7 +56,7 @@ function Sidebar() {
       <Toolbar />
       <div className={classes.drawerContainer}>
         <List>
-          <ListItem button key="Home" component="a" href="/home">
+          <ListItem button key="Home" component="a" href="/home" id="homeNav">
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -67,19 +67,32 @@ function Sidebar() {
             key="Profile"
             component="a"
             href={`/profile/${user?.sub}`}
+            id="profileNav"
           >
             <ListItemIcon>
               <PersonIcon />
             </ListItemIcon>
             <ListItemText primary="Profile" />
           </ListItem>
-          <ListItem button key="Create" component="a" href="/create">
+          <ListItem
+            button
+            key="Create"
+            component="a"
+            href="/create"
+            id="createNav"
+          >
             <ListItemIcon>
               <CreateIcon />
             </ListItemIcon>
             <ListItemText primary="Create" />
           </ListItem>
-          <ListItem button key="Bookmarked" component="a" href="/bookmarked">
+          <ListItem
+            button
+            key="Bookmarked"
+            component="a"
+            href="/bookmarked"
+            id="bookmarkedNav"
+          >
             <ListItemIcon>
               <BookmarksIcon />
             </ListItemIcon>
@@ -102,7 +115,13 @@ function Sidebar() {
             />
           </ListItem>
 
-          <ListItem button key="About" component="a" href="/about">
+          <ListItem
+            button
+            key="About"
+            component="a"
+            href="/about"
+            id="aboutNav"
+          >
             <ListItemIcon>
               <InfoIcon />
             </ListItemIcon>
@@ -115,6 +134,7 @@ function Sidebar() {
               logout();
               window.sessionStorage.clear();
             }}
+            id="logoutBtn"
           >
             <ListItemIcon>
               <MeetingRoomRoundedIcon />

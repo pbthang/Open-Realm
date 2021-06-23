@@ -33,7 +33,7 @@ function Home() {
 
   return (
     <AppShell>
-      <div className={classes.root}>
+      <div className={classes.root} id="homePostContainer">
         {prompts.map((prompt) => (
           <Post type="prompt" book={prompt} key={prompt?.id} />
         ))}

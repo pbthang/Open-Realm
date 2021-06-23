@@ -74,13 +74,13 @@ function Profile() {
         <Avatar src={user?.picture} className={classes.avatar} />
         <span className={classes.userInfo}>
           <Typography variant="h4">
-            <b>Name:</b> {user?.name}
+            <b>Name:</b> <span id="profileName">{user?.name}</span>
           </Typography>
           <Typography variant="h4">
-            <b>Username:</b> {user?.nickname}
+            <b>Username:</b> <span id="profileUsername">{user?.nickname}</span>
           </Typography>
           <Typography variant="h4">
-            <b>Email:</b> {user?.email}
+            <b>Email:</b> <span id="profileEmail">{user?.email}</span>
           </Typography>
         </span>
       </div>

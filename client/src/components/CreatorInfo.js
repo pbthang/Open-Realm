@@ -63,56 +63,58 @@ function CreatorInfo({ imgSrc, name, major, email, linkedIn, gitHub }) {
         NUS School of Computing
       </Typography>
       <table className={classes.contact}>
-        <tr>
-          <td>
-            <Typography variant="body1" className={classes.contactItem}>
-              <b>Email:</b>
-            </Typography>
-          </td>
-          <td>
-            <Typography
-              component="a"
-              href={`mailto:${email}`}
-              className={classes.link}
-            >
-              {email}
-            </Typography>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <Typography variant="body1" lassName={classes.contactItem}>
-              <b>LinkedIn:</b>
-            </Typography>
-          </td>
-          <td>
-            <Typography
-              component="a"
-              href={linkedIn}
-              target="__blank"
-              className={classes.link}
-            >
-              {linkedIn.split("/").slice(-1)[0]}
-            </Typography>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <Typography variant="body1" className={classes.contactItem}>
-              <b>GitHub:</b>
-            </Typography>
-          </td>
-          <td>
-            <Typography
-              component="a"
-              href={gitHub}
-              target="__blank"
-              className={classes.link}
-            >
-              {gitHub.split("/").slice(-1)[0]}
-            </Typography>
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>
+              <Typography variant="body1" className={classes.contactItem}>
+                <b>Email:</b>
+              </Typography>
+            </td>
+            <td>
+              <Typography
+                component="a"
+                href={`mailto:${email}`}
+                className={classes.link}
+              >
+                {email}
+              </Typography>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Typography variant="body1" className={classes.contactItem}>
+                <b>LinkedIn:</b>
+              </Typography>
+            </td>
+            <td>
+              <Typography
+                component="a"
+                href={linkedIn}
+                target="__blank"
+                className={classes.link}
+              >
+                {linkedIn.split("/").slice(-1)[0]}
+              </Typography>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Typography variant="body1" className={classes.contactItem}>
+                <b>GitHub:</b>
+              </Typography>
+            </td>
+            <td>
+              <Typography
+                component="a"
+                href={gitHub}
+                target="__blank"
+                className={classes.link}
+              >
+                {gitHub.split("/").slice(-1)[0]}
+              </Typography>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </Paper>
   );
