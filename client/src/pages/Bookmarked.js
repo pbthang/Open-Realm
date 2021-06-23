@@ -66,24 +66,32 @@ function Bookmarked() {
   return (
     <AppShell>
       <div>
-        <Divider />
-        <Typography variant="h3" className={classes.title}>
-          Bookmarked Prompts
-        </Typography>
-        <div className={classes.bookmarkedWorks}>
-          {bookmarkedPrompts.map((prompt) => (
-            <Post type="prompt" book={prompt} key={prompt?.id} />
-          ))}
-        </div>
-        <Divider />
-        <Typography variant="h3" className={classes.title}>
-          Bookmarked Writings
-        </Typography>
-        <div className={classes.bookmarkedWorks}>
-          {bookmarkedWritings.map((writing) => (
-            <Post type="writing" book={writing} key={writing.id} />
-          ))}
-        </div>
+        {bookmarkedPrompts.length > 0 && (
+          <>
+            <Divider />
+            <Typography variant="h3" className={classes.title}>
+              Bookmarked Prompts
+            </Typography>
+            <div className={classes.bookmarkedWorks}>
+              {bookmarkedPrompts.map((prompt) => (
+                <Post type="prompt" book={prompt} key={prompt?.id} />
+              ))}
+            </div>
+          </>
+        )}
+        {bookmarkedWritings.length > 0 && (
+          <>
+            <Divider />
+            <Typography variant="h3" className={classes.title}>
+              Bookmarked Writings
+            </Typography>
+            <div className={classes.bookmarkedWorks}>
+              {bookmarkedWritings.map((writing) => (
+                <Post type="writing" book={writing} key={writing.id} />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </AppShell>
   );
