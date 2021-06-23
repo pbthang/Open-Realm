@@ -55,12 +55,12 @@ function Profile() {
   useEffect(() => {
     const getPrompts = async () => {
       const response = await PromptDataService.findByAuthorId(sub);
-      setPublishedPrompts(response.data);
+      response.data && setPublishedPrompts(response.data);
     };
 
     const getWritings = async () => {
       const response = await WritingDataService.findByAuthorId(sub);
-      setPublishedWritings(response.data);
+      response.data && setPublishedWritings(response.data);
     };
 
     getPrompts();

@@ -25,7 +25,7 @@ function Home() {
   useEffect(() => {
     const getAllPrompts = async () => {
       const allPrompts = await retrievePrompts();
-      if (allPrompts) setPrompts(allPrompts);
+      allPrompts && setPrompts(allPrompts);
     };
 
     getAllPrompts();

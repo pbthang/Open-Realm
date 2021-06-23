@@ -25,42 +25,56 @@ function Bookmarked() {
 
   useEffect(() => {
     const getBookmarkedPrompts = async () => {
-      const response = await PromptBookmarkDataService.findByUserId(user.sub);
+      try {
+        const response = await PromptBookmarkDataService.findByUserId(user.sub);
 
-      setBookmarkedPrompts(
-        response.data.map((item) => ({
-          id: item.id,
-          title: item.title,
-          author_id: item.author_id,
-          numberOfBookmarks: item.numberOfBookmarks,
-          createdAt: item.createdAt,
-          updatedAt: item.updatedAt,
-          published: item.published,
-          comments_id: item.comments_id,
-        }))
-      );
+        response.data &&
+          setBookmarkedPrompts(
+            response.data.map((item) => ({
+              id: item.id,
+              title: item.title,
+              author_id: item.author_id,
+              numberOfBookmarks: item.numberOfBookmarks,
+              createdAt: item.createdAt,
+              updatedAt: item.updatedAt,
+              published: item.published,
+              comments_id: item.comments_id,
+            }))
+          );
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     const getBookmarkedWritings = async () => {
-      const response = await WritingBookmarkDataService.findByUserId(user.sub);
-      console.log(response.data);
-      setBookmarkedWritings(
-        response.data.map((item) => ({
-          id: item.id,
-          title: item.title,
-          author_id: item.author_id,
-          numberOfBookmarks: item.numberOfBookmarks,
-          published: item.published,
-          createdAt: item.createdAt,
-          updatedAt: item.updatedAt,
-          comments_id: item.comments_id,
-          prompt_id: item.prompt_id,
-        }))
-      );
+      try {
+        const response = await WritingBookmarkDataService.findByUserId(
+          user.sub
+        );
+        console.log(response.data);
+        response.data &&
+          setBookmarkedWritings(
+            response.data.map((item) => ({
+              id: item.id,
+              title: item.title,
+              author_id: item.author_id,
+              numberOfBookmarks: item.numberOfBookmarks,
+              published: item.published,
+              createdAt: item.createdAt,
+              updatedAt: item.updatedAt,
+              comments_id: item.comments_id,
+              prompt_id: item.prompt_id,
+            }))
+          );
+      } catch (error) {
+        console.error(error);
+      }
     };
 
-    getBookmarkedPrompts();
-    getBookmarkedWritings();
+    if (user?.sub) {
+      getBookmarkedPrompts();
+      getBookmarkedWritings();
+    }
   }, [user.sub]);
 
   return (

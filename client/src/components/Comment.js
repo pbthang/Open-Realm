@@ -190,7 +190,7 @@ function Comment({ type, comment, deleteComment }) {
               {commentContent}
             </Typography>
           </span>
-          {user.sub === comment.author_id && (
+          {user.sub === comment?.author_id && (
             <span className={classes.optionBtn}>
               <IconButton
                 onClick={handleOptionBtnClick}

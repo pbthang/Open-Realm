@@ -70,11 +70,13 @@ function Bookmark({ type, book }) {
         console.error(error);
       }
     };
+    if (user?.sub) {
+      getUserInfo();
+    }
 
-    getUserInfo();
-    if (type === "prompt") {
+    if (type === "prompt" && book?.id) {
       getPromptInfo();
-    } else if (type === "writing") {
+    } else if (type === "writing" && book?.id) {
       getWritingInfo();
     }
   }, [book.id, type, user.sub]);

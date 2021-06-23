@@ -183,16 +183,24 @@ function Writing() {
   useEffect(() => {
     const getInfo = async () => {
       const book = await getBook(writingId);
-      setBook(book);
+      if (book) {
+        setBook(book);
+      }
 
       const bookAuthor = await getBookAuthor(book.author_id);
-      setBookAuthor(bookAuthor);
+      if (bookAuthor) {
+        setBookAuthor(bookAuthor);
+      }
 
       const prompt = await getPrompt(book.prompt_id);
-      setPrompt(prompt);
+      if (prompt) {
+        setPrompt(prompt);
+      }
 
       const comments = await getComments(book.id);
-      setComments(comments.reverse());
+      if (comments) {
+        setComments(comments.reverse());
+      }
     };
 
     try {

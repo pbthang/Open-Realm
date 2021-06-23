@@ -57,9 +57,9 @@ function EditDeleteOptionBtn({ type, book }) {
 
   // Set default values
   useEffect(() => {
-    setTitle(book.title);
-    setContent(book.content);
-  }, [book.title, book.content]);
+    book?.title && setTitle(book.title);
+    book?.content && setContent(book.content);
+  }, [book?.title, book?.content]);
 
   // For Option Btn
   const [anchorEl, setAnchorEl] = useState(null);
