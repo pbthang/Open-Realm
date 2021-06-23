@@ -202,7 +202,7 @@ function Story() {
 
         <span className={classes.authorInfo}>
           <Avatar
-            src={bookAuthor.picture}
+            src={bookAuthor?.picture}
             className={classes.img}
             component="a"
             href={`/profile/${bookAuthor?.user_id}`}

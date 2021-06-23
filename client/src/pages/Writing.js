@@ -229,7 +229,7 @@ function Writing() {
 
         <span className={classes.authorInfo}>
           <Avatar
-            src={bookAuthor.picture}
+            src={bookAuthor?.picture}
             className={classes.img}
             component="a"
             href={`/profile/${bookAuthor?.user_id}`}
@@ -243,13 +243,13 @@ function Writing() {
             {bookAuthor.nickname}
           </Typography>
         </span>
-        <div className={classes.content}>{parse(book.content ?? "")}</div>
+        <div className={classes.content}>{parse(book?.content ?? "")}</div>
         <Bookmark type="writing" book={book} />
         <Divider />
         <div className={classes.comments}>
           <AddCommentForm
             type="writing"
-            postId={book.id}
+            postId={book?.id}
             addComment={addComment}
           />
           {comments.map((cmt, idx) => {
