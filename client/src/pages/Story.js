@@ -192,12 +192,12 @@ function Story() {
       <div className={classes.root}>
         <div>
           <Typography variant="body1" className={classes.promptId}>
-            Id: #{book.id}
+            Id: #{book?.id}
           </Typography>
           <EditDeleteOptionBtn type="prompt" book={book} />
         </div>
         <Typography variant="h2" className={classes.title}>
-          {book.title}
+          {book?.title}
         </Typography>
 
         <span className={classes.authorInfo}>
@@ -205,18 +205,18 @@ function Story() {
             src={bookAuthor.picture}
             className={classes.img}
             component="a"
-            href={`/profile/${bookAuthor.user_id}`}
+            href={`/profile/${bookAuthor?.user_id}`}
           />
           <Typography
             variant="h6"
             className={classes.authorName}
             component="a"
-            href={`/profile/${bookAuthor.user_id}`}
+            href={`/profile/${bookAuthor?.user_id}`}
           >
-            {bookAuthor.nickname}
+            {bookAuthor?.nickname}
           </Typography>
         </span>
-        <div className={classes.content}>{parse(book.content ?? "")}</div>
+        <div className={classes.content}>{parse(book?.content ?? "")}</div>
         <Bookmark type="prompt" book={book} />
         {nextWritings.length === 0 || (
           <>
@@ -225,7 +225,7 @@ function Story() {
               <Typography variant="h3">Following Writings</Typography>
               <div>
                 {nextWritings.map((writing) => (
-                  <Post type="writing" book={writing} key={writing.id} />
+                  <Post type="writing" book={writing} key={writing?.id} />
                 ))}
               </div>
             </div>
@@ -235,7 +235,7 @@ function Story() {
         <div className={classes.comments}>
           <AddCommentForm
             type="prompt"
-            postId={book.id}
+            postId={book?.id}
             addComment={addComment}
           />
           {comments.map((cmt) => {

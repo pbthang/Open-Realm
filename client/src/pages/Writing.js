@@ -210,21 +210,21 @@ function Writing() {
             variant="body1"
             className={classes.previousPrompt}
             component="a"
-            href={`/home/${book.prompt_id}`}
+            href={`/home/${book?.prompt_id}`}
           >
             <ArrowBackIosIcon />
             <b>
-              Prompt #{prompt.id}: {prompt.title}
+              Prompt #{prompt?.id}: {prompt?.title}
             </b>
           </Typography>
           <br /> <br />
           <Typography variant="body1" className={classes.writingId}>
-            Id: #{book.id}
+            Id: #{book?.id}
           </Typography>
           <EditDeleteOptionBtn type="writing" book={book} />
         </div>
         <Typography variant="h2" className={classes.title}>
-          {book.title}
+          {book?.title}
         </Typography>
 
         <span className={classes.authorInfo}>
@@ -232,13 +232,13 @@ function Writing() {
             src={bookAuthor.picture}
             className={classes.img}
             component="a"
-            href={`/profile/${bookAuthor.user_id}`}
+            href={`/profile/${bookAuthor?.user_id}`}
           />
           <Typography
             variant="h6"
             className={classes.authorName}
             component="a"
-            href={`/profile/${bookAuthor.user_id}`}
+            href={`/profile/${bookAuthor?.user_id}`}
           >
             {bookAuthor.nickname}
           </Typography>
