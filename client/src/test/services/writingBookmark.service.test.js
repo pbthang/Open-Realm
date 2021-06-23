@@ -1,4 +1,5 @@
 import WritingBookmarkDataService from "../../services/writingBookmark.service";
+import "./handlers";
 
 it("Get all writing bookmarks", async () => {
   const response = await WritingBookmarkDataService.getAll();

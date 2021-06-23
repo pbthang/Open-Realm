@@ -1,4 +1,5 @@
 import PromptBookmarkDataService from "../../services/promptBookmark.service";
+import "./handlers";
 
 it("Get all prompt bookmarks", async () => {
   const response = await PromptBookmarkDataService.getAll();

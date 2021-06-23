@@ -71,8 +71,8 @@ function Bookmarked() {
           Bookmarked Prompts
         </Typography>
         <div className={classes.bookmarkedWorks}>
-          {bookmarkedPrompts.map((prompt, idx) => (
-            <Post type="prompt" book={prompt} key={idx} />
+          {bookmarkedPrompts.map((prompt) => (
+            <Post type="prompt" book={prompt} key={prompt?.id} />
           ))}
         </div>
         <Divider />
@@ -80,8 +80,8 @@ function Bookmarked() {
           Bookmarked Writings
         </Typography>
         <div className={classes.bookmarkedWorks}>
-          {bookmarkedWritings.map((writing, idx) => (
-            <Post type="writing" book={writing} key={idx} />
+          {bookmarkedWritings.map((writing) => (
+            <Post type="writing" book={writing} key={writing.id} />
           ))}
         </div>
       </div>

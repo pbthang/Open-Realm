@@ -1,4 +1,5 @@
 import PromptCommentDataService from "../../services/promptComment.service";
+import "./handlers";
 
 it("Get all prompt comments", async () => {
   const response = await PromptCommentDataService.getAll();

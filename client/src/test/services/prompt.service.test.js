@@ -1,4 +1,5 @@
 import PromptDataService from "../../services/prompt.service";
+import "./handlers";
 
 it("Get all prompts", async () => {
   const response = await PromptDataService.getAll("AAA");

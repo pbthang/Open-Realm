@@ -1,4 +1,5 @@
 import WritingCommentDataService from "../../services/writingComment.service";
+import "./handlers";
 
 it("Get all writing comments", async () => {
   const response = await WritingCommentDataService.getAll();

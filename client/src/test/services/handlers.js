@@ -1,25 +1,64 @@
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 
+// PROMPT HANDLERS
 const promptHandlers = [
   rest.get("http://localhost:8080/api/prompts", (req, res, ctx) => {
-    // const { title } = req.url.searchParams.get("title");
-    return res(ctx.status(200), ctx.json([{ id: 1 }, { id: 2 }, { id: 3 }]));
+    return res(
+      ctx.status(200),
+      ctx.json([
+        {
+          id: 1,
+          title: "title one",
+          author_id: "1",
+          content: "content one",
+          numberOfBookmarks: 0,
+          createdAt: "2021-06-21T11:28:08.404Z",
+        },
+        {
+          id: 2,
+          title: "title two",
+          author_id: "2",
+          content: "content two",
+          numberOfBookmarks: 0,
+          createdAt: "2021-06-21T11:28:08.404Z",
+        },
+        {
+          id: 3,
+          title: "title three",
+          author_id: "3",
+          content: "content three",
+          numberOfBookmarks: 0,
+          createdAt: "2021-06-21T11:28:08.404Z",
+        },
+      ])
+    );
   }),
   rest.get("http://localhost:8080/api/prompts/:id", (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ id: req.params.id }));
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: req.params.id,
+        title: "title",
+        author_id: "1",
+        content: "content",
+        numberOfBookmarks: 0,
+        createdAt: "2021-06-21T11:28:08.404Z",
+      })
+    );
   }),
   rest.post("http://localhost:8080/api/prompts", (req, res, ctx) => {
-    return res(ctx.status(201));
+    return res(ctx.status(201), ctx.json(req.body));
   }),
   rest.put("http://localhost:8080/api/prompts/:id", (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ id: req.params.id }));
+    return res(ctx.status(200), ctx.json({ id: req.params.id, ...req.body }));
   }),
   rest.delete("http://localhost:8080/api/prompts/:id", (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ id: req.params.id }));
   }),
 ];
 
+// WRITING HANDLERS
 const writingHandlers = [
   rest.get("http://localhost:8080/api/writings", (req, res, ctx) => {
     return res(ctx.status(200), ctx.json([{ id: 1 }, { id: 2 }, { id: 3 }]));
@@ -38,6 +77,7 @@ const writingHandlers = [
   }),
 ];
 
+//PROMPT BOOKMARK HANDLERS
 const promptBookmarkHandlers = [
   rest.get("http://localhost:8080/api/promptBookmarks", (req, res, ctx) => {
     return res(ctx.status(200), ctx.json([{ id: 1 }, { id: 2 }, { id: 3 }]));
@@ -82,6 +122,7 @@ const promptBookmarkHandlers = [
   }),
 ];
 
+// WRITING BOOKMARK HANDLERS
 const writingBookmarkHandlers = [
   rest.get("http://localhost:8080/api/writingBookmarks", (req, res, ctx) => {
     return res(ctx.status(200), ctx.json([{ id: 1 }, { id: 2 }, { id: 3 }]));
@@ -138,6 +179,7 @@ const writingBookmarkHandlers = [
   ),
 ];
 
+// PROMPT COMMENT HANDLERS
 const promptCommentHandlers = [
   rest.get("http://localhost:8080/api/promptComments", (req, res, ctx) => {
     return res(ctx.status(200), ctx.json([{ id: 1 }, { id: 2 }, { id: 3 }]));
@@ -159,6 +201,7 @@ const promptCommentHandlers = [
   ),
 ];
 
+// WRITING COMMENT HANDLERS
 const writingCommentHandlers = [
   rest.get("http://localhost:8080/api/writingComments", (req, res, ctx) => {
     return res(ctx.status(200), ctx.json([{ id: 1 }, { id: 2 }, { id: 3 }]));
@@ -180,6 +223,56 @@ const writingCommentHandlers = [
   ),
 ];
 
+const userHandler = [
+  rest.post(
+    "https://dev-d1rzgdpx.jp.auth0.com/oauth/token",
+    (req, res, ctx) => {
+      if (
+        req.body.client_id &&
+        req.body.client_secret &&
+        req.body.audience &&
+        req.body.grant_type
+      ) {
+        return res(
+          ctx.status(201),
+          ctx.json({ token_type: "Bearer", access_token: "secret_token" })
+        );
+      } else {
+        return res(ctx.status(400));
+      }
+    }
+  ),
+  rest.get(
+    "https://dev-d1rzgdpx.jp.auth0.com/api/v2/users",
+    (req, res, ctx) => {
+      if (req.headers.has("authorization")) {
+        return res(
+          ctx.status(200),
+          ctx.json([{ id: 1 }, { id: 2 }, { id: 3 }])
+        );
+      } else {
+        return res(ctx.status(401));
+      }
+    }
+  ),
+  rest.get(
+    "https://dev-d1rzgdpx.jp.auth0.com/api/v2/users/:id",
+    (req, res, ctx) => {
+      if (req.headers.has("authorization")) {
+        return res(
+          ctx.status(200),
+          ctx.json({
+            id: req.params.id,
+            email: "email@gmail.com",
+            name: "John Doe",
+            picture: "https://via.placeholder.com/150",
+          })
+        );
+      }
+    }
+  ),
+];
+
 export const handlers = [
   ...promptHandlers,
   ...writingHandlers,
@@ -187,6 +280,7 @@ export const handlers = [
   ...writingBookmarkHandlers,
   ...promptCommentHandlers,
   ...writingCommentHandlers,
+  ...userHandler,
 ];
 
 const server = setupServer(...handlers);

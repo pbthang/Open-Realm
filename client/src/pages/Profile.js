@@ -33,21 +33,11 @@ const useStyles = makeStyles({
 function Profile() {
   const classes = useStyles();
   const { sub } = useParams();
-  // const { user } = useAuth0();
+
   const [user, setUser] = useState();
-  // const [startedStories, setStartedStories] = useState([]);
-  // const [publishedChapters, setPublishedChapters] = useState([]);
 
   const [publishedPrompts, setPublishedPrompts] = useState([]);
   const [publishedWritings, setPublishedWritings] = useState([]);
-
-  // console.log(sub);
-
-  // axios.request(options).then(function (response) {
-  //   console.log(response.data[0].user_id);
-  // }).catch(function (error) {
-  //   console.error(error);
-  // });
 
   const userString = JSON.stringify(user);
   useEffect(() => {
@@ -65,13 +55,11 @@ function Profile() {
   useEffect(() => {
     const getPrompts = async () => {
       const response = await PromptDataService.findByAuthorId(sub);
-      console.log(response);
       setPublishedPrompts(response.data);
     };
 
     const getWritings = async () => {
       const response = await WritingDataService.findByAuthorId(sub);
-      console.log(response);
       setPublishedWritings(response.data);
     };
 
@@ -104,8 +92,8 @@ function Profile() {
               Published Prompts
             </Typography>
             <div>
-              {publishedPrompts.map((prompt, idx) => (
-                <Post type="prompt" book={prompt} key={idx} />
+              {publishedPrompts.map((prompt) => (
+                <Post type="prompt" book={prompt} key={prompt?.id} />
               ))}
             </div>
           </>

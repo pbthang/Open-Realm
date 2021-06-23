@@ -1,4 +1,5 @@
 import WritingDataService from "../../services/writing.service";
+import "./handlers";
 
 it("Get all writings", async () => {
   const response = await WritingDataService.getAll("AAA");
