@@ -187,19 +187,19 @@ function Writing() {
         setBook(book);
       }
 
-      const bookAuthor = await getBookAuthor(book?.author_id);
-      if (bookAuthor) {
-        setBookAuthor(bookAuthor);
+      if (book?.author_id) {
+        const bookAuthor = await getBookAuthor(book?.author_id);
+        bookAuthor && setBookAuthor(bookAuthor);
       }
 
-      const prompt = await getPrompt(book?.prompt_id);
-      if (prompt) {
-        setPrompt(prompt);
+      if (book?.prompt_id) {
+        const prompt = await getPrompt(book?.prompt_id);
+        prompt && setPrompt(prompt);
       }
 
-      const comments = await getComments(book?.id);
-      if (comments) {
-        setComments(comments.reverse());
+      if (book?.id) {
+        const comments = await getComments(book?.id);
+        comments && setComments(comments.reverse());
       }
     };
 

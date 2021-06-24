@@ -169,23 +169,21 @@ function Story() {
   useEffect(() => {
     const getInfo = async () => {
       const book = await getBook(promptId);
-      if (book) {
-        setBook(book);
+      book && setBook(book);
+
+      if (book?.author_id) {
+        const bookAuthor = await getBookAuthor(book.author_id);
+        bookAuthor && setBookAuthor(bookAuthor);
       }
 
-      const bookAuthor = await getBookAuthor(book.author_id);
-      if (bookAuthor) {
-        setBookAuthor(bookAuthor);
+      if (book?.id) {
+        const comments = await getComments(book.id);
+        comments && setComments(comments.reverse());
       }
 
-      const comments = await getComments(book.id);
-      if (comments) {
-        setComments(comments.reverse());
-      }
-
-      const nextWritings = await getNextWritings(book.id);
-      if (nextWritings) {
-        setNextWritings(nextWritings);
+      if (book?.id) {
+        const nextWritings = await getNextWritings(book.id);
+        nextWritings && setNextWritings(nextWritings);
       }
     };
 

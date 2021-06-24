@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Redirect, useHistory } from "react-router";
+import { Redirect } from "react-router";
 import { AppBar, Toolbar, Typography, Button } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
 function NavBar() {
   const classes = useStyles();
   const { loginWithPopup, isAuthenticated } = useAuth0();
-  const history = useHistory();
 
   if (isAuthenticated) {
     return <Redirect to="/home" />;

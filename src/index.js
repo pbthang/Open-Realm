@@ -4,44 +4,6 @@ import App from "./App";
 import ThemeContextProvider from "./ThemeContextProvider";
 import reportWebVitals from "./reportWebVitals";
 import AuthProviderWithHistory from "./AuthProviderWithHistory";
-import { CssBaseline } from "@material-ui/core";
-import {
-  createMuiTheme,
-  ThemeProvider,
-  responsiveFontSizes,
-} from "@material-ui/core/styles";
-
-const theme = responsiveFontSizes(
-  createMuiTheme({
-    palette: {
-      type: "dark",
-      primary: {
-        main: "#563d7c",
-      },
-      secondary: {
-        main: "#dc3545",
-      },
-      error: {
-        main: "#dc3545",
-      },
-      warning: {
-        main: "#ffc107",
-      },
-      info: {
-        main: "#17a2b8",
-      },
-      success: {
-        main: "#28a745",
-      },
-    },
-    shape: {
-      borderRadius: 10,
-    },
-    typography: {
-      fontFamily: "Montserrat",
-    },
-  })
-);
 
 ReactDOM.render(
   <AuthProviderWithHistory>
