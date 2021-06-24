@@ -187,17 +187,17 @@ function Writing() {
         setBook(book);
       }
 
-      const bookAuthor = await getBookAuthor(book.author_id);
+      const bookAuthor = await getBookAuthor(book?.author_id);
       if (bookAuthor) {
         setBookAuthor(bookAuthor);
       }
 
-      const prompt = await getPrompt(book.prompt_id);
+      const prompt = await getPrompt(book?.prompt_id);
       if (prompt) {
         setPrompt(prompt);
       }
 
-      const comments = await getComments(book.id);
+      const comments = await getComments(book?.id);
       if (comments) {
         setComments(comments.reverse());
       }

@@ -75,7 +75,7 @@ function Bookmarked() {
       getBookmarkedPrompts();
       getBookmarkedWritings();
     }
-  }, [user.sub]);
+  }, [user?.sub]);
 
   return (
     <AppShell>
