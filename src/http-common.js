@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const isProduction = process.env.NODE_ENV === "production";
+const isDevelopment = process.env.REACT_APP_ENV === "development";
 
 export default axios.create({
-  baseURL: isProduction ? "https://openrealmapi.herokuapp.com/api" : "http://localhost:8080/api",
+  baseURL: isDevelopment ? "http://localhost:8080/api" : "https://openrealmapi.herokuapp.com/api",
   headers: {
     "Content-type": "application/json",
   },
