@@ -11,7 +11,7 @@ it("renders Open Realm text", () => {
 let browser;
 
 it("Login with valid credentials", async () => {
-  browser = await puppeteer.launch({ headless: false, slowMo: 20 });
+  browser = await puppeteer.launch({ headless: false, slowMo: 10 });
   const page = await browser.newPage();
   await page.goto("http:localhost:3000/home");
   await page.type("#username", "openrealmtest01@gmail.com");
@@ -20,7 +20,7 @@ it("Login with valid credentials", async () => {
   page.close();
 }, 10000);
 
-it("Navigate through pages", async () => {
+xit("Navigate through pages", async () => {
   const page = await browser.newPage();
   await page.goto("http:localhost:3000/home");
 

@@ -210,7 +210,9 @@ function EditDeleteOptionBtn({ type, book }) {
         maxWidth="sm"
         className={classes.editDialog}
       >
-        <DialogTitle>Delete Comment</DialogTitle>
+        <DialogTitle>
+          Delete {type === "prompt" ? "Prompt" : "Writing"}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             Are you sure you want to delete this{" "}
