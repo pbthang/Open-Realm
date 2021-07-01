@@ -24,11 +24,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-typewriter-effect": "^1.0.2",
-<<<<<<< HEAD
     "redux": "^4.1.0",
-=======
     "serve": "^12.0.0",
->>>>>>> 7ff65790fd39dc20116407c52523d310999cd822
     "web-vitals": "^1.0.1"
   },
   "scripts": {
