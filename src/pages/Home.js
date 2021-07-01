@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import AppShell from "../components/AppShell";
 import Post from "../components/Post";
+import Loading from "./Loading";
 import { makeStyles } from "@material-ui/core/styles";
+import { useSnackbar } from "notistack";
 import PromptDataService from "../services/prompt.service";
 
 const useStyles = makeStyles({
@@ -15,7 +17,10 @@ const useStyles = makeStyles({
 
 function Home() {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
+
   const [prompts, setPrompts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const retrievePrompts = async () => {
     const response = await PromptDataService.getAll();
@@ -24,12 +29,21 @@ function Home() {
 
   useEffect(() => {
     const getAllPrompts = async () => {
-      const allPrompts = await retrievePrompts();
-      allPrompts && setPrompts(allPrompts);
+      try {
+        setLoading(true);
+        const allPrompts = await retrievePrompts();
+        allPrompts && setPrompts(allPrompts);
+        setLoading(false);
+      } catch (error) {
+        enqueueSnackbar("Error loading prompts", { variant: "error" });
+        setLoading(false);
+      }
     };
 
     getAllPrompts();
   }, []);
+
+  if (loading) return <Loading />;
 
   return (
     <AppShell>

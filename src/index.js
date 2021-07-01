@@ -4,11 +4,18 @@ import App from "./App";
 import ThemeContextProvider from "./ThemeContextProvider";
 import reportWebVitals from "./reportWebVitals";
 import AuthProviderWithHistory from "./AuthProviderWithHistory";
+import { SnackbarProvider } from "notistack";
 
 ReactDOM.render(
   <AuthProviderWithHistory>
     <ThemeContextProvider>
-      <App />
+      <SnackbarProvider
+        maxSnack={3}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        preventDuplicate
+      >
+        <App />
+      </SnackbarProvider>
     </ThemeContextProvider>
   </AuthProviderWithHistory>,
   document.getElementById("root")

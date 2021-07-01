@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useSnackbar } from "notistack";
 import { useAuth0 } from "@auth0/auth0-react";
 import PromptCommentDataService from "../services/promptComment.service";
 import WritingCommentDataService from "../services/writingComment.service";
@@ -22,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 function AddCommentForm({ type, postId, addComment }) {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   const { user } = useAuth0();
 
@@ -39,9 +41,10 @@ function AddCommentForm({ type, postId, addComment }) {
         const response = await PromptCommentDataService.create(data);
         addComment(response.data);
         setNewComment("");
+        enqueueSnackbar("Comment added", { variant: "success" });
       }
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar("Error adding comment", { variant: "error" });
     }
   };
 
@@ -57,9 +60,10 @@ function AddCommentForm({ type, postId, addComment }) {
         const response = await WritingCommentDataService.create(data);
         addComment(response.data);
         setNewComment("");
+        enqueueSnackbar("Comment added", { variant: "success" });
       }
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar("Error adding comment", { variant: "error" });
     }
   };
 

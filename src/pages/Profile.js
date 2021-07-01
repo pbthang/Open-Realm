@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AppShell from "../components/AppShell";
+import Loading from "./Loading";
 import { Typography, Avatar, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useSnackbar } from "notistack";
 import PromptDataService from "../services/prompt.service";
 import WritingDataService from "../services/writing.service";
 import UserDataService from "../services/user.service";
@@ -32,6 +34,7 @@ const useStyles = makeStyles({
 
 function Profile() {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
   const { sub } = useParams();
 
   const [user, setUser] = useState();
@@ -43,13 +46,15 @@ function Profile() {
   useEffect(() => {
     const getUser = async () => {
       // get user id
-      const response = await UserDataService.get(sub);
-      return response.data;
+      try {
+        const response = await UserDataService.get(sub);
+        response.data && setUser(response.data);
+      } catch (error) {
+        enqueueSnackbar("Error loading user info", { variant: "error" });
+      }
     };
 
-    getUser()
-      .then((user) => user && setUser(user))
-      .catch((err) => console.error(err));
+    getUser();
   }, [userString, sub]);
 
   useEffect(() => {
@@ -59,8 +64,14 @@ function Profile() {
     };
 
     const getWritings = async () => {
-      const response = await WritingDataService.findByAuthorId(sub);
-      response.data && setPublishedWritings(response.data);
+      try {
+        const response = await WritingDataService.findByAuthorId(sub);
+        response.data && setPublishedWritings(response.data);
+      } catch (error) {
+        enqueueSnackbar("Error loading published writings", {
+          variant: "error",
+        });
+      }
     };
 
     getPrompts();
