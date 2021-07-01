@@ -246,7 +246,6 @@ function Story() {
             addComment={addComment}
           />
           {comments.map((cmt) => {
-            console.log(cmt.id);
             return (
               <Comment
                 type="prompt"
