@@ -84,11 +84,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.error.main,
     borderColor: theme.palette.error.main,
   },
-  // cmtAndDate: {
-  //   display: "flex",
-  //   alignItems: "center",
-  //   justifyContent: "space-between",
-  // },
   date: {},
 }));
 
@@ -191,16 +186,14 @@ function Comment({ type, comment, deleteComment }) {
             href={`/profile/${cmtAuthor?.user_id}`}
           />
           <span className={classes.usernameAndCmt}>
-            <div className={classes.cmtAndDate}>
-              <Typography
-                variant="body2"
-                className={classes.username}
-                component="a"
-                href={`/profile/${cmtAuthor?.user_id}`}
-              >
-                {cmtAuthor?.nickname}
-              </Typography>
-            </div>
+            <Typography
+              variant="body2"
+              className={classes.username}
+              component="a"
+              href={`/profile/${cmtAuthor?.user_id}`}
+            >
+              {cmtAuthor?.nickname}
+            </Typography>
 
             <Typography variant="body1" className={classes.cmtText}>
               {commentContent}

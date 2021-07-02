@@ -91,66 +91,80 @@ function Bookmark({ type, book }) {
   const handleClickMarked = async () => {
     setLoading(true);
     if (type === "prompt") {
-      try {
-        await PromptBookmarkDataService.deleteByUserAndPrompt(
-          user.sub,
-          book.id
-        );
-        await PromptDataService.update(book.id, {
-          numberOfBookmarks: number - 1,
-        });
-      } catch (error) {
-        enqueueSnackbar("Error updating bookmark", { variant: "error" });
-      }
+      const prm1 = PromptBookmarkDataService.deleteByUserAndPrompt(
+        user.sub,
+        book.id
+      ).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      const prm2 = PromptDataService.update(book.id, {
+        numberOfBookmarks: number - 1,
+      }).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      Promise.all([prm1, prm2]).then(() => setLoading(false));
+      setNumber((num) => num - 1);
+      setMarked((mark) => !mark);
     } else if (type === "writing") {
-      try {
-        await WritingBookmarkDataService.deleteByUserAndWriting(
-          user.sub,
-          book.id
-        );
-        await WritingDataService.update(book.id, {
-          numberOfBookmarks: number - 1,
-        });
-      } catch (error) {
-        enqueueSnackbar("Error updating bookmark", { variant: "error" });
-      }
+      const prm1 = WritingBookmarkDataService.deleteByUserAndWriting(
+        user.sub,
+        book.id
+      ).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      const prm2 = WritingDataService.update(book.id, {
+        numberOfBookmarks: number - 1,
+      }).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      Promise.all([prm1, prm2]).then(() => setLoading(false));
+      setNumber((num) => num - 1);
+      setMarked((mark) => !mark);
     }
-    setLoading(false);
-    setNumber((num) => num - 1);
-    setMarked((mark) => !mark);
   };
 
   // for BookmarkIconBorder
   const handleClickNotMarked = async () => {
     setLoading(true);
     if (type === "prompt") {
-      try {
-        await PromptBookmarkDataService.create({
-          user_id: user.sub,
-          prompt_id: book.id,
-        });
-        await PromptDataService.update(book.id, {
-          numberOfBookmarks: number + 1,
-        });
-      } catch (error) {
-        enqueueSnackbar("Error updating bookmark", { variant: "error" });
-      }
+      const prm1 = PromptBookmarkDataService.create({
+        user_id: user.sub,
+        prompt_id: book.id,
+      }).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      const prm2 = PromptDataService.update(book.id, {
+        numberOfBookmarks: number + 1,
+      }).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      Promise.all([prm1, prm2]).then(() => setLoading(false));
+      setNumber((num) => num + 1);
+      setMarked((mark) => !mark);
     } else if (type === "writing") {
-      try {
-        await WritingBookmarkDataService.create({
-          user_id: user.sub,
-          writing_id: book.id,
-        });
-        await WritingDataService.update(book.id, {
-          numberOfBookmarks: number + 1,
-        });
-      } catch (error) {
-        enqueueSnackbar("Error updating bookmark", { variant: "error" });
-      }
+      const prm1 = WritingBookmarkDataService.create({
+        user_id: user.sub,
+        writing_id: book.id,
+      }).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      const prm2 = WritingDataService.update(book.id, {
+        numberOfBookmarks: number + 1,
+      }).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      Promise.all([prm1, prm2]).then(() => setLoading(false));
+      setNumber((num) => num + 1);
+      setMarked((mark) => !mark);
     }
-    setLoading(false);
-    setNumber((num) => num + 1);
-    setMarked((mark) => !mark);
   };
 
   if (loading) return <CircularProgress color="inherit" size={30} />;
