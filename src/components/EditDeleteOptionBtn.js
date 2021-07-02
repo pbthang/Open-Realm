@@ -11,9 +11,11 @@ import {
   Menu,
   MenuItem,
   IconButton,
+  CircularProgress,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { makeStyles } from "@material-ui/core/styles";
+import { useSnackbar } from "notistack";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import ckeditorConfig from "../config/ckeditorConfig";
@@ -49,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
 
 function EditDeleteOptionBtn({ type, book }) {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
   const { user } = useAuth0();
   const history = useHistory();
 
@@ -80,19 +84,27 @@ function EditDeleteOptionBtn({ type, book }) {
     setDeleteDialogOpen(false);
   };
   const handlePromptDelete = async () => {
+    setLoading(true);
     try {
       await PromptDataService.delete(book.id);
+      enqueueSnackbar("Delete prompt successfully", { variant: "success" });
+      setLoading(false);
       history.push("/home");
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar("Error deleting prompt", { variant: "error" });
+      setLoading(false);
     }
   };
   const handleWritingDelete = async () => {
+    setLoading(true);
     try {
       await WritingDataService.delete(book.id);
+      enqueueSnackbar("Delete writing successfully", { variant: "success" });
+      setLoading(false);
       history.push(`/home/${book.prompt_id}`);
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar("Error deleting writing", { variant: "error" });
+      setLoading(false);
     }
   };
   const handleDelete = () => {
@@ -113,13 +125,29 @@ function EditDeleteOptionBtn({ type, book }) {
     setEditDialogOpen(false);
   };
   const handlePromptEditSubmit = async () => {
-    await PromptDataService.update(book.id, { title, content });
-    history.push(`/home/${book.id}`);
+    setLoading(true);
+    try {
+      await PromptDataService.update(book.id, { title, content });
+      enqueueSnackbar("Update prompt successfully", { variant: "success" });
+      setLoading(false);
+      history.push(`/home/${book.id}`);
+    } catch (error) {
+      enqueueSnackbar("Error updating prompt", { variant: "error" });
+      setLoading(false);
+    }
     handleEditDialogClose();
   };
   const handleWritingEditSubmit = async () => {
-    await WritingDataService.update(book.id, { title, content });
-    history.push(`/writings/${book.id}`);
+    setLoading(true);
+    try {
+      await WritingDataService.update(book.id, { title, content });
+      enqueueSnackbar("Update writing successfully", { variant: "success" });
+      setLoading(false);
+      history.push(`/writings/${book.id}`);
+    } catch (error) {
+      enqueueSnackbar("Error updating prompt", { variant: "error" });
+      setLoading(false);
+    }
     handleEditDialogClose();
   };
   const handleEditSubmit = () => {
@@ -191,18 +219,24 @@ function EditDeleteOptionBtn({ type, book }) {
             />
           </div>
         </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleEditDialogClose}
-            variant="text"
-            className={classes.cancelBtn}
-          >
-            Cancel
-          </Button>
-          <Button onClick={handleEditSubmit} variant="text" color="primary">
-            Submit
-          </Button>
-        </DialogActions>
+        {loading ? (
+          <DialogActions>
+            <CircularProgress size={30} color="inherit" />
+          </DialogActions>
+        ) : (
+          <DialogActions>
+            <Button
+              onClick={handleEditDialogClose}
+              variant="text"
+              className={classes.cancelBtn}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleEditSubmit} variant="text" color="primary">
+              Submit
+            </Button>
+          </DialogActions>
+        )}
       </Dialog>
       <Dialog
         open={deleteDialogOpen}
@@ -220,19 +254,25 @@ function EditDeleteOptionBtn({ type, book }) {
             <br /> This is non-reversible
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteDialog} variant="text">
-            Cancel
-          </Button>
-          <Button
-            onClick={handleDelete}
-            variant="text"
-            color="primary"
-            className={classes.cancelBtn}
-          >
-            Delete
-          </Button>
-        </DialogActions>
+        {loading ? (
+          <DialogActions>
+            <CircularProgress size={30} color="inherit" />
+          </DialogActions>
+        ) : (
+          <DialogActions>
+            <Button onClick={handleCloseDeleteDialog} variant="text">
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDelete}
+              variant="text"
+              color="primary"
+              className={classes.cancelBtn}
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        )}
       </Dialog>
     </div>
   );

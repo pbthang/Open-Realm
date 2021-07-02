@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import AppShell from "../components/AppShell";
+import Loading from "./Loading";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   TextField,
@@ -12,6 +13,7 @@ import {
   MenuItem,
   Typography,
 } from "@material-ui/core";
+import { useSnackbar } from "notistack";
 import { Autocomplete } from "@material-ui/lab";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -73,6 +75,8 @@ const useStyles = makeStyles((theme) => ({
 
 function Create() {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
 
   const history = useHistory();
   const { user } = useAuth0();
@@ -116,9 +120,14 @@ function Create() {
 
   useEffect(() => {
     const fetchPrompts = async () => {
-      const response = await http.get("/prompts");
-      setPromptList(response.data);
+      try {
+        const response = await http.get("/prompts");
+        setPromptList(response.data);
+      } catch (error) {
+        enqueueSnackbar("Error loading prompt list", { variant: "error" });
+      }
     };
+
     fetchPrompts();
   }, []);
 
@@ -131,14 +140,19 @@ function Create() {
     };
 
     if (title.length > 0 && content.length > 0) {
+      setLoading(true);
       PromptDataService.create(data)
         .then(() => {
           window.sessionStorage.clear();
+          enqueueSnackbar("Create prompt successfully.", {
+            variant: "success",
+          });
           history.push("/home");
         })
         .catch((err) => {
-          console.error(err);
+          enqueueSnackbar("Error creating prompt.", { variant: "error" });
         });
+      setLoading(false);
     }
   };
 
@@ -151,14 +165,23 @@ function Create() {
       published: true,
     };
     if (title.length > 0 && content.length > 0) {
+      setLoading(true);
       WritingDataService.create(data)
         .then(() => {
           window.sessionStorage.clear();
+          enqueueSnackbar("Create writing successfully.", {
+            variant: "success",
+          });
           history.push(`/home/${currentPrompt.id}`);
         })
-        .catch((err) => console.error(err));
+        .catch((err) =>
+          enqueueSnackbar("Error creating writing.", { variant: "error" })
+        );
+      setLoading(false);
     }
   };
+
+  if (loading) return <Loading />;
 
   return (
     <AppShell>
@@ -223,7 +246,7 @@ function Create() {
                 option.id === val.id && option.title === val.title
               }
               openOnFocus
-              forcePopupIcon={true}
+              forcePopupIcon
               onChange={handleOnPromptChange}
               value={currentPrompt}
               noOptionsText="No prompt available"

@@ -14,12 +14,14 @@ import {
   DialogContentText,
   DialogTitle,
   Tooltip,
+  CircularProgress,
 } from "@material-ui/core";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import UserDataService from "../services/user.service";
 import PromptCommentDataService from "../services/promptComment.service";
 import WritingCommentDataService from "../services/writingComment.service";
 import { makeStyles } from "@material-ui/core/styles";
+import { useSnackbar } from "notistack";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const useStyles = makeStyles((theme) => ({
@@ -82,16 +84,13 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.error.main,
     borderColor: theme.palette.error.main,
   },
-  // cmtAndDate: {
-  //   display: "flex",
-  //   alignItems: "center",
-  //   justifyContent: "space-between",
-  // },
   date: {},
 }));
 
 function Comment({ type, comment, deleteComment }) {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
 
   const { user } = useAuth0();
 
@@ -111,20 +110,26 @@ function Comment({ type, comment, deleteComment }) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const handleOpenDeleteDialog = () => {
     handleOptionBtnClose();
+    handleCancelClick();
     setDeleteDialogOpen(true);
   };
   const handleCloseDeleteDialog = () => {
     setDeleteDialogOpen(false);
   };
   const handleCommentDelete = async () => {
-    setAnchorEl(null);
-    if (type === "prompt") {
-      await PromptCommentDataService.delete(comment.id);
-    } else if (type === "writing") {
-      await WritingCommentDataService.delete(comment.id);
+    setLoading(true);
+    try {
+      if (type === "prompt") {
+        await PromptCommentDataService.delete(comment.id);
+      } else if (type === "writing") {
+        await WritingCommentDataService.delete(comment.id);
+      }
+      deleteComment(comment.id);
+      handleCloseDeleteDialog();
+    } catch (error) {
+      enqueueSnackbar("Error deleting comment", { variant: "error" });
     }
-    deleteComment(comment.id);
-    handleCloseDeleteDialog();
+    setLoading(false);
   };
 
   // For Edit Option
@@ -140,9 +145,15 @@ function Comment({ type, comment, deleteComment }) {
     setNewCommentContent("");
   };
   const handleEditSubmit = async () => {
-    await updateComment(newCommentContent);
-    setCommentContent(newCommentContent);
-    handleCancelClick();
+    setLoading(true);
+    try {
+      await updateComment(newCommentContent);
+      setCommentContent(newCommentContent);
+      handleCancelClick();
+    } catch (error) {
+      enqueueSnackbar("Error updating comment", { variant: "error" });
+    }
+    setLoading(false);
   };
   const updateComment = async (newCmt) => {
     if (type === "prompt") {
@@ -175,16 +186,14 @@ function Comment({ type, comment, deleteComment }) {
             href={`/profile/${cmtAuthor?.user_id}`}
           />
           <span className={classes.usernameAndCmt}>
-            <div className={classes.cmtAndDate}>
-              <Typography
-                variant="body2"
-                className={classes.username}
-                component="a"
-                href={`/profile/${cmtAuthor?.user_id}`}
-              >
-                {cmtAuthor?.nickname}
-              </Typography>
-            </div>
+            <Typography
+              variant="body2"
+              className={classes.username}
+              component="a"
+              href={`/profile/${cmtAuthor?.user_id}`}
+            >
+              {cmtAuthor?.nickname}
+            </Typography>
 
             <Typography variant="body1" className={classes.cmtText}>
               {commentContent}
@@ -228,22 +237,28 @@ function Comment({ type, comment, deleteComment }) {
             value={newCommentContent}
             onChange={(e) => setNewCommentContent(e.target.value)}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.submitBtn}
-            onClick={handleEditSubmit}
-          >
-            Update
-          </Button>
-          <Button
-            variant="outlined"
-            color="primary"
-            className={classes.cancelBtn}
-            onClick={handleCancelClick}
-          >
-            Cancel
-          </Button>
+          {loading ? (
+            <CircularProgress size={30} color="inherit" />
+          ) : (
+            <>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.submitBtn}
+                onClick={handleEditSubmit}
+              >
+                Update
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                className={classes.cancelBtn}
+                onClick={handleCancelClick}
+              >
+                Cancel
+              </Button>
+            </>
+          )}
         </form>
       )}
 
@@ -260,19 +275,26 @@ function Comment({ type, comment, deleteComment }) {
             <br /> This is non-reversible
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteDialog} variant="text">
-            Cancel
-          </Button>
-          <Button
-            onClick={handleCommentDelete}
-            variant="text"
-            color="primary"
-            className={classes.cancelBtn}
-          >
-            Delete
-          </Button>
-        </DialogActions>
+
+        {loading ? (
+          <DialogActions>
+            <CircularProgress size={30} color="inherit" />
+          </DialogActions>
+        ) : (
+          <DialogActions>
+            <Button onClick={handleCloseDeleteDialog} variant="text">
+              Cancel
+            </Button>
+            <Button
+              onClick={handleCommentDelete}
+              variant="text"
+              color="primary"
+              className={classes.cancelBtn}
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        )}
       </Dialog>
     </>
   );

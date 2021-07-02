@@ -23,6 +23,7 @@ function AppShell({ children }) {
     <div className={classes.root}>
       <NavBar />
       <Sidebar />
+
       <div>
         <Toolbar></Toolbar>
         <div className={classes.content}>{children}</div>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import AppShell from "../components/AppShell";
 import Post from "../components/Post";
+import Loading from "./Loading";
 import { Typography, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useSnackbar } from "notistack";
 import { useAuth0 } from "@auth0/auth0-react";
 import PromptBookmarkDataService from "../services/promptBookmark.service";
 import WritingBookmarkDataService from "../services/writingBookmark.service";
@@ -19,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
 function Bookmarked() {
   const classes = useStyles();
   const { user } = useAuth0();
+  const [loading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const [bookmarkedPrompts, setBookmarkedPrompts] = useState([]);
   const [bookmarkedWritings, setBookmarkedWritings] = useState([]);
@@ -26,8 +30,8 @@ function Bookmarked() {
   useEffect(() => {
     const getBookmarkedPrompts = async () => {
       try {
+        setLoading(true);
         const response = await PromptBookmarkDataService.findByUserId(user.sub);
-
         response.data &&
           setBookmarkedPrompts(
             response.data.map((item) => ({
@@ -42,16 +46,18 @@ function Bookmarked() {
             }))
           );
       } catch (error) {
-        console.error(error);
+        enqueueSnackbar("Error loading bookmarked prompts", {
+          variant: "error",
+        });
       }
     };
 
     const getBookmarkedWritings = async () => {
       try {
+        setLoading(true);
         const response = await WritingBookmarkDataService.findByUserId(
           user.sub
         );
-        console.log(response.data);
         response.data &&
           setBookmarkedWritings(
             response.data.map((item) => ({
@@ -67,15 +73,20 @@ function Bookmarked() {
             }))
           );
       } catch (error) {
-        console.error(error);
+        enqueueSnackbar("Error loading bookmarked writings", {
+          variant: "error",
+        });
       }
     };
 
     if (user?.sub) {
-      getBookmarkedPrompts();
-      getBookmarkedWritings();
+      Promise.all([getBookmarkedPrompts(), getBookmarkedWritings()]).then(() =>
+        setLoading(false)
+      );
     }
   }, [user?.sub]);
+
+  if (loading) return <Loading />;
 
   return (
     <AppShell>

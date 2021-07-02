@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import { makeStyles } from "@material-ui/core/styles";
+import { CircularProgress } from "@material-ui/core";
+import { useSnackbar } from "notistack";
 import { useAuth0 } from "@auth0/auth0-react";
 import PromptDataService from "../../services/prompt.service";
 import WritingDataService from "../../services/writing.service";
@@ -24,12 +26,15 @@ const useStyles = makeStyles({
 function Bookmark({ type, book }) {
   const classes = useStyles();
   const { user } = useAuth0();
+  const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState();
 
   const [marked, setMarked] = useState(false);
   const [number, setNumber] = useState(book.numberOfBookmarks ?? 0);
 
   useEffect(() => {
     const getUserInfo = async () => {
+      setLoading(true);
       if (type === "prompt") {
         try {
           const promptResponse = await PromptBookmarkDataService.findByUserId(
@@ -37,7 +42,7 @@ function Bookmark({ type, book }) {
           );
           setMarked(promptResponse.data.find((obj) => obj.id === book.id));
         } catch (error) {
-          console.error(error);
+          enqueueSnackbar("Error loading bookmark info", { variant: "error" });
         }
       } else if (type === "writing") {
         try {
@@ -46,9 +51,10 @@ function Bookmark({ type, book }) {
           );
           setMarked(writingResponse.data.find((obj) => obj.id === book.id));
         } catch (error) {
-          console.error(error);
+          enqueueSnackbar("Error loading bookmark info", { variant: "error" });
         }
       }
+      setLoading(false);
     };
 
     const getPromptInfo = async () => {
@@ -83,65 +89,85 @@ function Bookmark({ type, book }) {
 
   // for BookmarkIcon
   const handleClickMarked = async () => {
+    setLoading(true);
     if (type === "prompt") {
-      try {
-        await PromptBookmarkDataService.deleteByUserAndPrompt(
-          user.sub,
-          book.id
-        );
-        await PromptDataService.update(book.id, {
-          numberOfBookmarks: number - 1,
-        });
-      } catch (error) {
-        console.error(error);
-      }
+      const prm1 = PromptBookmarkDataService.deleteByUserAndPrompt(
+        user.sub,
+        book.id
+      ).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      const prm2 = PromptDataService.update(book.id, {
+        numberOfBookmarks: number - 1,
+      }).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      Promise.all([prm1, prm2]).then(() => setLoading(false));
+      setNumber((num) => num - 1);
+      setMarked((mark) => !mark);
     } else if (type === "writing") {
-      try {
-        await WritingBookmarkDataService.deleteByUserAndWriting(
-          user.sub,
-          book.id
-        );
-        await WritingDataService.update(book.id, {
-          numberOfBookmarks: number - 1,
-        });
-      } catch (error) {
-        console.error(error);
-      }
+      const prm1 = WritingBookmarkDataService.deleteByUserAndWriting(
+        user.sub,
+        book.id
+      ).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      const prm2 = WritingDataService.update(book.id, {
+        numberOfBookmarks: number - 1,
+      }).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      Promise.all([prm1, prm2]).then(() => setLoading(false));
+      setNumber((num) => num - 1);
+      setMarked((mark) => !mark);
     }
-    setNumber((num) => num - 1);
-    setMarked((mark) => !mark);
   };
 
   // for BookmarkIconBorder
   const handleClickNotMarked = async () => {
+    setLoading(true);
     if (type === "prompt") {
-      try {
-        await PromptBookmarkDataService.create({
-          user_id: user.sub,
-          prompt_id: book.id,
-        });
-        await PromptDataService.update(book.id, {
-          numberOfBookmarks: number + 1,
-        });
-      } catch (error) {
-        console.error(error);
-      }
+      const prm1 = PromptBookmarkDataService.create({
+        user_id: user.sub,
+        prompt_id: book.id,
+      }).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      const prm2 = PromptDataService.update(book.id, {
+        numberOfBookmarks: number + 1,
+      }).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      Promise.all([prm1, prm2]).then(() => setLoading(false));
+      setNumber((num) => num + 1);
+      setMarked((mark) => !mark);
     } else if (type === "writing") {
-      try {
-        await WritingBookmarkDataService.create({
-          user_id: user.sub,
-          writing_id: book.id,
-        });
-        await WritingDataService.update(book.id, {
-          numberOfBookmarks: number + 1,
-        });
-      } catch (error) {
-        console.error(error);
-      }
+      const prm1 = WritingBookmarkDataService.create({
+        user_id: user.sub,
+        writing_id: book.id,
+      }).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      const prm2 = WritingDataService.update(book.id, {
+        numberOfBookmarks: number + 1,
+      }).catch(() =>
+        enqueueSnackbar("Error updating bookmark", { variant: "error" })
+      );
+
+      Promise.all([prm1, prm2]).then(() => setLoading(false));
+      setNumber((num) => num + 1);
+      setMarked((mark) => !mark);
     }
-    setNumber((num) => num + 1);
-    setMarked((mark) => !mark);
   };
+
+  if (loading) return <CircularProgress color="inherit" size={30} />;
 
   return (
     <span className={classes.root}>
@@ -153,7 +179,7 @@ function Bookmark({ type, book }) {
           onClick={handleClickNotMarked}
         />
       )}
-      <span className={classes.number}>{number ?? ""}</span>
+      <span className={classes.number}>{number ?? book.numberOfBookmarks}</span>
     </span>
   );
 }

@@ -4,11 +4,13 @@ import Bookmark from "../components/Post/Bookmark";
 import Comment from "../components/Comment";
 import AddCommentForm from "../components/AddCommentForm";
 import EditDeleteOptionBtn from "../components/EditDeleteOptionBtn";
+import SectionLoading from "../components/SectionLoading";
 import parse from "html-react-parser";
 import { useParams } from "react-router-dom";
 import { Avatar, Divider, Typography } from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { makeStyles } from "@material-ui/core/styles";
+import { useSnackbar } from "notistack";
 import UserDataService from "../services/user.service";
 import WritingCommentDataService from "../services/writingComment.service";
 import WritingDataService from "../services/writing.service";
@@ -131,6 +133,9 @@ const useStyle = makeStyles((theme) => ({
 function Writing() {
   const classes = useStyle();
   const { writingId } = useParams();
+  const { enqueueSnackbar } = useSnackbar();
+  const [contentLoading, setContentLoading] = useState(false);
+  const [commentLoading, setCommentLoading] = useState(false);
 
   const [book, setBook] = useState({});
   const [bookAuthor, setBookAuthor] = useState({});
@@ -145,114 +150,113 @@ function Writing() {
   };
 
   const getBook = async (id) => {
+    if (!id) return;
     try {
       const response = await WritingDataService.get(id);
+      response.data && setBook(response.data);
       return response.data;
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar("Error loading writing", { variant: "error" });
     }
   };
 
   const getBookAuthor = async (id) => {
+    if (!id) return;
     try {
       const response = await UserDataService.get(id);
+      response.data && setBookAuthor(response.data);
       return response.data;
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar("Error loading writing", { variant: "error" });
     }
   };
 
   const getPrompt = async (id) => {
+    if (!id) return;
     try {
       const response = await PromptDataService.get(id);
+      response.data && setPrompt(response.data);
       return response.data;
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar("Error loading writing", { variant: "error" });
     }
   };
 
   const getComments = async (postId) => {
+    if (!postId) return;
     try {
       const response = await WritingCommentDataService.findByPost(postId);
+      response.data && setComments(response.data.reverse());
       return response.data;
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar("Error loading comments", { variant: "error" });
     }
   };
 
   useEffect(() => {
     const getInfo = async () => {
+      setContentLoading(true);
+      setCommentLoading(true);
       const book = await getBook(writingId);
-      if (book) {
-        setBook(book);
-      }
-
-      if (book?.author_id) {
-        const bookAuthor = await getBookAuthor(book?.author_id);
-        bookAuthor && setBookAuthor(bookAuthor);
-      }
-
-      if (book?.prompt_id) {
-        const prompt = await getPrompt(book?.prompt_id);
-        prompt && setPrompt(prompt);
-      }
-
-      if (book?.id) {
-        const comments = await getComments(book?.id);
-        comments && setComments(comments.reverse());
-      }
+      const bookAuthor = getBookAuthor(book?.author_id);
+      const prompt = getPrompt(book?.prompt_id);
+      Promise.all([bookAuthor, prompt]).then(() => setContentLoading(false));
+      getComments(book?.id).then(() => setCommentLoading(false));
     };
 
-    try {
-      getInfo();
-    } catch (error) {
-      console.err(error);
-    }
+    getInfo();
   }, [writingId]);
 
   return (
     <AppShell>
       <div className={classes.root}>
-        <div>
-          <Typography
-            variant="body1"
-            className={classes.previousPrompt}
-            component="a"
-            href={`/home/${book?.prompt_id}`}
-          >
-            <ArrowBackIosIcon />
-            <b>
-              Prompt #{prompt?.id}: {prompt?.title}
-            </b>
-          </Typography>
-          <br /> <br />
-          <Typography variant="body1" className={classes.writingId}>
-            Id: #{book?.id}
-          </Typography>
-          <EditDeleteOptionBtn type="writing" book={book} />
-        </div>
-        <Typography variant="h2" className={classes.title}>
-          {book?.title}
-        </Typography>
+        {contentLoading ? (
+          <SectionLoading msg="Loading writing content..." />
+        ) : (
+          <>
+            <div>
+              <Typography
+                variant="body1"
+                className={classes.previousPrompt}
+                component="a"
+                href={`/home/${book?.prompt_id}`}
+              >
+                <ArrowBackIosIcon />
+                <b>
+                  Prompt #{prompt?.id}: {prompt?.title}
+                </b>
+              </Typography>
+              <br /> <br />
+              <Typography variant="body1" className={classes.writingId}>
+                Id: #{book?.id}
+              </Typography>
+              <EditDeleteOptionBtn type="writing" book={book} />
+            </div>
+            <Typography variant="h2" className={classes.title}>
+              {book?.title}
+            </Typography>
 
-        <span className={classes.authorInfo}>
-          <Avatar
-            src={bookAuthor?.picture}
-            className={classes.img}
-            component="a"
-            href={`/profile/${bookAuthor?.user_id}`}
-          />
-          <Typography
-            variant="h6"
-            className={classes.authorName}
-            component="a"
-            href={`/profile/${bookAuthor?.user_id}`}
-          >
-            {bookAuthor.nickname}
-          </Typography>
-        </span>
-        <div className={classes.content}>{parse(book?.content ?? "")}</div>
-        <Bookmark type="writing" book={book} />
+            <span className={classes.authorInfo}>
+              <Avatar
+                src={bookAuthor?.picture}
+                className={classes.img}
+                component="a"
+                href={`/profile/${bookAuthor?.user_id}`}
+              />
+              <Typography
+                variant="h6"
+                className={classes.authorName}
+                component="a"
+                href={`/profile/${bookAuthor?.user_id}`}
+              >
+                {bookAuthor.nickname}
+              </Typography>
+            </span>
+            <div className={classes.content}>{parse(book?.content ?? "")}</div>
+            <Bookmark type="writing" book={book} />
+          </>
+        )}
+
         <Divider />
         <div className={classes.comments}>
           <AddCommentForm
@@ -260,16 +264,20 @@ function Writing() {
             postId={book?.id}
             addComment={addComment}
           />
-          {comments.map((cmt, idx) => {
-            return (
-              <Comment
-                type="writing"
-                comment={cmt}
-                deleteComment={deleteComment}
-                key={cmt.id}
-              />
-            );
-          })}
+          {commentLoading ? (
+            <SectionLoading msg="Loading comments..." />
+          ) : (
+            comments.map((cmt, idx) => {
+              return (
+                <Comment
+                  type="writing"
+                  comment={cmt}
+                  deleteComment={deleteComment}
+                  key={cmt.id}
+                />
+              );
+            })
+          )}
         </div>
       </div>
     </AppShell>

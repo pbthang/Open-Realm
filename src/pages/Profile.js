@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AppShell from "../components/AppShell";
+import SectionLoading from "../components/SectionLoading";
 import { Typography, Avatar, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useSnackbar } from "notistack";
 import PromptDataService from "../services/prompt.service";
 import WritingDataService from "../services/writing.service";
 import UserDataService from "../services/user.service";
@@ -32,7 +34,11 @@ const useStyles = makeStyles({
 
 function Profile() {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
   const { sub } = useParams();
+  const [userLoading, setUserLoading] = useState(false);
+  const [promptLoading, setPromptLoading] = useState(false);
+  const [writingLoading, setWritingLoading] = useState(false);
 
   const [user, setUser] = useState();
 
@@ -43,24 +49,44 @@ function Profile() {
   useEffect(() => {
     const getUser = async () => {
       // get user id
-      const response = await UserDataService.get(sub);
-      return response.data;
+      setUserLoading(true);
+      try {
+        const response = await UserDataService.get(sub);
+        response.data && setUser(response.data);
+      } catch (error) {
+        enqueueSnackbar("Error loading user info", { variant: "error" });
+      }
+      setUserLoading(false);
     };
 
-    getUser()
-      .then((user) => user && setUser(user))
-      .catch((err) => console.error(err));
+    getUser();
   }, [userString, sub]);
 
   useEffect(() => {
     const getPrompts = async () => {
-      const response = await PromptDataService.findByAuthorId(sub);
-      response.data && setPublishedPrompts(response.data);
+      setPromptLoading(true);
+      try {
+        const response = await PromptDataService.findByAuthorId(sub);
+        response.data && setPublishedPrompts(response.data);
+      } catch (error) {
+        enqueueSnackbar("Error loading published prompts", {
+          variant: "error",
+        });
+      }
+      setPromptLoading(false);
     };
 
     const getWritings = async () => {
-      const response = await WritingDataService.findByAuthorId(sub);
-      response.data && setPublishedWritings(response.data);
+      setWritingLoading(true);
+      try {
+        const response = await WritingDataService.findByAuthorId(sub);
+        response.data && setPublishedWritings(response.data);
+      } catch (error) {
+        enqueueSnackbar("Error loading published writings", {
+          variant: "error",
+        });
+      }
+      setWritingLoading(false);
     };
 
     getPrompts();
@@ -70,50 +96,69 @@ function Profile() {
   return (
     <AppShell>
       <Typography variant="h2">User Profile</Typography>
-      <div className={classes.user}>
-        <Avatar src={user?.picture} className={classes.avatar} />
-        <span className={classes.userInfo}>
-          <Typography variant="h4">
-            <b>Name:</b> <span id="profileName">{user?.name}</span>
-          </Typography>
-          <Typography variant="h4">
-            <b>Username:</b> <span id="profileUsername">{user?.nickname}</span>
-          </Typography>
-          <Typography variant="h4">
-            <b>Email:</b> <span id="profileEmail">{user?.email}</span>
-          </Typography>
-        </span>
-      </div>
-      <div className={classes.yourWorks}>
-        {publishedPrompts.length === 0 || (
-          <>
-            <Divider />
-            <Typography variant="h3" className={classes.title}>
-              Published Prompts
+      {userLoading ? (
+        <SectionLoading msg="Loading user info..." />
+      ) : (
+        <div className={classes.user}>
+          <Avatar src={user?.picture} className={classes.avatar} />
+          <span className={classes.userInfo}>
+            <Typography variant="h4">
+              <b>Name:</b> <span id="profileName">{user?.name}</span>
             </Typography>
-            <div>
-              {publishedPrompts.map((prompt) => (
-                <Post type="prompt" book={prompt} key={prompt?.id} />
-              ))}
-            </div>
-          </>
-        )}
-      </div>
-      <div className={classes.yourWorks}>
-        {publishedWritings.length === 0 || (
-          <>
-            <Divider />
-            <Typography variant="h3" className={classes.title}>
-              Published Writings
+            <Typography variant="h4">
+              <b>Username:</b>{" "}
+              <span id="profileUsername">{user?.nickname}</span>
             </Typography>
-            <div>
-              {publishedWritings.map((writing, idx) => (
-                <Post type="writing" book={writing} key={idx} />
-              ))}
-            </div>
-          </>
-        )}
-      </div>
+            <Typography variant="h4">
+              <b>Email:</b> <span id="profileEmail">{user?.email}</span>
+            </Typography>
+          </span>
+        </div>
+      )}
+      {promptLoading ? (
+        <>
+          <Divider />
+          <SectionLoading msg="Loading published prompts..." />
+        </>
+      ) : (
+        <div className={classes.yourWorks}>
+          {publishedPrompts.length === 0 || (
+            <>
+              <Divider />
+              <Typography variant="h3" className={classes.title}>
+                Published Prompts
+              </Typography>
+              <div>
+                {publishedPrompts.map((prompt) => (
+                  <Post type="prompt" book={prompt} key={prompt?.id} />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+      {writingLoading ? (
+        <>
+          <Divider />
+          <SectionLoading msg="Loading published writings..." />
+        </>
+      ) : (
+        <div className={classes.yourWorks}>
+          {publishedWritings.length === 0 || (
+            <>
+              <Divider />
+              <Typography variant="h3" className={classes.title}>
+                Published Writings
+              </Typography>
+              <div>
+                {publishedWritings.map((writing, idx) => (
+                  <Post type="writing" book={writing} key={idx} />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      )}
     </AppShell>
   );
 }
