@@ -167,7 +167,7 @@ function Bookmark({ type, book }) {
     }
   };
 
-  if (loading) return <CircularProgress color="inherit" size={30} />;
+  if (loading) return <CircularProgress color="inherit" size={25} />;
 
   return (
     <span className={classes.root}>

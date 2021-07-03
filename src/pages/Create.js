@@ -132,15 +132,14 @@ function Create() {
   }, []);
 
   const addPrompt = () => {
-    var data = {
-      author_id: user.sub,
-      title: title,
-      content: content,
-      published: true,
-    };
-
     if (title.length > 0 && content.length > 0) {
       setLoading(true);
+      var data = {
+        author_id: user.sub,
+        title: title,
+        content: content,
+        published: true,
+      };
       PromptDataService.create(data)
         .then(() => {
           window.sessionStorage.clear();
@@ -153,19 +152,21 @@ function Create() {
           enqueueSnackbar("Error creating prompt.", { variant: "error" });
         });
       setLoading(false);
+    } else {
+      enqueueSnackbar("No field should be left empty", { variant: "warning" });
     }
   };
 
   const addWriting = () => {
-    const data = {
-      title: title,
-      author_id: user.sub,
-      prompt_id: currentPrompt.id,
-      content: content,
-      published: true,
-    };
-    if (title.length > 0 && content.length > 0) {
+    if (title.length > 0 && content.length > 0 && currentPrompt) {
       setLoading(true);
+      const data = {
+        title: title,
+        author_id: user.sub,
+        prompt_id: currentPrompt.id,
+        content: content,
+        published: true,
+      };
       WritingDataService.create(data)
         .then(() => {
           window.sessionStorage.clear();
@@ -178,6 +179,8 @@ function Create() {
           enqueueSnackbar("Error creating writing.", { variant: "error" })
         );
       setLoading(false);
+    } else {
+      enqueueSnackbar("No field should be left empty", { variant: "warning" });
     }
   };
 
@@ -226,7 +229,7 @@ function Create() {
               />
             </div>
           </form>
-          <Paper className={classes.preview}>{parse(content)}</Paper>
+          {/* <Paper className={classes.preview}>{parse(content)}</Paper> */}
           <Button
             variant="contained"
             color="primary"
@@ -279,16 +282,16 @@ function Create() {
               }}
             />
 
-            <Paper className={classes.editorContainer}>
+            <div className={classes.editorContainer}>
               <CKEditor
                 config={ckeditorConfig}
                 editor={ClassicEditor}
                 data={content}
                 onChange={handleOnContentChange}
               />
-            </Paper>
+            </div>
           </form>
-          <Paper className={classes.preview}>{parse(content)}</Paper>
+          {/* <Paper className={classes.preview}>{parse(content)}</Paper> */}
           <Button
             variant="contained"
             color="primary"

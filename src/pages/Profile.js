@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import AppShell from "../components/AppShell";
 import SectionLoading from "../components/SectionLoading";
+import EditProfileBtn from "../components/EditProfileBtn";
 import { Typography, Avatar, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSnackbar } from "notistack";
@@ -36,6 +38,7 @@ function Profile() {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const { sub } = useParams();
+  const currUser = useAuth0().user;
   const [userLoading, setUserLoading] = useState(false);
   const [promptLoading, setPromptLoading] = useState(false);
   const [writingLoading, setWritingLoading] = useState(false);
@@ -46,19 +49,20 @@ function Profile() {
   const [publishedWritings, setPublishedWritings] = useState([]);
 
   const userString = JSON.stringify(user);
-  useEffect(() => {
-    const getUser = async () => {
-      // get user id
-      setUserLoading(true);
-      try {
-        const response = await UserDataService.get(sub);
-        response.data && setUser(response.data);
-      } catch (error) {
-        enqueueSnackbar("Error loading user info", { variant: "error" });
-      }
-      setUserLoading(false);
-    };
 
+  const getUser = async () => {
+    // get user id
+    setUserLoading(true);
+    try {
+      const response = await UserDataService.get(sub);
+      response.data && setUser(response.data);
+    } catch (error) {
+      enqueueSnackbar("Error loading user info", { variant: "error" });
+    }
+    setUserLoading(false);
+  };
+
+  useEffect(() => {
     getUser();
   }, [userString, sub]);
 
@@ -99,21 +103,24 @@ function Profile() {
       {userLoading ? (
         <SectionLoading msg="Loading user info..." />
       ) : (
-        <div className={classes.user}>
-          <Avatar src={user?.picture} className={classes.avatar} />
-          <span className={classes.userInfo}>
-            <Typography variant="h4">
-              <b>Name:</b> <span id="profileName">{user?.name}</span>
-            </Typography>
-            <Typography variant="h4">
-              <b>Username:</b>{" "}
-              <span id="profileUsername">{user?.nickname}</span>
-            </Typography>
-            <Typography variant="h4">
-              <b>Email:</b> <span id="profileEmail">{user?.email}</span>
-            </Typography>
-          </span>
-        </div>
+        <>
+          <EditProfileBtn user={user} reload={getUser} />
+          <div className={classes.user}>
+            <Avatar src={user?.picture} className={classes.avatar} />
+            <span className={classes.userInfo}>
+              <Typography variant="h4">
+                <b>Name:</b> <span id="profileName">{user?.name}</span>
+              </Typography>
+              <Typography variant="h4">
+                <b>Username:</b>{" "}
+                <span id="profileUsername">{user?.nickname}</span>
+              </Typography>
+              <Typography variant="h4">
+                <b>Email:</b> <span id="profileEmail">{user?.email}</span>
+              </Typography>
+            </span>
+          </div>
+        </>
       )}
       {promptLoading ? (
         <>

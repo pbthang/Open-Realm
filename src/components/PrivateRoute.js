@@ -1,15 +1,31 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import { withAuthenticationRequired } from "@auth0/auth0-react";
 import Loading from "../pages/Loading";
+import Login from "../pages/Login";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useSnackbar } from "notistack";
 
-function PrivateRoute({ component, ...rest }) {
+function PrivateRoute({ component: Component, ...rest }) {
+  const { enqueueSnackbar } = useSnackbar();
+  const { isAuthenticated, isLoading, error } = useAuth0();
+
+  if (error)
+    enqueueSnackbar("Cannot authenticate user", {
+      variant: "error",
+    });
+
+  if (isLoading) return <Loading />;
+
   return (
     <Route
-      component={withAuthenticationRequired(component, {
-        onRedirecting: () => <Loading />,
-      })}
       {...rest}
+      render={(props) => {
+        if (isAuthenticated) {
+          return <Component {...props} />;
+        } else {
+          return <Login />;
+        }
+      }}
     />
   );
 }

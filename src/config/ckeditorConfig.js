@@ -13,6 +13,7 @@ const ckeditorConfig = {
     "undo",
     "redo",
   ],
+  height: 500,
 };
 
 export default ckeditorConfig;

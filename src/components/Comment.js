@@ -126,6 +126,7 @@ function Comment({ type, comment, deleteComment }) {
       }
       deleteComment(comment.id);
       handleCloseDeleteDialog();
+      enqueueSnackbar("Delete comment successfully", { variant: "success" });
     } catch (error) {
       enqueueSnackbar("Error deleting comment", { variant: "error" });
     }
@@ -150,6 +151,7 @@ function Comment({ type, comment, deleteComment }) {
       await updateComment(newCommentContent);
       setCommentContent(newCommentContent);
       handleCancelClick();
+      enqueueSnackbar("Update comment successfully", { variant: "success" });
     } catch (error) {
       enqueueSnackbar("Error updating comment", { variant: "error" });
     }
@@ -251,7 +253,7 @@ function Comment({ type, comment, deleteComment }) {
               </Button>
               <Button
                 variant="outlined"
-                color="primary"
+                color="error"
                 className={classes.cancelBtn}
                 onClick={handleCancelClick}
               >
@@ -288,7 +290,6 @@ function Comment({ type, comment, deleteComment }) {
             <Button
               onClick={handleCommentDelete}
               variant="text"
-              color="primary"
               className={classes.cancelBtn}
             >
               Delete

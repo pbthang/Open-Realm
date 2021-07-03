@@ -188,6 +188,7 @@ function EditDeleteOptionBtn({ type, book }) {
         open={editDialogOpen}
         onClose={handleEditDialogClose}
         maxWidth="md"
+        fullWidth
         className={classes.editDialog}
       >
         <DialogTitle>
@@ -197,6 +198,12 @@ function EditDeleteOptionBtn({ type, book }) {
           <DialogContentText>Edit your works here</DialogContentText>
           <TextField
             className={classes.titleInput}
+            error={title.length > 255}
+            helperText={
+              title.length > 255
+                ? "Title should have less than 255 characters"
+                : ""
+            }
             autoFocus
             margin="dense"
             fullWidth
@@ -232,7 +239,7 @@ function EditDeleteOptionBtn({ type, book }) {
             >
               Cancel
             </Button>
-            <Button onClick={handleEditSubmit} variant="text" color="primary">
+            <Button onClick={handleEditSubmit} variant="text">
               Submit
             </Button>
           </DialogActions>
