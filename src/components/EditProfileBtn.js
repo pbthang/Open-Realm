@@ -12,6 +12,8 @@ import {
   CircularProgress,
   TextField,
   Input,
+  Avatar,
+  Container,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSnackbar } from "notistack";
@@ -33,6 +35,19 @@ const useStyles = makeStyles((theme) => ({
   profilePicInput: {
     marginTop: "1rem",
   },
+  avatar: {
+    height: 200,
+    width: 200,
+  },
+  inputContainer: {
+    display: "inline",
+  },
+  dialogContent: {
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
+    flexWrap: "wrap",
+  },
 }));
 
 function EditProfileBtn({ user, reload }) {
@@ -44,12 +59,17 @@ function EditProfileBtn({ user, reload }) {
   const [name, setName] = useState(user?.name);
   const [username, setUsername] = useState(user?.nickname);
   const [picture, setPicture] = useState(null);
+  const [previewSource, setPreviewSource] = useState(user?.picture);
 
   const [open, setOpen] = useState(false);
   const handleEditBtnClick = () => {
     setOpen(true);
   };
   const handleClose = () => {
+    setName(user?.name);
+    setUsername(user?.nickname);
+    setPicture(null);
+    setPreviewSource(user?.picture);
     setOpen(false);
   };
   const handleEditSubmit = async () => {
@@ -72,7 +92,7 @@ function EditProfileBtn({ user, reload }) {
         name: name,
         nickname: username,
       });
-      await handleImageUpload();
+      await handleImageUploadToCloud();
       reload();
       enqueueSnackbar("Update user info successfully", { variant: "success" });
       handleClose();
@@ -82,7 +102,7 @@ function EditProfileBtn({ user, reload }) {
     setLoading(false);
   };
 
-  const handleImageUpload = async () => {
+  const handleImageUploadToCloud = async () => {
     if (!picture) return;
     const formData = new FormData();
     formData.append("file", picture);
@@ -92,6 +112,17 @@ function EditProfileBtn({ user, reload }) {
       formData
     );
     await UserDataService.patch(user.user_id, { picture: response.data.url });
+  };
+
+  const handleFileInputChange = (e) => {
+    if (e.target.files?.length) {
+      setPicture(e.target.files[0]);
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(e.target.files[0]);
+      fileReader.onloadend = () => {
+        setPreviewSource(fileReader.result);
+      };
+    }
   };
 
   return (
@@ -104,31 +135,36 @@ function EditProfileBtn({ user, reload }) {
         </span>
         <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
           <DialogTitle id="form-dialog-title">Edit profile</DialogTitle>
-          <DialogContent>
-            <TextField
-              margin="dense"
-              label="Name"
-              fullWidth
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+          <DialogContent className={classes.dialogContent}>
+            <Avatar
+              src={previewSource}
+              variant="circle"
+              className={classes.avatar}
             />
-            <TextField
-              margin="dense"
-              label="Username"
-              fullWidth
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <div className={classes.profilePicInput}>
-              <span>Change profile picture: </span>
-              <Input
-                type="file"
-                disableUnderline
-                placeholder="Choose an image"
-                onChange={(e) =>
-                  e.target.files?.length && setPicture(e.target.files[0])
-                }
+            <div className={classes.inputContainer}>
+              <TextField
+                margin="dense"
+                label="Name"
+                fullWidth
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
+              <TextField
+                margin="dense"
+                label="Username"
+                fullWidth
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <div className={classes.profilePicInput}>
+                <span>Change profile picture: </span>
+                <Input
+                  type="file"
+                  disableUnderline
+                  placeholder="Choose an image"
+                  onChange={handleFileInputChange}
+                />
+              </div>
             </div>
           </DialogContent>
           {loading ? (

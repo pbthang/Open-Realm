@@ -11,6 +11,8 @@ const useStyles = makeStyles({
     display: "flex",
     flexWrap: "wrap",
     alignItems: "flex-start",
+    margin: 0,
+    padding: 0,
   },
   container: {},
 });

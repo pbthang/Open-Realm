@@ -11,6 +11,7 @@ import {
   ListItemText,
   FormControlLabel,
   Switch,
+  useMediaQuery,
 } from "@material-ui/core";
 import { ThemeContext } from "../../ThemeContextProvider";
 import HomeIcon from "@material-ui/icons/Home";

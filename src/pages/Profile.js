@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
 import AppShell from "../components/AppShell";
 import SectionLoading from "../components/SectionLoading";
 import EditProfileBtn from "../components/EditProfileBtn";
@@ -16,14 +15,19 @@ const useStyles = makeStyles({
   user: {
     display: "flex",
     alignItems: "center",
-    margin: "2rem 0",
+    justifyContent: "center",
+    flexWrap: "wrap",
+    margin: 0,
+    padding: 0,
   },
   avatar: {
     height: 200,
     width: 200,
+    margin: "2rem",
   },
   userInfo: {
-    marginLeft: "2rem",
+    margin: 0,
+    padding: 0,
   },
   yourWorks: {
     marginTop: "1rem",
@@ -38,7 +42,6 @@ function Profile() {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const { sub } = useParams();
-  const currUser = useAuth0().user;
   const [userLoading, setUserLoading] = useState(false);
   const [promptLoading, setPromptLoading] = useState(false);
   const [writingLoading, setWritingLoading] = useState(false);
