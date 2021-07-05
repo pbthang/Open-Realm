@@ -66,11 +66,11 @@ function EditProfileBtn({ user, reload }) {
     setOpen(true);
   };
   const handleClose = () => {
+    setOpen(false);
     setName(user?.name);
     setUsername(user?.nickname);
     setPicture(null);
     setPreviewSource(user?.picture);
-    setOpen(false);
   };
   const handleEditSubmit = async () => {
     if (

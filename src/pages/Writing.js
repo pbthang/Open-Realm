@@ -45,7 +45,7 @@ const useStyle = makeStyles((theme) => ({
   content: {
     marginTop: "2rem",
     marginBottom: "2rem",
-    wordWrap: "normal",
+    wordWrap: "break-word",
     "& a": {
       color: "inherit",
     },
@@ -252,7 +252,9 @@ function Writing() {
                 {bookAuthor.nickname}
               </Typography>
             </span>
-            <div className={classes.content}>{parse(book?.content ?? "")}</div>
+            <Typography variant="body1" className={classes.content}>
+              {parse(book?.content ?? "")}
+            </Typography>
             <Bookmark type="writing" book={book} />
           </>
         )}
