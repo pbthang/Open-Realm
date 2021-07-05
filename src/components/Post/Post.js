@@ -10,6 +10,7 @@ import {
 import Bookmark from "./Bookmark";
 import { makeStyles } from "@material-ui/core/styles";
 import UserDataService from "../../services/user.service";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,7 +84,9 @@ function Post({ type, book }) {
           <div className={classes.idAndDate}>
             <Typography variant="subtitle2">Id: #{book.id}</Typography>
             <Typography variant="caption">
-              {book.createdAt?.split("T")[0]}
+              {moment(book.createdAt, "YYYY-MM-DD[T]hh:mm:ss")
+                .utc(true)
+                .fromNow()}
             </Typography>
           </div>
           <a href={`/home/${book.id}`} className={classes.link}>
@@ -122,7 +125,9 @@ function Post({ type, book }) {
               Id: #{book.id} - Prompt #{book.prompt_id}
             </Typography>
             <Typography variant="caption">
-              {book.createdAt?.split("T")[0]}
+              {moment(book.createdAt, "YYYY-MM-DD[T]hh:mm:ss")
+                .utc(true)
+                .fromNow()}
             </Typography>
           </div>
           <a href={`/writings/${book.id}`} className={classes.link}>
