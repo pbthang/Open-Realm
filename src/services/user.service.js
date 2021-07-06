@@ -40,6 +40,23 @@ class UserDataService {
     );
     return response;
   }
+
+  async resendEmail(user_id) {
+    const TOKEN = await ACCESS_TOKEN;
+    const response = await axios.post(
+      "https://dev-d1rzgdpx.jp.auth0.com/api/v2/jobs/verification-email",
+      {
+        user_id,
+        client_id: process.env.REACT_APP_MGMT_API_CLIENT_ID,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      }
+    );
+    return response;
+  }
 }
 
 export default new UserDataService();

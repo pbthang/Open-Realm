@@ -23,6 +23,7 @@ import WritingCommentDataService from "../services/writingComment.service";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSnackbar } from "notistack";
 import { useAuth0 } from "@auth0/auth0-react";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   comments: {},
@@ -177,7 +178,10 @@ function Comment({ type, comment, deleteComment }) {
   return (
     <>
       <Tooltip
-        title={!!comment?.createdAt && `on ${comment.createdAt?.split("T")[0]}`}
+        title={
+          !!comment?.createdAt &&
+          moment(comment.createdAt, "YYYY-MM-DD[T]hh:mm:ss").utc(true).fromNow()
+        }
         placement="top-start"
       >
         <Paper className={classes.comment}>

@@ -7,7 +7,7 @@ import { useSnackbar } from "notistack";
 
 function PrivateRoute({ component: Component, ...rest }) {
   const { enqueueSnackbar } = useSnackbar();
-  const { isAuthenticated, isLoading, error } = useAuth0();
+  const { isAuthenticated, isLoading, error, user } = useAuth0();
 
   if (error)
     enqueueSnackbar("Cannot authenticate user", {
@@ -20,7 +20,7 @@ function PrivateRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={(props) => {
-        if (isAuthenticated) {
+        if (isAuthenticated && user.email_verified) {
           return <Component {...props} />;
         } else {
           return <Login />;
