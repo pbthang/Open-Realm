@@ -1,34 +1,48 @@
-import http from "../http-common";
+import HTTP from "../http-common";
 
 class PromptBookmarkDataService {
-  getAll() {
-    return http.get("/promptBookmarks");
+  async getAll() {
+    const http = await HTTP;
+    const res = await http.get("/promptBookmarks");
+    return res;
   }
 
-  get(id) {
-    return http.get(`/promptBookmarks/${id}`);
+  async get(id) {
+    const http = await HTTP;
+    const res = await http.get(`/promptBookmarks/${id}`);
+    return res;
   }
 
-  create(data) {
-    return http.post("/promptBookmarks", data);
+  async create(data) {
+    const http = await HTTP;
+    const res = await http.post("/promptBookmarks", data);
+    return res;
   }
 
-  update(id, data) {
-    return http.put(`/promptBookmarks/${id}`, data);
+  async update(id, data) {
+    const http = await HTTP;
+    const res = await http.put(`/promptBookmarks/${id}`, data);
+    return res;
   }
 
-  delete(id) {
-    return http.delete(`/promptBookmarks/${id}`);
+  async delete(id) {
+    const http = await HTTP;
+    const res = await http.delete(`/promptBookmarks/${id}`);
+    return res;
   }
 
-  findByUserId(id) {
-    return http.get(`/promptBookmarks/getbyuser/getprompts?user_id=${id}`);
+  async findByUserId(id) {
+    const http = await HTTP;
+    const res = await http.get(`/promptBookmarks/getbyuser/getprompts?user_id=${id}`);
+    return res;
   }
 
-  deleteByUserAndPrompt(user_id, prompt_id) {
-    return http.delete(
+  async deleteByUserAndPrompt(user_id, prompt_id) {
+    const http = await HTTP;
+    const res = await http.delete(
       `/promptBookmarks?user_id=${user_id}&prompt_id=${prompt_id}`
     );
+    return res;
   }
 }
 

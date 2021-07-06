@@ -1,28 +1,34 @@
-import http from "../http-common";
+import HTTP from "../http-common";
 
 class WritingCommentDataService {
-  getAll() {
-    return http.get("/writingComments");
+  async getAll() {
+    const http = await HTTP;
+    return await http.get("/writingComments");
   }
 
-  get(id) {
-    return http.get(`/writingComments/${id}`);
+  async get(id) {
+    const http = await HTTP;
+    return await http.get(`/writingComments/${id}`);
   }
 
-  create(data) {
-    return http.post("/writingComments", data);
+  async create(data) {
+    const http = await HTTP;
+    return await http.post("/writingComments", data);
   }
 
-  update(id, data) {
-    return http.put(`/writingComments/${id}`, data);
+  async update(id, data) {
+    const http = await HTTP;
+    return await http.put(`/writingComments/${id}`, data);
   }
 
-  delete(id) {
-    return http.delete(`/writingComments/${id}`);
+  async delete(id) {
+    const http = await HTTP;
+    return await http.delete(`/writingComments/${id}`);
   }
 
-  findByPost(postID) {
-    return http.get(`/writingComments?post_id=${postID}`);
+  async findByPost(postID) {
+    const http = await HTTP;
+    return await http.get(`/writingComments?post_id=${postID}`);
   }
 }
 

@@ -1,32 +1,39 @@
-import http from "../http-common";
+import HTTP from "../http-common";
 
 class WritingBookmarkDataService {
-  getAll() {
-    return http.get("/writingBookmarks");
+  async getAll() {
+    const http = await HTTP;
+    return await http.get("/writingBookmarks");
   }
 
-  get(id) {
-    return http.get(`/writingBookmarks/${id}`);
+  async get(id) {
+    const http = await HTTP;
+    return await http.get(`/writingBookmarks/${id}`);
   }
 
-  create(data) {
-    return http.post("/writingBookmarks", data);
+  async create(data) {
+    const http = await HTTP;
+    return await http.post("/writingBookmarks", data);
   }
 
-  update(id, data) {
-    return http.put(`/writingBookmarks/${id}`, data);
+  async update(id, data) {
+    const http = await HTTP;
+    return await http.put(`/writingBookmarks/${id}`, data);
   }
 
-  delete(id) {
-    return http.delete(`/writingBookmarks/${id}`);
+  async delete(id) {
+    const http = await HTTP;
+    return await http.delete(`/writingBookmarks/${id}`);
   }
 
-  findByUserId(id) {
-    return http.get(`/writingBookmarks/getbyuser/getwritings?user_id=${id}`);
+  async findByUserId(id) {
+    const http = await HTTP;
+    return await http.get(`/writingBookmarks/getbyuser/getwritings?user_id=${id}`);
   }
 
-  deleteByUserAndWriting(user_id, writing_id) {
-    return http.delete(
+  async deleteByUserAndWriting(user_id, writing_id) {
+    const http = await HTTP;
+    return await http.delete(
       `/writingBookmarks?user_id=${user_id}&writing_id=${writing_id}`
     );
   }

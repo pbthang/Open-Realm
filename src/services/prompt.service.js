@@ -1,32 +1,46 @@
-import http from "../http-common";
+import HTTP from "../http-common";
 
 class PromptDataService {
-  getAll() {
-    return http.get("/prompts");
+  async getAll() {
+    const http = await HTTP;
+    const response = await http.get("/prompts");
+    return response;
   }
 
-  get(id) {
-    return http.get(`/prompts/${id}`);
+  async get(id) {
+    const http = await HTTP;
+    const response = await http.get(`/prompts/${id}`);
+    return response;
   }
 
-  create(data) {
-    return http.post("/prompts", data);
+  async create(data) {
+    const http = await HTTP;
+    const response = await http.post("/prompts", data);
+    return response;
   }
 
-  update(id, data) {
-    return http.put(`/prompts/${id}`, data);
+  async update(id, data) {
+    const http = await HTTP;
+    const response = await http.put(`/prompts/${id}`, data);
+    return response;
   }
 
-  delete(id) {
-    return http.delete(`/prompts/${id}`);
+  async delete(id) {
+    const http = await HTTP;
+    const response = await http.delete(`/prompts/${id}`);
+    return response;
   }
 
-  findByTitle(title) {
-    return http.get(`/prompts?title=${title}`);
+  async findByTitle(title) {
+    const http = await HTTP;
+    const response = await http.get(`/prompts?title=${title}`);
+    return response;
   }
 
-  findByAuthorId(id) {
-    return http.get(`/prompts?author_id=${id}`);
+  async findByAuthorId(id) {
+    const http = await HTTP;
+    const response = await http.get(`/prompts?author_id=${id}`);
+    return response;
   }
 }
 

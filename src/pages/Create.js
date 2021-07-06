@@ -19,7 +19,6 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import ckeditorConfig from "../config/ckeditorConfig";
 import parse from "html-react-parser";
-import http from "../http-common";
 import PromptDataService from "../services/prompt.service";
 import WritingDataService from "../services/writing.service";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -121,7 +120,7 @@ function Create() {
   useEffect(() => {
     const fetchPrompts = async () => {
       try {
-        const response = await http.get("/prompts");
+        const response = await PromptDataService.getAll();
         setPromptList(response.data);
       } catch (error) {
         enqueueSnackbar("Error loading prompt list", { variant: "error" });

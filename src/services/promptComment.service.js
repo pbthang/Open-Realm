@@ -1,28 +1,40 @@
-import http from "../http-common";
+import HTTP from "../http-common";
 
 class PromptCommentDataService {
-  getAll() {
-    return http.get("/promptComments");
+  async getAll() {
+    const http = await HTTP;
+    const res = await http.get("/promptComments");
+    return res;
   }
 
-  get(id) {
-    return http.get(`/promptComments/${id}`);
+  async get(id) {
+    const http = await HTTP;
+    const res = await http.get(`/promptComments/${id}`);
+    return res;
   }
 
-  create(data) {
-    return http.post("/promptComments", data);
+  async create(data) {
+    const http = await HTTP;
+    const res = await http.post("/promptComments", data);
+    return res;
   }
 
-  update(id, data) {
-    return http.put(`/promptComments/${id}`, data);
+  async update(id, data) {
+    const http = await HTTP;
+    const res = await http.put(`/promptComments/${id}`, data);
+    return res;
   }
 
-  delete(id) {
-    return http.delete(`/promptComments/${id}`);
+  async delete(id) {
+    const http = await HTTP;
+    const res = await http.delete(`/promptComments/${id}`);
+    return res;
   }
 
-  findByPost(postID) {
-    return http.get(`/promptComments?post_id=${postID}`);
+  async findByPost(postID) {
+    const http = await HTTP;
+    const res = await http.get(`/promptComments?post_id=${postID}`);
+    return res;
   }
 }
 

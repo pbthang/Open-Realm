@@ -1,41 +1,58 @@
-import http from "../http-common";
+import HTTP from "../http-common";
 
 class WritingDataService {
-  getAll() {
-    return http.get("/writings");
+  async getAll() {
+    const http = await HTTP;
+    const res = await http.get("/writings");
+    return res;
   }
 
-  get(id) {
-    return http.get(`/writings/${id}`);
+  async get(id) {
+    const http = await HTTP;
+    const res = await http.get(`/writings/${id}`);
+    return res;
   }
 
-  create(data) {
-    return http.post("/writings", data);
+  async create(data) {
+    const http = await HTTP;
+    const res = await http.post("/writings", data);
+    return res;
   }
 
-  update(id, data) {
-    return http.put(`/writings/${id}`, data);
+  async update(id, data) {
+    const http = await HTTP;
+    const res = await http.put(`/writings/${id}`, data);
+    return res;
   }
 
-  delete(id) {
-    return http.delete(`/writings/${id}`);
+  async delete(id) {
+    const http = await HTTP;
+    const res = await http.delete(`/writings/${id}`);
+    return res;
   }
 
-  findByTitle(title) {
-    return http.get(`/writings?title=${title}`);
+  async findByTitle(title) {
+    const http = await HTTP;
+    const res = await http.get(`/writings?title=${title}`);
+    return res;
   }
 
-  findByAuthorId(id) {
-    return http.get(`/writings?author_id=${id}`);
+  async findByAuthorId(id) {
+    const http = await HTTP;
+    const res = await http.get(`/writings?author_id=${id}`);
+    return res;
   }
 
-  findByPromptId(id) {
-    return http.get(`/writings?prompt_id=${id}`);
+  async findByPromptId(id) {
+    const http = await HTTP;
+    const res = await http.get(`/writings?prompt_id=${id}`);
+    return res;
   }
 
   async getPrompt(writingId) {
+    const http = await HTTP;
     const response = await this.get(writingId);
-    return http.get(`/prompts/${response.data.prompt_id}`);
+    return await http.get(`/prompts/${response.data.prompt_id}`);
   }
 }
 
