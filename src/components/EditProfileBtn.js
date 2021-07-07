@@ -111,7 +111,9 @@ function EditProfileBtn({ user, reload }) {
       "https://api.cloudinary.com/v1_1/dic0ykohn/image/upload",
       formData
     );
-    await UserDataService.patch(user.user_id, { picture: response.data.url });
+    await UserDataService.patch(user.user_id, {
+      picture: response.data.secure_url,
+    });
   };
 
   const handleFileInputChange = (e) => {
