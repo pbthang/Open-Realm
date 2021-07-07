@@ -5,8 +5,8 @@ const API_TOKEN = (async () => {
     const TOKEN = await axios.post(
       "https://dev-d1rzgdpx.jp.auth0.com/oauth/token",
       {
-        client_id: "aRMCF2DqGDJAuWdrIoDrPj510devAf0y",
-        client_secret: "LzHIjU3JGxO4hPJjQ2pH6EBoqcyBSt_TeiS-YIzJvfHjuGtzQjyx3C0NI7PVpBJv",
+        client_id: process.env.REACT_APP_API_CLIENT_ID,
+        client_secret: process.env.REACT_APP_API_SECRET,
         audience: "https://api.hedgeing.xyz",
         grant_type: "client_credentials"
       }
