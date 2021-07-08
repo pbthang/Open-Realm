@@ -74,7 +74,8 @@ export const ThemeContext = React.createContext(false);
 
 function ThemeContextProvider({ children }) {
   const [theme, setTheme] = useState(
-    window.localStorage.getItem("themeCache") === "dark" ? "dark" : "light"
+    window.localStorage.getItem("themeCache") ||
+      (window.matchMedia("(prefers-color-scheme: dark)") ? "dark" : "light")
   );
   const setThemeLocally = (newTheme) => {
     setTheme(newTheme);

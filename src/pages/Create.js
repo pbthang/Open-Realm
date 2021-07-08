@@ -6,7 +6,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   TextField,
   Button,
-  Paper,
   Select,
   FormControl,
   InputLabel,
@@ -18,7 +17,6 @@ import { Autocomplete } from "@material-ui/lab";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import ckeditorConfig from "../config/ckeditorConfig";
-import parse from "html-react-parser";
 import PromptDataService from "../services/prompt.service";
 import WritingDataService from "../services/writing.service";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -81,39 +79,46 @@ function Create() {
   const { user } = useAuth0();
 
   const [content, setContent] = useState(
-    window.sessionStorage.getItem("createCache") ?? ""
+    window.localStorage.getItem("createCache") ?? ""
   );
 
   const [title, setTitle] = useState(
-    window.sessionStorage.getItem("titleCache") ?? ""
+    window.localStorage.getItem("titleCache") ?? ""
   );
+
+  const clearCache = () => {
+    window.localStorage.removeItem("createCache");
+    window.localStorage.removeItem("titleCache");
+    window.localStorage.removeItem("promptCache");
+    window.localStorage.removeItem("type");
+  };
 
   // type can be PROMPT | WRITING
   const PROMPT = "prompt_type";
   const WRITING = "writing_type";
   const [type, setType] = useState(
-    window.sessionStorage.getItem("type") ?? PROMPT
+    window.localStorage.getItem("type") ?? PROMPT
   );
 
   const [promptList, setPromptList] = useState([]);
 
   const [currentPrompt, setCurrentPrompt] = useState(
-    JSON.parse(window.sessionStorage.getItem("promptCache")) ?? null
+    JSON.parse(window.localStorage.getItem("promptCache")) ?? null
   );
 
   const handleOnTypeChange = (e) => {
     setType(e.target.value);
-    window.sessionStorage.setItem("type", e.target.value);
+    window.localStorage.setItem("type", e.target.value);
   };
 
   const handleOnContentChange = (e, editor) => {
     const data = editor.getData();
     setContent(data);
-    window.sessionStorage.setItem("createCache", data);
+    window.localStorage.setItem("createCache", data);
   };
 
   const handleOnPromptChange = (e, newVal) => {
-    window.sessionStorage.setItem("promptCache", JSON.stringify(newVal));
+    window.localStorage.setItem("promptCache", JSON.stringify(newVal));
     setCurrentPrompt(newVal);
   };
 
@@ -141,7 +146,7 @@ function Create() {
       };
       PromptDataService.create(data)
         .then(() => {
-          window.sessionStorage.clear();
+          clearCache();
           enqueueSnackbar("Create prompt successfully.", {
             variant: "success",
           });
@@ -168,7 +173,7 @@ function Create() {
       };
       WritingDataService.create(data)
         .then(() => {
-          window.sessionStorage.clear();
+          clearCache();
           enqueueSnackbar("Create writing successfully.", {
             variant: "success",
           });
@@ -216,7 +221,7 @@ function Create() {
               value={title}
               onChange={(e) => {
                 setTitle(e.target.value);
-                window.sessionStorage.setItem("titleCache", e.target.value);
+                window.localStorage.setItem("titleCache", e.target.value);
               }}
             />
             <div className={classes.editorContainer}>
@@ -244,9 +249,7 @@ function Create() {
             <Autocomplete
               options={promptList}
               getOptionLabel={(option) => `${option.id} - ${option.title}`}
-              getOptionSelected={(option, val) =>
-                option.id === val.id && option.title === val.title
-              }
+              getOptionSelected={(option, val) => option.id === val.id}
               openOnFocus
               forcePopupIcon
               onChange={handleOnPromptChange}
@@ -277,7 +280,7 @@ function Create() {
               multiline
               onChange={(e) => {
                 setTitle(e.target.value);
-                window.sessionStorage.setItem("titleCache", e.target.value);
+                window.localStorage.setItem("titleCache", e.target.value);
               }}
             />
 

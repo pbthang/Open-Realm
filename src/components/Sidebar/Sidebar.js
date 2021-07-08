@@ -133,7 +133,6 @@ function Sidebar() {
             key="Logout"
             onClick={() => {
               logout();
-              window.sessionStorage.clear();
             }}
             id="logoutBtn"
           >
