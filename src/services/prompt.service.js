@@ -37,6 +37,13 @@ class PromptDataService {
     return response;
   }
 
+  async search(string) {
+    const http = await HTTP;
+    const byTitle = await http.get(`/prompts?title=${string}`);
+    const byContent = await http.get(`/prompts?content=${string}`);
+    return byTitle.concat(byContent);
+  }
+
   async findByAuthorId(id) {
     const http = await HTTP;
     const response = await http.get(`/prompts?author_id=${id}`);
