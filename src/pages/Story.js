@@ -18,7 +18,7 @@ import WritingDataService from "../services/writing.service";
 
 const useStyle = makeStyles((theme) => ({
   root: {
-    // margin: "1rem",
+    margin: "1rem 1rem 1rem 2rem",
   },
   promptId: {
     display: "inline",
@@ -227,7 +227,11 @@ function Story() {
                 {bookAuthor?.nickname}
               </Typography>
             </span>
-            <Typography variant="body1" className={classes.content}>
+            <Typography
+              variant="body1"
+              className={classes.content}
+              component="div"
+            >
               {parse(book?.content ?? "")}
             </Typography>
             <Bookmark type="prompt" book={book} />

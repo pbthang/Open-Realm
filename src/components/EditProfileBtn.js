@@ -21,7 +21,10 @@ import UserDataService from "../services/user.service";
 
 const useStyles = makeStyles((theme) => ({
   optionBtn: {
-    float: "right",
+    marginRight: "1rem",
+    position: "absolute",
+    right: 20,
+    top: 40,
   },
   iconBtn: {
     opacity: 0.3,

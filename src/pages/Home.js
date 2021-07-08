@@ -11,10 +11,9 @@ const useStyles = makeStyles({
     display: "flex",
     flexWrap: "wrap",
     alignItems: "flex-start",
-    margin: 0,
+    margin: "2rem 0 1rem 2rem",
     padding: 0,
   },
-  container: {},
 });
 
 function Home() {

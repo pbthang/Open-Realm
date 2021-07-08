@@ -10,6 +10,9 @@ import PromptBookmarkDataService from "../services/promptBookmark.service";
 import WritingBookmarkDataService from "../services/writingBookmark.service";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: "0 0 1rem 2rem",
+  },
   title: {
     margin: "1rem",
   },
@@ -90,7 +93,7 @@ function Bookmarked() {
 
   return (
     <AppShell>
-      <div>
+      <div className={classes.root}>
         {bookmarkedPrompts.length > 0 && (
           <>
             <Divider />

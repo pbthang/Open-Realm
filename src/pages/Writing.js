@@ -18,7 +18,7 @@ import PromptDataService from "../services/prompt.service";
 
 const useStyle = makeStyles((theme) => ({
   root: {
-    margin: "1rem",
+    margin: "1rem 1rem 1rem 2rem",
   },
   writingId: {
     // display: "inline",
@@ -252,7 +252,11 @@ function Writing() {
                 {bookAuthor.nickname}
               </Typography>
             </span>
-            <Typography variant="body1" className={classes.content}>
+            <Typography
+              variant="body1"
+              className={classes.content}
+              component="div"
+            >
               {parse(book?.content ?? "")}
             </Typography>
             <Bookmark type="writing" book={book} />

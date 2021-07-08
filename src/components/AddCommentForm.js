@@ -72,6 +72,9 @@ function AddCommentForm({ type, postId, addComment }) {
     setLoading(false);
   };
 
+  const addNewComment =
+    type === "prompt" ? addPromptComment : addWritingComment;
+
   return (
     <form className={classes.addCmt} noValidate autoComplete="off">
       <TextField
@@ -83,6 +86,7 @@ function AddCommentForm({ type, postId, addComment }) {
         className={classes.input}
         value={newComment}
         onChange={(e) => setNewComment(e.target.value)}
+        onKeyPress={(e) => e.key === "Enter" && addNewComment()}
       />
       {loading ? (
         <CircularProgress color="inherit" size={30} className={classes.btn} />
@@ -91,7 +95,7 @@ function AddCommentForm({ type, postId, addComment }) {
           variant="contained"
           color="primary"
           className={classes.btn}
-          onClick={type === "prompt" ? addPromptComment : addWritingComment}
+          onClick={addNewComment}
         >
           Add
         </Button>

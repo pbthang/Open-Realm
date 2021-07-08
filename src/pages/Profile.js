@@ -12,6 +12,10 @@ import UserDataService from "../services/user.service";
 import Post from "../components/Post";
 
 const useStyles = makeStyles({
+  root: {
+    margin: "1rem 0 1rem 2rem",
+    position: "relative",
+  },
   user: {
     display: "flex",
     alignItems: "center",
@@ -23,7 +27,7 @@ const useStyles = makeStyles({
   avatar: {
     height: 200,
     width: 200,
-    margin: "2rem",
+    margin: "2rem 2rem 2rem 0",
   },
   userInfo: {
     margin: 0,
@@ -102,73 +106,75 @@ function Profile() {
 
   return (
     <AppShell>
-      <Typography variant="h2">User Profile</Typography>
-      {userLoading ? (
-        <SectionLoading msg="Loading user info..." />
-      ) : (
-        <>
-          <EditProfileBtn user={user} reload={getUser} />
-          <div className={classes.user}>
-            <Avatar src={user?.picture} className={classes.avatar} />
-            <span className={classes.userInfo}>
-              <Typography variant="h4">
-                <b>Name:</b> <span id="profileName">{user?.name}</span>
-              </Typography>
-              <Typography variant="h4">
-                <b>Username:</b>{" "}
-                <span id="profileUsername">{user?.nickname}</span>
-              </Typography>
-              <Typography variant="h4">
-                <b>Email:</b> <span id="profileEmail">{user?.email}</span>
-              </Typography>
-            </span>
+      <div className={classes.root}>
+        <Typography variant="h2">User Profile</Typography>
+        {userLoading ? (
+          <SectionLoading msg="Loading user info..." />
+        ) : (
+          <>
+            <EditProfileBtn user={user} reload={getUser} />
+            <div className={classes.user}>
+              <Avatar src={user?.picture} className={classes.avatar} />
+              <span className={classes.userInfo}>
+                <Typography variant="h5">
+                  <b>Name:</b> <span id="profileName">{user?.name}</span>
+                </Typography>
+                <Typography variant="h5">
+                  <b>Username:</b>{" "}
+                  <span id="profileUsername">{user?.nickname}</span>
+                </Typography>
+                <Typography variant="h5">
+                  <b>Email:</b> <span id="profileEmail">{user?.email}</span>
+                </Typography>
+              </span>
+            </div>
+          </>
+        )}
+        {promptLoading ? (
+          <>
+            <Divider />
+            <SectionLoading msg="Loading published prompts..." />
+          </>
+        ) : (
+          <div className={classes.yourWorks}>
+            {publishedPrompts.length === 0 || (
+              <>
+                <Divider />
+                <Typography variant="h3" className={classes.title}>
+                  Published Prompts
+                </Typography>
+                <div>
+                  {publishedPrompts.map((prompt) => (
+                    <Post type="prompt" book={prompt} key={prompt?.id} />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
-        </>
-      )}
-      {promptLoading ? (
-        <>
-          <Divider />
-          <SectionLoading msg="Loading published prompts..." />
-        </>
-      ) : (
-        <div className={classes.yourWorks}>
-          {publishedPrompts.length === 0 || (
-            <>
-              <Divider />
-              <Typography variant="h3" className={classes.title}>
-                Published Prompts
-              </Typography>
-              <div>
-                {publishedPrompts.map((prompt) => (
-                  <Post type="prompt" book={prompt} key={prompt?.id} />
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-      )}
-      {writingLoading ? (
-        <>
-          <Divider />
-          <SectionLoading msg="Loading published writings..." />
-        </>
-      ) : (
-        <div className={classes.yourWorks}>
-          {publishedWritings.length === 0 || (
-            <>
-              <Divider />
-              <Typography variant="h3" className={classes.title}>
-                Published Writings
-              </Typography>
-              <div>
-                {publishedWritings.map((writing, idx) => (
-                  <Post type="writing" book={writing} key={idx} />
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-      )}
+        )}
+        {writingLoading ? (
+          <>
+            <Divider />
+            <SectionLoading msg="Loading published writings..." />
+          </>
+        ) : (
+          <div className={classes.yourWorks}>
+            {publishedWritings.length === 0 || (
+              <>
+                <Divider />
+                <Typography variant="h3" className={classes.title}>
+                  Published Writings
+                </Typography>
+                <div>
+                  {publishedWritings.map((writing, idx) => (
+                    <Post type="writing" book={writing} key={idx} />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </div>
     </AppShell>
   );
 }

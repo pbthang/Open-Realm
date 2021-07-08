@@ -11,6 +11,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     margin: "1rem",
+    height: "100%",
   },
   loader: {
     marginRight: "1rem",

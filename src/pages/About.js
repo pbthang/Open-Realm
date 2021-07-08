@@ -11,6 +11,9 @@ const posterSize = [1587, 2245];
 const posterScale = 0.2;
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: "1rem 2rem",
+  },
   poster: {
     margin: "1rem",
     display: "inline-block",
@@ -20,7 +23,11 @@ const useStyles = makeStyles((theme) => ({
   aboutOpenRealm: {
     margin: "2rem 0",
     display: "flex",
+    justifyContent: "center",
     alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      flexWrap: "wrap",
+    },
   },
   aboutOpenRealmFirstPara: {
     marginBottom: "1rem",
@@ -32,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   aboutOpenRealmText: {
     marginLeft: "2rem",
+    display: "inline-block",
   },
   creators: {
     margin: "2rem 0",
@@ -55,7 +63,7 @@ function About() {
   const classes = useStyles();
   return (
     <AppShell>
-      <div>
+      <div className={classes.root}>
         <Typography variant="h2">About Open Realms</Typography>
         <div className={classes.aboutOpenRealm}>
           <Avatar
@@ -64,7 +72,7 @@ function About() {
             alt="OR"
             className={classes.poster}
           />
-          <span className={classes.aboutOpenRealmText}>
+          <div className={classes.aboutOpenRealmText}>
             <Typography
               variant="body1"
               className={classes.aboutOpenRealmFirstPara}
@@ -103,7 +111,7 @@ function About() {
                 https://github.com/pbthang/Open-Realm
               </a>
             </Typography>
-          </span>
+          </div>
         </div>
         <Typography variant="h2">Creators</Typography>
         <div className={classes.creators}>
