@@ -5,6 +5,7 @@ const isProduction = process.env.REACT_APP_ENV === "production";
 
 const HTTP = (async () => {
   const TOKEN = await API_TOKEN;
+  console.log(TOKEN);
   const router = axios.create({
     baseURL: isProduction
       ? "https://api.hedgeing.xyz/api"
