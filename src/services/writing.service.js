@@ -41,7 +41,7 @@ class WritingDataService {
     const http = await HTTP;
     const byTitle = await http.get(`/writings?title=${string}`);
     const byContent = await http.get(`/writings?content=${string}`);
-    return byTitle.concat(byContent);
+    return [...byTitle.data, ...byContent.data];
   }
 
   async findByAuthorId(id) {

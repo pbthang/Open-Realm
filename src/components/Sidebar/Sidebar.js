@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 import { ThemeContext } from "../../ThemeContextProvider";
 import HomeIcon from "@material-ui/icons/Home";
+import SearchIcon from "@material-ui/icons/Search";
 import PersonIcon from "@material-ui/icons/Person";
 import InfoIcon from "@material-ui/icons/Info";
 import MeetingRoomRoundedIcon from "@material-ui/icons/MeetingRoomRounded";
@@ -76,6 +77,18 @@ function Sidebar() {
                 <HomeIcon />
               </ListItemIcon>
               <ListItemText primary="Home" />
+            </ListItem>
+            <ListItem
+              button
+              key="Search"
+              component="a"
+              href="/search"
+              id="searchNav"
+            >
+              <ListItemIcon>
+                <SearchIcon />
+              </ListItemIcon>
+              <ListItemText primary="Search" />
             </ListItem>
             <ListItem
               button

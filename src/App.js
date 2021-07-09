@@ -10,6 +10,7 @@ import Bookmarked from "./pages/Bookmarked";
 import Story from "./pages/Story";
 import FourOFour from "./pages/FourOFour";
 import Writing from "./pages/Writing";
+import Search from "./pages/Search";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <PrivateRoute exact path="/create" component={Create} />
           <PrivateRoute exact path="/bookmarked" component={Bookmarked} />
           <PrivateRoute exact path="/about" component={About} />
+          <PrivateRoute exact path="/search" component={Search} />
           <Route exact path="/" component={Login} />
           <Route exact path="*" component={FourOFour} />
         </Switch>
