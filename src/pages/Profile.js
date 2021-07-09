@@ -71,6 +71,7 @@ function Profile() {
 
   useEffect(() => {
     getUser();
+    // eslint-disable-next-line
   }, [userString, sub]);
 
   useEffect(() => {
@@ -102,7 +103,7 @@ function Profile() {
 
     getPrompts();
     getWritings();
-  }, [sub]);
+  }, [sub, enqueueSnackbar]);
 
   return (
     <AppShell>

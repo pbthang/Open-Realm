@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AppShell from "../components/AppShell";
 import Post from "../components/Post";
 import SectionLoading from "../components/SectionLoading";
@@ -15,9 +15,13 @@ const useStyles = makeStyles((theme) => ({
   searchForm: {
     display: "flex",
     alignItems: "center",
+    margin: "1rem",
   },
   btn: {
     margin: "1rem",
+  },
+  result: {
+    marginTop: "1rem",
   },
 }));
 
@@ -35,7 +39,7 @@ function Search() {
     setPromptLoading(true);
     try {
       const response = await PromptDataService.search(searchString);
-      setResultPrompts(response);
+      setResultPrompts(response.data);
     } catch (error) {
       console.log(error);
       enqueueSnackbar("Error searching prompts", { variant: "error" });
@@ -47,7 +51,7 @@ function Search() {
     setWritingLoading(true);
     try {
       const response = await WritingDataService.search(searchString);
-      setResultWritings(response);
+      setResultWritings(response.data);
     } catch (error) {
       console.log(error);
       enqueueSnackbar("Error searching writings", { variant: "error" });
@@ -57,7 +61,7 @@ function Search() {
 
   const handleSearchClick = () => {
     if (!searchString)
-      return enqueueSnackbar("Search input cannot be empty", {
+      return enqueueSnackbar("Search field cannot be empty", {
         variant: "warning",
       });
     fetchPrompts();
@@ -74,6 +78,7 @@ function Search() {
             label="Search"
             value={searchString}
             onChange={(e) => setSearchString(e.target.value)}
+            onKeyPress={(e) => e.key === "Enter" && handleSearchClick()}
           />
           <Button
             variant="contained"
@@ -88,9 +93,10 @@ function Search() {
           <SectionLoading msg="Loading prompts..." />
         ) : (
           resultPrompts.length > 0 && (
-            <div>
+            <div className={classes.result}>
+              <Divider />
               <Typography variant="h3">Result prompts</Typography>
-              <div className={classes.result}>
+              <div>
                 {resultPrompts.map((prompt) => (
                   <Post type="prompt" book={prompt} key={prompt.id} />
                 ))}
@@ -102,9 +108,10 @@ function Search() {
           <SectionLoading msg="Loading writings..." />
         ) : (
           resultWritings.length > 0 && (
-            <div>
+            <div className={classes.result}>
+              <Divider />
               <Typography variant="h3">Result writings</Typography>
-              <div className={classes.result}>
+              <div>
                 {resultWritings.map((writing) => (
                   <Post type="writing" book={writing} key={writing.id} />
                 ))}
