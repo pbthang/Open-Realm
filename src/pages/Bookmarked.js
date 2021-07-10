@@ -87,7 +87,7 @@ function Bookmarked() {
         setLoading(false)
       );
     }
-  }, [user?.sub]);
+  }, [user?.sub, enqueueSnackbar]);
 
   if (loading) return <Loading />;
 

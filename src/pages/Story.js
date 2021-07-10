@@ -136,51 +136,52 @@ function Story() {
     setComments((comments) => comments.filter((cmt) => cmt.id !== cmtId));
   };
 
-  const getBook = async (id) => {
-    if (!id) return;
-    try {
-      const response = await PromptDataService.get(id);
-      response.data && setBook(response.data);
-      return response.data;
-    } catch (error) {
-      enqueueSnackbar("Error loading prompt", { variant: "error" });
-    }
-  };
-
-  const getBookAuthor = async (id) => {
-    if (!id) return;
-    try {
-      const response = await UserDataService.get(id);
-      response.data && setBookAuthor(response.data);
-      return response.data;
-    } catch (error) {
-      enqueueSnackbar("Error loading prompt", { variant: "error" });
-    }
-  };
-
-  const getComments = async (postId) => {
-    if (!postId) return;
-    try {
-      const response = await PromptCommentDataService.findByPost(postId);
-      response.data && setComments(response.data.reverse());
-      return response.data;
-    } catch (error) {
-      enqueueSnackbar("Error loading comments", { variant: "error" });
-    }
-  };
-
-  const getNextWritings = async (promptId) => {
-    if (!promptId) return;
-    try {
-      const response = await WritingDataService.findByPromptId(promptId);
-      response.data && setNextWritings(response.data);
-      return response.data;
-    } catch (error) {
-      enqueueSnackbar("Error loading following writings", { variant: "error" });
-    }
-  };
-
   useEffect(() => {
+    const getBook = async (id) => {
+      if (!id) return;
+      try {
+        const response = await PromptDataService.get(id);
+        response.data && setBook(response.data);
+        return response.data;
+      } catch (error) {
+        enqueueSnackbar("Error loading prompt", { variant: "error" });
+      }
+    };
+
+    const getBookAuthor = async (id) => {
+      if (!id) return;
+      try {
+        const response = await UserDataService.get(id);
+        response.data && setBookAuthor(response.data);
+        return response.data;
+      } catch (error) {
+        enqueueSnackbar("Error loading prompt", { variant: "error" });
+      }
+    };
+
+    const getComments = async (postId) => {
+      if (!postId) return;
+      try {
+        const response = await PromptCommentDataService.findByPost(postId);
+        response.data && setComments(response.data.reverse());
+        return response.data;
+      } catch (error) {
+        enqueueSnackbar("Error loading comments", { variant: "error" });
+      }
+    };
+
+    const getNextWritings = async (promptId) => {
+      if (!promptId) return;
+      try {
+        const response = await WritingDataService.findByPromptId(promptId);
+        response.data && setNextWritings(response.data);
+        return response.data;
+      } catch (error) {
+        enqueueSnackbar("Error loading following writings", {
+          variant: "error",
+        });
+      }
+    };
     const getInfo = async () => {
       setContentLoading(true);
       setWritingLoading(true);
@@ -192,7 +193,7 @@ function Story() {
     };
 
     getInfo();
-  }, [promptId]);
+  }, [promptId, enqueueSnackbar]);
 
   return (
     <AppShell>

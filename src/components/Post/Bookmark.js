@@ -85,7 +85,7 @@ function Bookmark({ type, book }) {
     } else if (type === "writing" && book?.id) {
       getWritingInfo();
     }
-  }, [book.id, type, user.sub]);
+  }, [book.id, type, user.sub, enqueueSnackbar]);
 
   // for BookmarkIcon
   const handleClickMarked = async () => {

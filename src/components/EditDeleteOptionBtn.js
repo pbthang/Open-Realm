@@ -129,8 +129,8 @@ function EditDeleteOptionBtn({ type, book }) {
     try {
       await PromptDataService.update(book.id, { title, content });
       enqueueSnackbar("Update prompt successfully", { variant: "success" });
+      window.location.href = window.location.href;
       setLoading(false);
-      history.push(`/home/${book.id}`);
     } catch (error) {
       enqueueSnackbar("Error updating prompt", { variant: "error" });
       setLoading(false);
@@ -142,8 +142,8 @@ function EditDeleteOptionBtn({ type, book }) {
     try {
       await WritingDataService.update(book.id, { title, content });
       enqueueSnackbar("Update writing successfully", { variant: "success" });
+      window.location.href = window.location.href;
       setLoading(false);
-      history.push(`/writings/${book.id}`);
     } catch (error) {
       enqueueSnackbar("Error updating prompt", { variant: "error" });
       setLoading(false);

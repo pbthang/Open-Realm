@@ -124,7 +124,7 @@ function Create() {
     };
 
     fetchPrompts();
-  }, []);
+  }, [enqueueSnackbar]);
 
   const addPrompt = () => {
     if (title.length > 0 && content.length > 0) {

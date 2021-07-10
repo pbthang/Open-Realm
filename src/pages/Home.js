@@ -42,7 +42,7 @@ function Home() {
     };
 
     getAllPrompts();
-  }, []);
+  }, [enqueueSnackbar]);
 
   if (loading) return <Loading />;
 
