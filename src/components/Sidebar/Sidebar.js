@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -44,6 +45,18 @@ const useStyles = makeStyles((theme) => ({
     left: 20,
     zIndex: 99999,
   },
+  link: {
+    textDecoration: "none",
+    color: "inherit",
+    "&:hover": {
+      color: "inherit",
+      textDecoration: "none",
+    },
+    "&:visited": {
+      color: "inherit",
+      textDecoration: "none",
+    },
+  },
 }));
 
 function Sidebar() {
@@ -72,60 +85,52 @@ function Sidebar() {
         <Toolbar />
         <div className={classes.drawerContainer}>
           <List>
-            <ListItem button key="Home" component="a" href="/home" id="homeNav">
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary="Home" />
-            </ListItem>
-            <ListItem
-              button
-              key="Search"
-              component="a"
-              href="/search"
-              id="searchNav"
-            >
-              <ListItemIcon>
-                <SearchIcon />
-              </ListItemIcon>
-              <ListItemText primary="Search" />
-            </ListItem>
-            <ListItem
-              button
-              key="Profile"
-              component="a"
-              href={`/profile/${user?.sub}`}
-              id="profileNav"
-            >
-              <ListItemIcon>
-                <PersonIcon />
-              </ListItemIcon>
-              <ListItemText primary="Profile" />
-            </ListItem>
-            <ListItem
-              button
-              key="Create"
-              component="a"
-              href="/create"
-              id="createNav"
-            >
-              <ListItemIcon>
-                <CreateIcon />
-              </ListItemIcon>
-              <ListItemText primary="Create" />
-            </ListItem>
-            <ListItem
-              button
-              key="Bookmarked"
-              component="a"
-              href="/bookmarked"
-              id="bookmarkedNav"
-            >
-              <ListItemIcon>
-                <BookmarksIcon />
-              </ListItemIcon>
-              <ListItemText primary="Bookmarked" />
-            </ListItem>
+            <Link to="/home" className={classes.link}>
+              <ListItem button key="Home" id="homeNav">
+                <ListItemIcon>
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItem>
+            </Link>
+            <Link to="/search" className={classes.link}>
+              <ListItem button key="Search" id="searchNav">
+                <ListItemIcon>
+                  <SearchIcon />
+                </ListItemIcon>
+                <ListItemText primary="Search" />
+              </ListItem>
+            </Link>
+            <Link to={`/profile/${user?.sub}`} className={classes.link}>
+              <ListItem button key="Profile" id="profileNav">
+                <ListItemIcon>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary="Profile" />
+              </ListItem>
+            </Link>
+            <Link to="/create" className={classes.link}>
+              <ListItem button key="Create" id="createNav">
+                <ListItemIcon>
+                  <CreateIcon />
+                </ListItemIcon>
+                <ListItemText primary="Create" />
+              </ListItem>
+            </Link>
+            <Link to="/bookmarked" className={classes.link}>
+              <ListItem
+                button
+                key="Bookmarked"
+                component="a"
+                href="/bookmarked"
+                id="bookmarkedNav"
+              >
+                <ListItemIcon>
+                  <BookmarksIcon />
+                </ListItemIcon>
+                <ListItemText primary="Bookmarked" />
+              </ListItem>
+            </Link>
           </List>
           <Divider />
 
@@ -143,18 +148,20 @@ function Sidebar() {
               />
             </ListItem>
 
-            <ListItem
-              button
-              key="About"
-              component="a"
-              href="/about"
-              id="aboutNav"
-            >
-              <ListItemIcon>
-                <InfoIcon />
-              </ListItemIcon>
-              <ListItemText primary="About" />
-            </ListItem>
+            <Link to="/about" className={classes.link}>
+              <ListItem
+                button
+                key="About"
+                component="a"
+                href="/about"
+                id="aboutNav"
+              >
+                <ListItemIcon>
+                  <InfoIcon />
+                </ListItemIcon>
+                <ListItemText primary="About" />
+              </ListItem>
+            </Link>
             <ListItem
               button
               key="Logout"

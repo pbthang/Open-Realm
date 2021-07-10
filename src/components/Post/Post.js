@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -89,30 +90,30 @@ function Post({ type, book }) {
                 .fromNow()}
             </Typography>
           </div>
-          <a href={`/home/${book.id}`} className={classes.link}>
+          <Link to={`/home/${book.id}`} className={classes.link}>
             <Tooltip title={book.title} placement="top">
               <Typography noWrap className={classes.title}>
                 {book?.title}
               </Typography>
             </Tooltip>
-          </a>
+          </Link>
 
           <Typography variant="subtitle1">
             By{" "}
-            <a
-              href={`/profile/${book.author_id}`}
+            <Link
+              to={`/profile/${book.author_id}`}
               className={classes.authorName}
             >
               {author?.nickname}
-            </a>
+            </Link>
           </Typography>
         </CardContent>
 
         <CardActions className={classes.action}>
           <Bookmark type={type} book={book} />
-          <Button size="small" component="a" href={`/home/${book.id}`}>
-            Read
-          </Button>
+          <Link to={`/home/${book.id}`} style={{ textDecoration: "none" }}>
+            <Button size="small">Read</Button>
+          </Link>
         </CardActions>
       </Card>
     );
@@ -130,30 +131,30 @@ function Post({ type, book }) {
                 .fromNow()}
             </Typography>
           </div>
-          <a href={`/writings/${book.id}`} className={classes.link}>
+          <Link to={`/writings/${book.id}`} className={classes.link}>
             <Tooltip title={book.title} placement="top">
               <Typography noWrap className={classes.title}>
                 {book.title}
               </Typography>
             </Tooltip>
-          </a>
+          </Link>
 
           <Typography variant="subtitle1">
             By{" "}
-            <a
-              href={`/profile/${book.author_id}`}
+            <Link
+              to={`/profile/${book.author_id}`}
               className={classes.authorName}
             >
               {author.nickname}
-            </a>
+            </Link>
           </Typography>
         </CardContent>
 
         <CardActions className={classes.action}>
           <Bookmark type={type} book={book} />
-          <Button size="small" component="a" href={`/writings/${book.id}`}>
-            Read
-          </Button>
+          <Link to={`/writings/${book.id}`} style={{ textDecoration: "none" }}>
+            <Button size="small">Read</Button>
+          </Link>
         </CardActions>
       </Card>
     );

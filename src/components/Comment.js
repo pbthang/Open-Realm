@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Paper,
   Typography,
@@ -192,13 +193,13 @@ function Comment({ type, comment, deleteComment }) {
             href={`/profile/${cmtAuthor?.user_id}`}
           />
           <span className={classes.usernameAndCmt}>
-            <Typography
-              variant="body2"
-              className={classes.username}
-              component="a"
-              href={`/profile/${cmtAuthor?.user_id}`}
-            >
-              {cmtAuthor?.nickname}
+            <Typography variant="body2">
+              <Link
+                to={`/profile/${cmtAuthor?.user_id}`}
+                className={classes.username}
+              >
+                {cmtAuthor?.nickname}
+              </Link>
             </Typography>
 
             <Typography variant="body1" className={classes.cmtText}>
