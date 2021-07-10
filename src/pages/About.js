@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       flexWrap: "wrap",
     },
   },
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     display: "inline-block",
   },
   aboutOpenRealmText: {
-    marginLeft: "2rem",
+    marginLeft: "0",
     display: "inline-block",
   },
   creators: {

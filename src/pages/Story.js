@@ -102,6 +102,10 @@ const useStyle = makeStyles((theme) => ({
   nextWritings: {
     margin: "1rem 0",
   },
+  posts: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
   optionBtn: {
     float: "right",
   },
@@ -250,7 +254,7 @@ function Story() {
               <Divider />
               <div className={classes.nextWritings}>
                 <Typography variant="h3">Following Writings</Typography>
-                <div>
+                <div className={classes.posts}>
                   {nextWritings.map((writing) => (
                     <Post type="writing" book={writing} key={writing?.id} />
                   ))}

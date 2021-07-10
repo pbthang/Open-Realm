@@ -40,6 +40,10 @@ const useStyles = makeStyles({
   title: {
     margin: "1rem",
   },
+  posts: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
 });
 
 function Profile() {
@@ -144,7 +148,7 @@ function Profile() {
                 <Typography variant="h3" className={classes.title}>
                   Published Prompts
                 </Typography>
-                <div>
+                <div className={classes.posts}>
                   {publishedPrompts.map((prompt) => (
                     <Post type="prompt" book={prompt} key={prompt?.id} />
                   ))}
@@ -166,7 +170,7 @@ function Profile() {
                 <Typography variant="h3" className={classes.title}>
                   Published Writings
                 </Typography>
-                <div>
+                <div className={classes.posts}>
                   {publishedWritings.map((writing, idx) => (
                     <Post type="writing" book={writing} key={idx} />
                   ))}

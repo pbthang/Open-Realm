@@ -18,6 +18,8 @@ const useStyles = makeStyles((theme) => ({
   },
   bookmarkedWorks: {
     marginBottom: "1rem",
+    display: "flex",
+    flexWrap: "wrap",
   },
 }));
 

@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     wordWrap: "break-word",
     paddingRight: 0,
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down("sm")]: {
       width: "95vw",
     },
   },
