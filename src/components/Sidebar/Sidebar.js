@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 function Sidebar() {
   const classes = useStyles();
   const { logout, user } = useAuth0();
-  const isMedium = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const isMedium = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const [open, setOpen] = useState(isMedium);
 
   const { theme, setThemeLocally } = useContext(ThemeContext);

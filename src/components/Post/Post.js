@@ -18,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "space-between",
     margin: "0.5rem",
-    height: "10rem",
-    width: "19rem",
+    height: "9rem",
+    width: "18rem",
     cursor: "default",
   },
   title: {

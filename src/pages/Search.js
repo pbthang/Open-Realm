@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
   result: {
     marginTop: "1rem",
   },
+  posts: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
 }));
 
 function Search() {
@@ -96,7 +100,7 @@ function Search() {
             <div className={classes.result}>
               <Divider />
               <Typography variant="h3">Result prompts</Typography>
-              <div>
+              <div className={classes.posts}>
                 {resultPrompts.map((prompt) => (
                   <Post type="prompt" book={prompt} key={prompt.id} />
                 ))}
@@ -111,7 +115,7 @@ function Search() {
             <div className={classes.result}>
               <Divider />
               <Typography variant="h3">Result writings</Typography>
-              <div>
+              <div className={classes.posts}>
                 {resultWritings.map((writing) => (
                   <Post type="writing" book={writing} key={writing.id} />
                 ))}
