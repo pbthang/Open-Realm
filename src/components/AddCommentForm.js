@@ -9,15 +9,23 @@ import WritingCommentDataService from "../services/writingComment.service";
 const useStyles = makeStyles((theme) => ({
   addCmt: {
     margin: "1rem",
+    position: "relative",
     display: "flex",
     alignItems: "center",
+    [theme.breakpoints.down("xs")]: {
+      flexWrap: "wrap",
+    },
   },
   input: {
     wordWrap: "normal",
   },
   btn: {
-    marginLeft: "1rem",
+    margin: "1rem 0 1rem 1rem",
     height: "100%",
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+      marginLeft: 0,
+    },
   },
 }));
 

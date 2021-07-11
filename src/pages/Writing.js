@@ -273,10 +273,9 @@ function Writing() {
             >
               {parse(book?.content ?? "")}
             </Typography>
-            <Bookmark type="writing" book={book} />
           </>
         )}
-
+        <Bookmark type="writing" book={book} />
         <Divider />
         <div className={classes.comments}>
           <AddCommentForm

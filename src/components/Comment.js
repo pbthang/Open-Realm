@@ -75,16 +75,34 @@ const useStyles = makeStyles((theme) => ({
     margin: "1rem",
     display: "flex",
     alignItems: "center",
+    [theme.breakpoints.down("xs")]: {
+      flexWrap: "wrap",
+    },
   },
-  input: {
-    marginRight: "1rem",
+  btns: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginLeft: "1rem",
+    [theme.breakpoints.down("xs")]: {
+      width: "100%",
+      margin: "1rem 0 1rem 0",
+    },
   },
+  input: {},
   submitBtn: {
     marginRight: "1rem",
+    [theme.breakpoints.down("xs")]: {
+      width: "48%",
+      margin: 0,
+    },
   },
   cancelBtn: {
     color: theme.palette.error.main,
     borderColor: theme.palette.error.main,
+    [theme.breakpoints.down("xs")]: {
+      width: "48%",
+    },
   },
   date: {},
 }));
@@ -244,7 +262,7 @@ function Comment({ type, comment, deleteComment }) {
           {loading ? (
             <CircularProgress size={30} color="inherit" />
           ) : (
-            <>
+            <div className={classes.btns}>
               <Button
                 variant="contained"
                 color="primary"
@@ -255,13 +273,12 @@ function Comment({ type, comment, deleteComment }) {
               </Button>
               <Button
                 variant="outlined"
-                color="error"
                 className={classes.cancelBtn}
                 onClick={handleCancelClick}
               >
                 Cancel
               </Button>
-            </>
+            </div>
           )}
         </form>
       )}

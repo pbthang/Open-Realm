@@ -253,10 +253,9 @@ function Story() {
             >
               {parse(book?.content ?? "")}
             </Typography>
-            <Bookmark type="prompt" book={book} />
           </>
         )}
-
+        <Bookmark type="prompt" book={book} />
         {writingLoading ? (
           <>
             <Divider />
