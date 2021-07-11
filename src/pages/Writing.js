@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import AppShell from "../components/AppShell";
 import Bookmark from "../components/Post/Bookmark";
 import Comment from "../components/Comment";
@@ -128,6 +129,13 @@ const useStyle = makeStyles((theme) => ({
       opacity: 1,
     },
   },
+  link: {
+    textDecoration: "none",
+    color: "inherit",
+    "&:visited": {
+      color: "inherit",
+    },
+  },
 }));
 
 function Writing() {
@@ -149,54 +157,58 @@ function Writing() {
     setComments((comments) => comments.filter((cmt) => cmt.id !== cmtId));
   };
 
-  useEffect(() => {
-    const getBook = async (id) => {
-      if (!id) return;
-      try {
-        const response = await WritingDataService.get(id);
-        response.data && setBook(response.data);
-        return response.data;
-      } catch (error) {
-        enqueueSnackbar("Error loading writing", { variant: "error" });
-      }
-    };
+  const getBook = async (id) => {
+    if (!id) return;
+    setContentLoading(true);
+    try {
+      const response = await WritingDataService.get(id);
+      response.data && setBook(response.data);
+      setContentLoading(false);
+      return response.data;
+    } catch (error) {
+      enqueueSnackbar("Error loading writing", { variant: "error" });
+      setContentLoading(false);
+    }
+  };
 
+  useEffect(() => {
     const getBookAuthor = async (id) => {
       if (!id) return;
+      setContentLoading(true);
       try {
         const response = await UserDataService.get(id);
         response.data && setBookAuthor(response.data);
-        return response.data;
       } catch (error) {
         enqueueSnackbar("Error loading writing", { variant: "error" });
       }
+      setContentLoading(false);
     };
 
     const getPrompt = async (id) => {
       if (!id) return;
+      setContentLoading(true);
       try {
         const response = await PromptDataService.get(id);
         response.data && setPrompt(response.data);
-        return response.data;
       } catch (error) {
         enqueueSnackbar("Error loading writing", { variant: "error" });
       }
+      setContentLoading(false);
     };
 
     const getComments = async (postId) => {
       if (!postId) return;
+      setCommentLoading(true);
       try {
         const response = await WritingCommentDataService.findByPost(postId);
         response.data && setComments(response.data.reverse());
-        return response.data;
       } catch (error) {
         enqueueSnackbar("Error loading comments", { variant: "error" });
       }
+      setCommentLoading(false);
     };
 
     const getInfo = async () => {
-      setContentLoading(true);
-      setCommentLoading(true);
       const book = await getBook(writingId);
       const bookAuthor = getBookAuthor(book?.author_id);
       const prompt = getPrompt(book?.prompt_id);
@@ -205,6 +217,7 @@ function Writing() {
     };
 
     getInfo();
+    // eslint-disable-next-line
   }, [writingId, enqueueSnackbar]);
 
   return (
@@ -215,42 +228,43 @@ function Writing() {
         ) : (
           <>
             <div>
-              <Typography
-                variant="body1"
-                className={classes.previousPrompt}
-                component="a"
-                href={`/home/${book?.prompt_id}`}
-              >
-                <ArrowBackIosIcon />
-                <b>
-                  Prompt #{prompt?.id}: {prompt?.title}
-                </b>
-              </Typography>
+              <Link to={`/home/${book?.prompt_id}`} className={classes.link}>
+                <Typography variant="body1" className={classes.previousPrompt}>
+                  <ArrowBackIosIcon />
+                  <b>
+                    Prompt #{prompt?.id}: {prompt?.title}
+                  </b>
+                </Typography>
+              </Link>
               <br /> <br />
               <Typography variant="body1" className={classes.writingId}>
                 Id: #{book?.id}
               </Typography>
-              <EditDeleteOptionBtn type="writing" book={book} />
+              <EditDeleteOptionBtn
+                type="writing"
+                book={book}
+                reload={() => getBook(writingId)}
+              />
             </div>
             <Typography variant="h2" className={classes.title}>
               {book?.title}
             </Typography>
 
             <span className={classes.authorInfo}>
-              <Avatar
-                src={bookAuthor?.picture}
-                className={classes.img}
-                component="a"
-                href={`/profile/${bookAuthor?.user_id}`}
-              />
-              <Typography
-                variant="h6"
-                className={classes.authorName}
-                component="a"
-                href={`/profile/${bookAuthor?.user_id}`}
+              <Link
+                to={`/profile/${bookAuthor?.user_id}`}
+                className={classes.link}
               >
-                {bookAuthor.nickname}
-              </Typography>
+                <Avatar src={bookAuthor?.picture} className={classes.img} />
+              </Link>
+              <Link
+                to={`/profile/${bookAuthor?.user_id}`}
+                className={classes.link}
+              >
+                <Typography variant="h6" className={classes.authorName}>
+                  {bookAuthor.nickname}
+                </Typography>
+              </Link>
             </span>
             <Typography
               variant="body1"

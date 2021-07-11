@@ -186,12 +186,9 @@ function Comment({ type, comment, deleteComment }) {
         placement="top-start"
       >
         <Paper className={classes.comment}>
-          <Avatar
-            src={cmtAuthor?.picture}
-            className={classes.img}
-            component="a"
-            href={`/profile/${cmtAuthor?.user_id}`}
-          />
+          <Link to={`/profile/${cmtAuthor?.user_id}`} className={classes.img}>
+            <Avatar src={cmtAuthor?.picture} />
+          </Link>
           <span className={classes.usernameAndCmt}>
             <Typography variant="body2">
               <Link

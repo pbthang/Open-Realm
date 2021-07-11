@@ -39,9 +39,8 @@ class WritingDataService {
 
   async search(string) {
     const http = await HTTP;
-    const byTitle = await http.get(`/writings?q=${string}`);
-    // const byContent = await http.get(`/writings?content=${string}`);
-    return byTitle;
+    const response = await http.get(`/writings?q=${string}`);
+    return response;
   }
 
   async findByAuthorId(id) {

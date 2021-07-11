@@ -118,13 +118,7 @@ function Sidebar() {
               </ListItem>
             </Link>
             <Link to="/bookmarked" className={classes.link}>
-              <ListItem
-                button
-                key="Bookmarked"
-                component="a"
-                href="/bookmarked"
-                id="bookmarkedNav"
-              >
+              <ListItem button key="Bookmarked" id="bookmarkedNav">
                 <ListItemIcon>
                   <BookmarksIcon />
                 </ListItemIcon>
@@ -149,13 +143,7 @@ function Sidebar() {
             </ListItem>
 
             <Link to="/about" className={classes.link}>
-              <ListItem
-                button
-                key="About"
-                component="a"
-                href="/about"
-                id="aboutNav"
-              >
+              <ListItem button key="About" id="aboutNav">
                 <ListItemIcon>
                   <InfoIcon />
                 </ListItemIcon>

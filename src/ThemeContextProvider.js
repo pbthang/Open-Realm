@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { CssBaseline, useTheme } from "@material-ui/core";
-import {
-  createMuiTheme,
-  ThemeProvider,
-  responsiveFontSizes,
-} from "@material-ui/core/styles";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
 export const ThemeContext = React.createContext(false);
 

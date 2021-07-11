@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import AppShell from "../components/AppShell";
 import EditDeleteOptionBtn from "../components/EditDeleteOptionBtn";
 import Bookmark from "../components/Post/Bookmark";
@@ -118,6 +119,13 @@ const useStyle = makeStyles((theme) => ({
       opacity: 1,
     },
   },
+  link: {
+    textDecoration: "none",
+    color: "inherit",
+    "&:visited": {
+      color: "inherit",
+    },
+  },
 }));
 
 function Story() {
@@ -140,63 +148,67 @@ function Story() {
     setComments((comments) => comments.filter((cmt) => cmt.id !== cmtId));
   };
 
-  useEffect(() => {
-    const getBook = async (id) => {
-      if (!id) return;
-      try {
-        const response = await PromptDataService.get(id);
-        response.data && setBook(response.data);
-        return response.data;
-      } catch (error) {
-        enqueueSnackbar("Error loading prompt", { variant: "error" });
-      }
-    };
+  const getBook = async (id) => {
+    if (!id) return;
+    setContentLoading(true);
+    try {
+      const response = await PromptDataService.get(id);
+      response.data && setBook(response.data);
+      setContentLoading(false);
+      return response.data;
+    } catch (error) {
+      enqueueSnackbar("Error loading prompt", { variant: "error" });
+      setContentLoading(false);
+    }
+  };
 
+  useEffect(() => {
     const getBookAuthor = async (id) => {
       if (!id) return;
+      setContentLoading(true);
       try {
         const response = await UserDataService.get(id);
         response.data && setBookAuthor(response.data);
-        return response.data;
       } catch (error) {
         enqueueSnackbar("Error loading prompt", { variant: "error" });
       }
+      setContentLoading(false);
     };
 
     const getComments = async (postId) => {
       if (!postId) return;
+      setCommentLoading(true);
       try {
         const response = await PromptCommentDataService.findByPost(postId);
         response.data && setComments(response.data.reverse());
-        return response.data;
       } catch (error) {
         enqueueSnackbar("Error loading comments", { variant: "error" });
       }
+      setCommentLoading(false);
     };
 
     const getNextWritings = async (promptId) => {
       if (!promptId) return;
+      setWritingLoading(true);
       try {
         const response = await WritingDataService.findByPromptId(promptId);
         response.data && setNextWritings(response.data);
-        return response.data;
       } catch (error) {
         enqueueSnackbar("Error loading following writings", {
           variant: "error",
         });
       }
+      setWritingLoading(false);
     };
     const getInfo = async () => {
-      setContentLoading(true);
-      setWritingLoading(true);
-      setCommentLoading(true);
       const book = await getBook(promptId);
-      getBookAuthor(book?.author_id).then(() => setContentLoading(false));
-      getComments(book?.id).then(() => setCommentLoading(false));
-      getNextWritings(book?.id).then(() => setWritingLoading(false));
+      getBookAuthor(book?.author_id);
+      getComments(book?.id);
+      getNextWritings(book?.id);
     };
 
     getInfo();
+    // eslint-disable-next-line
   }, [promptId, enqueueSnackbar]);
 
   return (
@@ -210,27 +222,29 @@ function Story() {
               <Typography variant="body1" className={classes.promptId}>
                 Id: #{promptId}
               </Typography>
-              <EditDeleteOptionBtn type="prompt" book={book} />
+              <EditDeleteOptionBtn
+                type="prompt"
+                book={book}
+                reload={() => getBook(promptId)}
+              />
             </div>
             <Typography variant="h2" className={classes.title}>
               {book?.title}
             </Typography>
 
             <span className={classes.authorInfo}>
-              <Avatar
-                src={bookAuthor?.picture}
-                className={classes.img}
-                component="a"
-                href={`/profile/${bookAuthor?.user_id}`}
-              />
-              <Typography
-                variant="h6"
-                className={classes.authorName}
-                component="a"
-                href={`/profile/${bookAuthor?.user_id}`}
+              <Link to={`/profile/${bookAuthor?.user_id}`}>
+                <Avatar src={bookAuthor?.picture} className={classes.img} />
+              </Link>
+
+              <Link
+                to={`/profile/${bookAuthor?.user_id}`}
+                className={classes.link}
               >
-                {bookAuthor?.nickname}
-              </Typography>
+                <Typography variant="h6" className={classes.authorName}>
+                  {bookAuthor?.nickname}
+                </Typography>
+              </Link>
             </span>
             <Typography
               variant="body1"

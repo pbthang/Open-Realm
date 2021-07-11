@@ -64,7 +64,6 @@ function AddCommentForm({ type, postId, addComment }) {
         const response = await WritingCommentDataService.create(data);
         addComment(response.data);
         setNewComment("");
-        enqueueSnackbar("Comment added successfully", { variant: "success" });
       }
     } catch (error) {
       enqueueSnackbar("Error adding comment", { variant: "error" });

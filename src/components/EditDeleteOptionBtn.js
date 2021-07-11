@@ -49,21 +49,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function EditDeleteOptionBtn({ type, book }) {
+function EditDeleteOptionBtn({ type, book, reload }) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const { user } = useAuth0();
   const history = useHistory();
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-
-  // Set default values
-  useEffect(() => {
-    book?.title && setTitle(book.title);
-    book?.content && setContent(book.content);
-  }, [book?.title, book?.content]);
+  const [title, setTitle] = useState(book.title ?? "");
+  const [content, setContent] = useState(book.content ?? "");
 
   // For Option Btn
   const [anchorEl, setAnchorEl] = useState(null);
@@ -129,7 +123,7 @@ function EditDeleteOptionBtn({ type, book }) {
     try {
       await PromptDataService.update(book.id, { title, content });
       enqueueSnackbar("Update prompt successfully", { variant: "success" });
-      window.location.href = window.location.href;
+      reload();
       setLoading(false);
     } catch (error) {
       enqueueSnackbar("Error updating prompt", { variant: "error" });
@@ -142,7 +136,7 @@ function EditDeleteOptionBtn({ type, book }) {
     try {
       await WritingDataService.update(book.id, { title, content });
       enqueueSnackbar("Update writing successfully", { variant: "success" });
-      window.location.href = window.location.href;
+      reload();
       setLoading(false);
     } catch (error) {
       enqueueSnackbar("Error updating prompt", { variant: "error" });
@@ -209,7 +203,6 @@ function EditDeleteOptionBtn({ type, book }) {
             fullWidth
             multiline
             label="Title"
-            defaultValue={book.title}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -218,9 +211,7 @@ function EditDeleteOptionBtn({ type, book }) {
               editor={ClassicEditor}
               config={ckeditorConfig}
               data={content}
-              defaultValue={book.content}
               onChange={(e, editor) => {
-                console.log(editor.getData());
                 setContent(editor.getData());
               }}
             />
