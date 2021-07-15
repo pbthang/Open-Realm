@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -57,6 +57,18 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: "none",
     },
   },
+  activeNavLink: {
+    color: theme.palette.text.disabled,
+    "& svg": {
+      color: theme.palette.text.disabled,
+    },
+    "&:hover": {
+      color: theme.palette.text.disabled,
+    },
+    "&:visited": {
+      color: theme.palette.text.disabled,
+    },
+  },
 }));
 
 function Sidebar() {
@@ -85,46 +97,66 @@ function Sidebar() {
         <Toolbar />
         <div className={classes.drawerContainer}>
           <List>
-            <Link to="/home" className={classes.link}>
+            <NavLink
+              activeClassName={classes.activeNavLink}
+              to="/home"
+              className={classes.link}
+            >
               <ListItem button key="Home" id="homeNav">
                 <ListItemIcon>
                   <HomeIcon />
                 </ListItemIcon>
                 <ListItemText primary="Home" />
               </ListItem>
-            </Link>
-            <Link to="/search" className={classes.link}>
+            </NavLink>
+            <NavLink
+              activeClassName={classes.activeNavLink}
+              to="/search"
+              className={classes.link}
+            >
               <ListItem button key="Search" id="searchNav">
                 <ListItemIcon>
                   <SearchIcon />
                 </ListItemIcon>
                 <ListItemText primary="Search" />
               </ListItem>
-            </Link>
-            <Link to={`/profile/${user?.sub}`} className={classes.link}>
+            </NavLink>
+            <NavLink
+              activeClassName={classes.activeNavLink}
+              to={`/profile/${user?.sub}`}
+              className={classes.link}
+            >
               <ListItem button key="Profile" id="profileNav">
                 <ListItemIcon>
                   <PersonIcon />
                 </ListItemIcon>
                 <ListItemText primary="Profile" />
               </ListItem>
-            </Link>
-            <Link to="/create" className={classes.link}>
+            </NavLink>
+            <NavLink
+              activeClassName={classes.activeNavLink}
+              to="/create"
+              className={classes.link}
+            >
               <ListItem button key="Create" id="createNav">
                 <ListItemIcon>
                   <CreateIcon />
                 </ListItemIcon>
                 <ListItemText primary="Create" />
               </ListItem>
-            </Link>
-            <Link to="/bookmarked" className={classes.link}>
+            </NavLink>
+            <NavLink
+              activeClassName={classes.activeNavLink}
+              to="/bookmarked"
+              className={classes.link}
+            >
               <ListItem button key="Bookmarked" id="bookmarkedNav">
                 <ListItemIcon>
                   <BookmarksIcon />
                 </ListItemIcon>
                 <ListItemText primary="Bookmarked" />
               </ListItem>
-            </Link>
+            </NavLink>
           </List>
           <Divider />
 
@@ -142,14 +174,18 @@ function Sidebar() {
               />
             </ListItem>
 
-            <Link to="/about" className={classes.link}>
+            <NavLink
+              activeClassName={classes.activeNavLink}
+              to="/about"
+              className={classes.link}
+            >
               <ListItem button key="About" id="aboutNav">
                 <ListItemIcon>
                   <InfoIcon />
                 </ListItemIcon>
                 <ListItemText primary="About" />
               </ListItem>
-            </Link>
+            </NavLink>
             <ListItem
               button
               key="Logout"
