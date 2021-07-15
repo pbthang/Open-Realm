@@ -26,7 +26,6 @@ const useStyle = makeStyles((theme) => ({
   },
   title: {
     display: "block",
-    fontSize: "3rem",
     wordWrap: "normal",
   },
   content: {

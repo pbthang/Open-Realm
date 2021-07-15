@@ -44,21 +44,21 @@ function ThemeContextProvider({ children }) {
           },
         },
         h2: {
-          fontSize: "3.5rem",
+          fontSize: "3rem",
           [muiTheme.breakpoints.down("sm")]: {
-            fontSize: "3rem",
+            fontSize: "2.5rem",
           },
           [muiTheme.breakpoints.down("xs")]: {
-            fontSize: "2.5rem",
+            fontSize: "2.25rem",
           },
         },
         h3: {
-          fontSize: "2.5rem",
+          fontSize: "2.25rem",
           [muiTheme.breakpoints.down("sm")]: {
-            fontSize: "2.25rem",
+            fontSize: "2rem",
           },
           [muiTheme.breakpoints.down("xs")]: {
-            fontSize: "2rem",
+            fontSize: "1.75rem",
           },
         },
         h4: {
@@ -80,7 +80,7 @@ function ThemeContextProvider({ children }) {
           },
         },
         h6: {
-          fontSize: "1.5rem",
+          fontSize: "1.25rem",
           [muiTheme.breakpoints.down("sm")]: {},
           [muiTheme.breakpoints.down("xs")]: {
             fontSize: "1rem",

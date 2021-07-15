@@ -36,7 +36,7 @@ function NavBar() {
   return (
     <AppBar position="fixed" className={classes.root}>
       <Toolbar>
-        <Typography variant="h6" className={classes.title}>
+        <Typography variant="h5" className={classes.title}>
           Open Realm
         </Typography>
         {!!(user?.nickname && user?.picture) && (

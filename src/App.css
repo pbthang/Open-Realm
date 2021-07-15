@@ -21,3 +21,8 @@ code {
 .ck-editor__editable:not(.ck-editor__nested-editable) {
   min-height: 150px;
 }
+
+.ck-editor .btn-toolbar {
+  position: sticky !important;
+  color: red !important;
+}

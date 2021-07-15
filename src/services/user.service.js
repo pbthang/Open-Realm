@@ -1,5 +1,5 @@
 import axios from "axios";
-import ACCESS_TOKEN from "../auth0MgmtAPIToken";
+import ACCESS_TOKEN from "../api/auth0MgmtAPIToken";
 
 class UserDataService {
   async getAll() {

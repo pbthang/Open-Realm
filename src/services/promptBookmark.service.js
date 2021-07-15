@@ -1,4 +1,4 @@
-import HTTP from "../http-common";
+import HTTP from "../api/http-common";
 
 class PromptBookmarkDataService {
   async getAll() {
@@ -33,7 +33,9 @@ class PromptBookmarkDataService {
 
   async findByUserId(id) {
     const http = await HTTP;
-    const res = await http.get(`/promptBookmarks/getbyuser/getprompts?user_id=${id}`);
+    const res = await http.get(
+      `/promptBookmarks/getbyuser/getprompts?user_id=${id}`
+    );
     return res;
   }
 

@@ -1,4 +1,4 @@
-import HTTP from "../http-common";
+import HTTP from "../api/http-common";
 
 class WritingCommentDataService {
   async getAll() {

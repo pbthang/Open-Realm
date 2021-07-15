@@ -15,7 +15,7 @@ import {
   Fab,
   useMediaQuery,
 } from "@material-ui/core";
-import { ThemeContext } from "../../ThemeContextProvider";
+import { ThemeContext } from "../../providers/ThemeContextProvider";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import PersonIcon from "@material-ui/icons/Person";

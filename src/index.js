@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import ThemeContextProvider from "./ThemeContextProvider";
+import ThemeContextProvider from "./providers/ThemeContextProvider";
 import reportWebVitals from "./reportWebVitals";
-import AuthProviderWithHistory from "./AuthProviderWithHistory";
+import AuthProviderWithHistory from "./providers/AuthProviderWithHistory";
 import { SnackbarProvider } from "notistack";
 
 ReactDOM.render(

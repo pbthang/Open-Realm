@@ -1,4 +1,4 @@
-import HTTP from "../http-common";
+import HTTP from "../api/http-common";
 
 class WritingBookmarkDataService {
   async getAll() {
@@ -28,7 +28,9 @@ class WritingBookmarkDataService {
 
   async findByUserId(id) {
     const http = await HTTP;
-    return await http.get(`/writingBookmarks/getbyuser/getwritings?user_id=${id}`);
+    return await http.get(
+      `/writingBookmarks/getbyuser/getwritings?user_id=${id}`
+    );
   }
 
   async deleteByUserAndWriting(user_id, writing_id) {
